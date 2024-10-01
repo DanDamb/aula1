@@ -2,17 +2,55 @@
 title: "Aula 1"
 output: html_notebook
 ---
-Tutorial [Happy Git](https://happygitwithr.com/)
 
-Local (SSH) do projeto no GitHub: git@github.com:DanDamb/aula1.git
+# Preâmbulo
+Este documento é um estudo que visa desenvolver uma metodologia para publicação de resultados de monitoramento ecológico.
+Os objetivos é utilizar as tecnologias [R Markdown](http://rmarkdown.rstudio.com), para produção de conteúdo, e [GitHub](http://github.com/), para hospedagem e controle de versão (VCS) colaborativa.
+A referência adotada pra implementação é o tutorial [Happy Git](https://happygitwithr.com/).
 
-Comandos de linha:
+## Implementação do procedimento
+Estamos trabalhando localmente com linux, onde foi implementado o sistema de segurança SSH.
+Portanto a comunicação com servidor externo foi estabelecida através da porta, ou caminho, (SSH) do projeto no GitHub: ```git@github.com:DanDamb/aula1.git```
 
- git commit -a -m "comitando tudo"
+Para saber o local/caminho SSS use o comando```>git remote show origin``` no terminal.
+
+Já está implementado o [Indice](https://dandamb.github.io/aula1/) e a [Aula 1](https://dandamb.github.io/aula1/Aula1.nb.html). Que por enquanto tem o mesmo conteúdo web.
+
+[Aula 1](https://dandamb.github.io/aula1/Aula1.nb.html)
+
+O procedimento de produção do material, no momento, é
+1. gerar o conteúdo no em linguagem de marcação RMarkdown no RStudio e gerenciar o controle de verções com o Git.
+Os comandos básicos no Git são os seguintes.
+
+0) para sincronizar a pasta local com o projeto:
+```
+ git init
  git remote set-url origin git@github.com:DanDamb/aula1.git
- push -u origin main
+```
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+1) para verificar o status dos arquivos do projeto:
+```
+git status
+```
+
+
+2) para verificar a localização remota dos arquivod do projeto
+```
+git remote -v
+```
+que no nosso caso resulta em:
+```
+  origin  git@github.com:DanDamb/aula1.git (fetch)
+  origin  git@github.com:DanDamb/aula1.git (push)
+```
+
+3) para 'commitar' os arquivos locais no repositório GitHub:
+```
+ git commit -a -m "mensagem do commit"
+ push -u origin main
+```
+
+Este material está sendo produzido com tecnologia [R Markdown](http://rmarkdown.rstudio.com) 
 
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
 
