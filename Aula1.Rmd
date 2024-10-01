@@ -2,7 +2,7 @@
 title: "Aula 1"
 output: html_notebook
 ---
- git commit -a -m "comitando tudo
+ git commit -a -m "comitando tudo"
  git remote set-url origin git@github.com:DanDamb/aula1.git
  push -u origin main
 
