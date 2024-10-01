@@ -1,0 +1,6 @@
+---
+title: "Aula 3"
+output: html_notebook
+---
+
+conteúdo da aula 3...
