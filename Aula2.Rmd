@@ -1,6 +1,3037 @@
 ---
-title: "Aula 2"
+title: "Tutorial linguagem R"
 output: html_notebook
 ---
 
-conteúdo da aula 2...
+# 1 INTRODUÇÃO
+Esta página é um exercício para o aprendizado do uso básico e de algumas ferramentas estatísticas usuais do **R**.
+Simultaneamente pretendemos fazer algumas análises básicas de alguns dos dados públicos disponibilizados pelo *ICMBio*.
+O objetivo é aprender o básico através da função *?* de ajuda do *R*. A ajuda é apresentada ao digitar na linha de comando do console *? seguido do nome* da função, do pacote (ou biblioteca) de funções, como o exemplo a seguir:
+```{r}
+? sort
+```
+```
+sort {base}
+Sorting or Ordering Vectors
+Description
+Sort (or order) a vector or factor (partially) into ascending or descending order. For ordering along more than one variable, e.g., for sorting data frames, see order.
+
+Usage
+sort(x, decreasing = FALSE, ...)
+(...)
+```
+
+Também é pssível obter ajuda sobre assuntos mais gerais utilizando a função *?? seguida do termo* que estamos pesquisando, por exemplo:
+```{r}
+?? Bayes
+```
+```
+Help pages:
+bayestestR::bayesfactor		Bayes Factors (BF)
+bayestestR::bayesfactor_inclusion		Inclusion Bayes Factors for testing predictors across Bayesian models
+bayestestR::bayesfactor_models		Bayes Factors (BF) for model comparison
+bayestestR::bayesfactor_parameters		Bayes Factors (BF) for a Single Parameter
+bayestestR::bayesfactor_restricted		Bayes Factors (BF) for Order Restricted Models
+(...)
+```
+Sobretudo, pretendemos desenvolver o conteúdo através da adaptação de exemplos, obtidos com o comando ```example() ``` do R que traz exemplos das funções disponíveis no R.
+
+```{r}
+example("sample")
+```
+```
+sample> x <- 1:12
+
+sample> # a random permutation
+sample> sample(x)
+ [1]  8  1  2  3  4 12  7  6  9  5 10 11
+
+sample> # bootstrap resampling -- only if length(x) > 1 !
+sample> sample(x, replace = TRUE)
+ [1]  8 12  7 12  2  1  3  1 10  2  7  6
+(...)
+```
+
+
+# 2 TIPOS
+O R suporta muitos tipos de dados. Os *tipos* mais básicos são os seguintes:
+
+Tipo de Dados|Descrição|Exemplo
+---------|-----------|--------
+Numérico|Representa números reais (com ou sem casas decimais)|```3,14, 10, -2,5```
+Inteiro|Representa números inteiros (sem casas decimais). Acrescente L para especificar o tipo inteiro.|```10L, -5L, 0L```
+Caractere|Representa texto ou sequências de caracteres, entre aspas simples ou duplas.|```"Olá", 'R', "123"```
+Lógico|Representa valores booleanos, TRUE ou FALSE.|```TRUE, FALSE```
+Complexo|Representa números complexos com partes reais e imaginárias.|```2 + 3i```
+Raw|Representa bytes brutos de dados.|```as.raw(c(0x41, 0x42))```
+
+Com os tipos básicos é possível construído tipos mais complexos:
+
+TIPO|DESCRIÇÃO
+----|-------------------------------------
+Numérico|O tipo padrão para cálculos matemáticos, que pode incluir números inteiros e decimais
+Inteiro|Usado para valores discretos, como IDs exclusivos. A função as.integer() pode armazenar e converter valores em inteiros
+Lógico|Representa valores VERDADEIRO ou FALSO. Valores lógicos podem ser multiplicados por valores numéricos, com TRUE interpretado como 1 e FALSE como 0
+Caractere|Representa valores de sequência alfabética. Um tipo especial de sequência de caracteres é "fator", que provavelmente está em uma ordem.
+Vetor|Pode ser numérico, caractere ou lógico. Por ex. ```c(1,2,5.3,6,-2,4)``` é um vetor numérico.
+Matriz|Todas as colunas em uma matriz devem ter o mesmo modo e comprimento. Por ex. ```matrix(c(11,12,21,22),2,2)```.
+Data Frame|Mais geral do que uma matriz, pois colunas diferentes podem ter modos diferentes
+Lista|Uma coleção ordenada de objetos, que pode ser uma variedade de objetos sob um nome
+
+Para determinar os tipos de dados, você pode usar as funções *class(), mode() ou typeof()*.
+A seguir utilizamos a função *cat()*, para imprimir, de maneira mais clara, os resultados da função *typeof()* aplicada sobre os diferentes *tipos* apresentados. 
+```{r}
+ cat(" 3.1415 ->  ", typeof(3.1415), "\n")
+ cat(" pi ->  ", typeof(pi), "\n")
+ cat(" 3 ->  ", typeof(3), "\n")
+ cat(" 3L ->  ", typeof(3L), "\n")
+ cat(" '3.1415' -> ", typeof("3.1415"), "\n")
+ cat(" TRUE ->  ", typeof(TRUE), "\n")
+ cat(" 2 + 3i ->  ", typeof(2 + 3i), "\n")
+ cat(" as.raw(c(0x41, 0x42)) ->  ", typeof(as.raw(c(0x41, 0x42))), "\n")
+```
+
+Existem algumas constantes predefinidas como tipos especiais no *R*:
+
+CONSTANTE|DEFINIÇÃO
+---------|---------
+pi|pi (π) é uma constante matemática que representa a relação entre o comprimento de uma circunferência e o seu diâmetro.
+Inf|Inf e -Inf são infinito positivo e negativo.
+NaN|*Not a Number* ou o mesmo que uma indefinição. Não confundir com N.A.
+N.A.|*Not Available*"* no *R* significa "Não Disponível", referindo-se a um elemento faltante em um conjunto.
+
+Estes valores podem aparecer em algumas situações (que não foram bem definida aqui) mas que servem de ilustração para o funcionamento do funcionamento na linguagem *R*:
+
+FORMULA|CÓDIGO R|RESULTADO|TIPO DO RESULTADO
+-------|-------|---------|------------------
+$0/0$|`0/0`|$NaN$|`r typeof(0/0)`
+$0/\pi$|`0/pi`|$0$|`r typeof(0/pi)`
+$0/\infty$|`0/Inf`|$0$|`r typeof(0/Inf)`
+$\pi/0$|`pi/0`|$Inf$|`r typeof(1/0)`
+$\pi/\pi$|`pi/pi`|$1$|`r typeof(pi/pi)`
+$\pi/\infty$|`pi/Inf`|$0$|`r typeof(pi/Inf)`
+$\infty/0$|`Inf/0`|$Inf$|`r typeof(Inf/0)`
+$\infty/\pi$|`Inf/pi`|$Inf$|`r typeof(Inf/pi)`
+$\infty/\infty$|`Inf/Inf`|$NaN$|`r typeof(Inf/Inf)`
+$\infty-\infty$|`Inf-Inf`|$NaN$|`r typeof(Inf/Inf)`
+
+Importante ter em mente que a implementação do *R* optou por esta forma para manter a consistencia da maior parte dos algoritmos utilizados na implementação da linguagem, não visando uma coerência com qualquer fundamentação matemática ou teoria estatística.
+
+
+# 3 OPERAÇÕES BÁSICA
+## Aritméticas e lógicas
+
+Operador | Descrição | Exemplo | Código
+---------|-----------|---------|----------
++ | Operador de adição |$3 + 5$|```  3+5 ```
+- | Operador de subtração |$3 - 5$|```  3-5 ```
+* | Operador de multiplicação |$3 * 5$|```  3*5 ```
+/ | Operador de divisão |$3 / 5$|```  3/5 ```
+: | Operador de sequência |$3 : 5$|```  3:5 ```
+^ | Operador exponencial |$3 ^ 5$|```  3^5 ```
+%% | Operador de módulo |$3 %% 5$|```  3%%5 ```
+== | Operador de igualdade |$3 == 5$|```  3==5 ```
+> | Operador “maior que"|$3 > 5$|```  3>5 ```
+< | Operador “menor que"|$3 < 5$|```  3<5 ```
+<= | Operador “menor ou igual"|$3 <= 5$|```  3<=5 ```
+! | Operador “Não"|$3 ! 5$|```  3!5 ```
+& | Operador lógico “E"|$3 & 5$|```  3&5 ```
+\| | Operador lógico “OU"|$3 + 5$|```  3|5 ```
+
+A seguir apresentaremos exemplos da execução do código, para tal utilizaremos o comando ```print()```:
+```{r}
+print(3+5)
+print(3-5)
+print(3*5)
+print(3/5)
+print(3:5)
+print(3^5)
+print(3%%5)
+print(3==5)
+print(3>5)
+print(3<5)
+print(3<=5)
+print(3>=5)
+print(!TRUE)
+print(TRUE&FALSE)
+print(TRUE|FALSE)
+```
+
+
+NOTA: Para representar o infinito, o R utiliza Inf e -Inf. Faça o teste realizando a seguinte operação no console: 1 / 0
+
+4.3 Operações lógicas
+As operações lógicas são frequentemente utilizadas no R, principalmente nas funções de controle de fluxo. Diversas linguagens de programação utilizam a lógica booleana em que os valores lógicos podem ser TRUE ou FALSE. No R, além dos estados TRUE ou FALSE, há também um terceiro para indicar valor ausente (missing value) identificado por NA. Tais palavras são reservadas no R, o que indica que você não poderá criar variáveis com tais nomes. É importante destacar que o R é case sensitive, o que indica que existe a diferenciação entre letras maiúsculas e minúsculas. Portanto, quando formos representar os estados TRUE, FALSE ou NA, devemos escrever com todas as letras maiúsculas.
+
+Também podemos representar TRUE e FALSE digitando apenas a primeira letra maiúscula. Faça os exemplos abaixo e analise os resultados do console.
+
+3 > 5
+
+48 != 10
+
+TRUE == T
+
+39 > 100
+
+(30 > 10) & (4 < 3)
+
+F == TRUE
+
+TRUE + TRUE
+
+FALSE / 2
+
+NA + 3
+
+TRUE + NA
+
+class(TRUE)
+NOTA: Devemos ter bastante cuidado com os valores ausentes (NA). Caso não haja o tratamento correto, tais valores podem interferir sensivelmente no código executado. Veremos isso com mais clareza ao longo do nosso curso.
+
+4.4 Criando variáveis
+Até então, realizamos algumas operações sem a necessidade de armazenar dados. No entanto, em operações mais complexas é praticamente impossível não utilizarmos variáveis. Com a criação de uma variável, podemos facilmente reusá-la ao longo de nosso código. Vejamos um exemplo.
+
+x <- 3
+
+x + 10
+## [1] 13
+No exemplo anterior, criamos uma variável x para armazenar o valor numérico 3. Ao realizarmos a operação x + 10, automaticamente o valor atribuído a x é recuperado. Para criarmos uma variável, utilizamos o símbolo <- ou =. No entanto, a notação <- é a mais utilizada e será a adotada ao longo do nosso curso. Faça o exemplo seguinte e analise os resultados.
+
+x <- 25
+
+x = 30
+
+31 -> x
+
+x <- x + 1
+Os nomes das variáveis podem conter letras, números, pontos e sublinha (_), mas não podem iniciar com um número ou um ponto seguido de número.
+
+NOTA: Por questão de estética e praticidade, é recomendável que você mantenha os nomes das variáveis apenas com letras minúsculas. As variáveis devem ter nomes curtos e revelar um pouco da informação que guarda. Isso facilitará a leitura do código!
+
+Outra forma de criarmos variáveis é utilizando a função assign(), apesar de menos usual. Vejamos um exemplo a seguir.
+
+assign("x", 99) #Note que é necessária a utilização de aspas para indicar o nome da variável
+
+x
+## [1] 99
+4.5 Outras classes de variáveis
+Além das classes numéricas e lógicas, podemos armazenar em uma variável dados em forma de texto (character) ou como fator (factor). A primeira forma é utilizada para armazenar qualquer dado texto, como o nome de uma pessoa. Já a segunda é geralmente utilizada para armazenar variáveis categóricas como, por exemplo, o sexo de uma pessoa. Seguem exemplo de criação de uma variável que irá armazenar um dado em texto.
+
+nome <- "Antônio Santos"
+
+nome
+## [1] "Antônio Santos"
+NOTA: Por questão didática, veremos como criar uma variável do tipo fator um pouco adiante, após conhecermos os vetores.
+
+4.6 Listando e removendo variáveis
+Para listar todas as variáveis criadas, usamos a função ls(). Digite a função no console e verifique as variáveis disponíveis no momento. Para remover uma variável, usamos a função rm() com o nome da variável que desejamos remover. Vamos atribuir 3 à uma variável de nome k1 e depois vamos removê-la do nosso ambiente.
+
+k1 <- 3
+rm(k1)
+Sempre que começamos a executar um novo script, é recomendável limpar todas as variáveis carregadas, visando evitar conflitos e outros problemas. Basta utilizar o comando:
+
+rm(list = ls())
+5 VETORES
+5.1 O que é um vetor?
+Até então aprendemos a armazenar dados em variáveis. No entanto, muitas vezes precisamos armazenar uma sequência de dados. Suponhamos que você deseja armazenar as idades de uma turma de 30 alunos. Criar uma variável para cada um dos alunos nos parece um pouco sem sentido. É para isso que o R dispõe de alguns objetos capazes de lidar com grandes quantidades de dados de uma maneira mais inteligente.
+
+O objeto que iremos conhecer agora se chama vetor. Na linguagem R, um vetor é uma sequência de dados de um mesmo tipo. Para criarmos um vetor no R a função utilizada é a c() e o processo é bastante simples. Vejamos um exemplo de criação de um vetor com os componentes {3, 23, 44} atribuído a uma variável y.
+
+y <- c(3, 23, 44)
+
+y
+## [1]  3 23 44
+Como já foi mencionado, os vetores armazenam dados de um mesmo tipo. Isso quer dizer que não podemos armazenar um dado numérico e um dado tipo texto (character) no mesmo vetor. Seguem alguns exemplos.
+
+z <- c("João", "Paulo", "Pedro", "Francisco")
+
+class(z)
+## [1] "character"
+k <- c(TRUE, FALSE, TRUE, TRUE)
+
+class(k)
+## [1] "logical"
+Ao tentarmos criar um vetor com tipos de dados heterogêneos, o R converterá para character. O entendimento desse procedimento facilitará a detecção e a solução de alguns problemas no processo de manipulação e tratamento de dados.
+
+k <- c(TRUE, 3, "Pedro")
+
+class(k)
+## [1] "character"
+Agora que conhecemos um pouco de vetores, vamos criar uma variável tipo factor a partir de uma variável numérica. Suponha que você esteja diante de um conjunto de dados em que os gêneros feminino e masculino estejam representados pelos números 1 e 2, respectivamente. Podemos transformar essa informação em fator da seguinte forma:
+
+genero <- c(1, 2, 1, 2)
+
+genero <- factor(genero, levels = c(1, 2), labels = c("feminino", "masculino"))
+
+genero
+## [1] feminino  masculino feminino  masculino
+## Levels: feminino masculino
+Para mais detalhes, leia sobre a função factor().
+
+5.2 Indexando vetores
+Uma vez que aprendemos como criar vetores, chegou o momento de aprendermos a manipulá-los e a realizar algumas operações. Vamos começar criando um vetor com cinco elementos numéricos e depois realizar algumas operações.
+
+#Criando o vetor e atribuindo à variavél de nome "v"
+v <- c(20, 12, 35, 19, 60)
+Uma vez que temos nosso vetor v, podemos recuperar todos os valores de uma só vez ou apenas um ou alguns componentes desejados. A posição inicial de um vetor no R possui valor 1 e segue da esquerda para a direita. Portanto, se quisermos obter o valor contido na posição 2 do nosso vetor v, usamos a seguinte notação: v[2]. Vejamos:
+
+v[2]
+## [1] 12
+Podemos também selecionar um intervalo de componentes do vetor, o que é bastante útil e rápido. Se quisermos selecionar os dados das posições 2 a 4 do nosso vetor, basta fazermos:
+
+v[2:4]
+## [1] 12 35 19
+Para exibirmos todos os componentes do vetor exceto o de uma determinada posição, utilizamos o sinal - ao indexar o nosso vetor. O exemplo seguinte selecionará todos os elementos do nosso vetor v, exceto o elemento da posição 4.
+
+v[-4]
+## [1] 20 12 35 60
+Como um último exemplo, vamos indexar nosso vetor para que retorne apenas as posições 2 e 5. Isso pode ser feito facilmente da seguinte maneira:
+
+v[c(2, 5)]
+## [1] 12 60
+NOTA: Há diferentes formas de indexarmos vetores e obtermos o mesmo resultado. Com o tempo, você vai descobrindo a forma mais usual e conveniente para chegar ao resultado desejado.
+
+5.3 Operações matemáticas e lógicas com vetores
+Além de indexar, devemos também conhecer como é que o R interpreta algumas operações quando utilizamos vetores. Com um vetor contendo dados numéricos, podemos realizar diversas operações. Seguem exemplos utilizando o vetor v criado no tópico anterior.
+
+v
+## [1] 20 12 35 19 60
+v * 3
+## [1]  60  36 105  57 180
+v + 1
+## [1] 21 13 36 20 61
+v / 7
+## [1] 2.857143 1.714286 5.000000 2.714286 8.571429
+Podemos observar que ao realizarmos qualquer operação entre um vetor numérico e um número, a operação é realizada para cada um dos componentes do vetor, gerando um vetor resultado.
+
+Podemos também somar dois vetores, desde que um deles seja de tamanho igual ou múltiplo do outro. O exemplo a seguir esclarece.
+
+j <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+w <- c(11, 12, 13, 14, 15)
+#Soma dos vetores j e w
+j + w
+##  [1] 12 14 16 18 20 17 19 21 23 25
+Ao realizar uma operação lógica com um vetor obtemos como resultado um vetor lógico. Vejamos uma operação com o vetor w do exercício anterior.
+
+w >= 13
+## [1] FALSE FALSE  TRUE  TRUE  TRUE
+Esse vetor resultado é importante para filtrarmos elementos do nosso vetor. Suponhamos que desejamos selecionar os elementos do vetor w que sejam maiores ou iguais a 13. Podemos fazer isso de uma maneira muito simples, utilizando a expressão w >= 13 como indexador do nosso vetor w. Se quisermos saber em quais posições do vetor se encontram os elementos que satisfazem à condição, podemos utilizar a função which(). Vejamos:
+
+w[w >= 13]
+## [1] 13 14 15
+which(w >= 13)
+## [1] 3 4 5
+Diversas funções matemáticas e estatísticas podem ser facilmente aplicadas a vetores numéricos. Vejamos algumas funções importantes abaixo.
+
+Função	Descrição
+sum()	Retorna a soma
+mean()	Retorna a média
+sd()	Retorna o desvio padrão
+median()	Retorna a mediana
+var()	Retorna a variância
+cor()	Retorna a correlação entre dois vetores
+min()	Retorna o mínimo
+max()	Retorna o máximo
+range()	Retorna o mínimo e o máximo
+summary()	Retorna um sumário dos dados
+quantile()	Retorna os quantis do conjunto numérico
+NOTA: Lembre-se que para ler sobre qualquer função no R basta digitarmos ? seguidos do nome da função no console.
+
+Faça os exemplos seguintes e veja os resultados.
+
+vetor1 <- c(1, 8, 11, 23.5, 12.8, 16, 25)
+
+vetor2 <- c(10, 7.5, 10, 20.1, 24, 12, 25)
+
+sum(vetor1)
+
+mean(vetor2)
+
+cor(vetor1, vetor2)
+
+range(vetor1)
+5.4 Sequências e números aleatórios
+Sequências são importantes em várias operações, principalmente por economizar tempo. Uma forma simples de criar uma sequência é utilizando : e estabelecendo o início e o fim. Vejamos um exemplo de como criar uma sequência dos números de 1 a 20.
+
+1:20
+##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+É possível também que nossa sequência seja formada por um intervalo determinado por nós. Para isso, utilizamos a função seq(). Como exemplo, vamos criar uma sequência de 0 a 50 com um intervalo de 5.
+
+seq(0, 50, 5)
+##  [1]  0  5 10 15 20 25 30 35 40 45 50
+Outras funções que frequentemente utilizamos no R são as que geram números aleatórias. Tais funções são bastante importantes nos processos de amostragem. As funções mais utilizadas para essa tarefa são: sample() e runif(). Vamos aos exemplos:
+
+#Gerar 20 números inteiros no intervalo de 0 a 100 sem reposição
+sample(0:100, 20)
+##  [1] 82 90 47 68 87 12 72 31 44 42 60 45 93 11 46 58 25 26  5  9
+#Gerar 20 valores entre 0 e 1 com reposição
+sample(0:1, 20, replace = TRUE)
+##  [1] 1 1 0 0 0 0 1 1 0 0 0 0 0 0 1 1 1 0 0 0
+#Gerar 5 valores decimais entre 0 e 10
+runif(5, 0, 10)
+## [1] 3.3825195 6.7469271 8.1158721 8.4822125 0.3636028
+Podemos gerar também valores aleatórios de variáveis do tipo character. Para isso, podemos utilizar a função sample() e definir um vetor de onde deverá ser selecionada a amostra. Como exemplo, podemos gerar 5 valores aleatórios entre as variáveis categóricas “masculino” e “feminino”. Observe que, como o número de valores gerados supera o conjunto de variáveis, devemos definir a possibilidade de repetição (replace = TRUE).
+
+sample(c("masculino", "feminino"), 5, replace = TRUE)
+## [1] "feminino"  "feminino"  "feminino"  "feminino"  "masculino"
+Para gerarmos um determinado texto ou número repetidas vezes, podemos utilizar a função replicate().
+
+replicate(5, "meu texto")
+## [1] "meu texto" "meu texto" "meu texto" "meu texto" "meu texto"
+5.5 Outras funções importantes para manipular vetores
+A tabela seguinte apresenta algumas outras funções importantes para trabalharmos com vetores. É importante que você leia a documentação de cada função para evitar erros.
+
+Função	Descrição
+paste()	Concatena vetores
+order()	Retorna a ordem
+length()	Retorna o tamanho do vetor
+names()	Nomeia os elementos
+cumsum()	Retorna um vetor que é a soma cumulativa do vetor objeto
+sort()	Ordena um vetor
+rev()	Retorna o vetor em ordem decrescente
+is.na()	Retorna um vetor lógico com TRUE para valor ausente (NA)
+6 EXERCÍCIOS
+Tente responder as questões de 1 a 7 sem utilizar o R.
+
+Qual é o resultado da operação 11 > 3?
+
+Qual é o resultado da operação 13 + 4 * (5 + NA) ?
+
+Qual o resultado da operação (TRUE + FALSE + T)^2?
+
+Podemos realizar a operação 3nota <- 3.5 no R? Justifique a sua resposta.
+
+Sendo u <- c("A", 3), qual a classe do vetor u?
+
+Sendo j <- seq(1, 10, 3), qual será o valor do terceiro componente do vetor j?
+
+Sendo z <- c(1, 3, 5, 12, 87, 21, 0, 12), como podemos selecionar apenas os componentes do vetor z maiores do que 20?
+
+NOTA: Para executarmos os exercícios seguintes do nosso caso hipotético, precisamos carregar o objeto vetor01. Para isso, coloque o arquivo vetor.RData no mesmo diretório de trabalho que está utilizando (use o comando getwd() para conferir) e execute o comando load("vetor.RData") no console. Você visualizará o objeto vetor01 no Global Enviroment do RStudio.
+
+O vetor01possui 15.000 observações referentes às notas dos candidatos do concurso público para auxiliar administrativo da Prefeitura de São Longuinho. Os dados foram disponibilizados pela empresa organizadora do concurso. As notas variam de 0 a 10 e os candidatos que não realizaram a prova estão com NA nos respectivos campos.
+De posse dos dados, você deve realizar as seguintes tarefas:
+
+Coloque o vetor01 em ordem decrescente das notas e salve o resultado no próprio vetor01(sobrescrever). Você deve manter todas as 15.000 observações ao ordenar o vetor;
+Calcule a média e a mediana das notas;
+Calcule o desvio padrão das notas;
+Calcule o percentual de faltosos;
+Calcule quantos candidatos obtiveram notas maiores do que 7.00 e menores do que 8.00;
+Selecione as 500 maiores notas do vetor01 e guarde o resultado em um vetor chamado vetor02;
+Remova os valores ausentes (NA) do vetor01e guarde o resultado no próprio vetor01.
+7 MATRIZES
+A ideia de matriz no R é similar a da matriz que conhecemos na matemática. Seus componentes são indexados pelo índice da linha e da coluna correspondente. Para o R, uma matriz é uma coleção de elementos de uma mesma classe arranjados em duas dimensões.
+
+Am,n=⎛⎝⎜⎜⎜⎜⎜a1,1a2,1⋮am,1a1,2a2,2⋮am,2⋯⋯⋱⋯a1,na2,n⋮am,n⎞⎠⎟⎟⎟⎟⎟
+
+7.1 Criando matrizes
+O processo de criação de uma matriz no R é relativamente simples. No exemplo a seguir, vamos criar uma matriz com 100 elementos numéricos em sequência de 1 a 100. Nossa matriz terá 10 linhas e 10 colunas.
+
+matriz01 <- matrix( 
+            seq(1, 100), 
+            ncol = 10,
+            nrow = 10) 
+
+matriz01
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1   11   21   31   41   51   61   71   81    91
+##  [2,]    2   12   22   32   42   52   62   72   82    92
+##  [3,]    3   13   23   33   43   53   63   73   83    93
+##  [4,]    4   14   24   34   44   54   64   74   84    94
+##  [5,]    5   15   25   35   45   55   65   75   85    95
+##  [6,]    6   16   26   36   46   56   66   76   86    96
+##  [7,]    7   17   27   37   47   57   67   77   87    97
+##  [8,]    8   18   28   38   48   58   68   78   88    98
+##  [9,]    9   19   29   39   49   59   69   79   89    99
+## [10,]   10   20   30   40   50   60   70   80   90   100
+Percebemos que o R, por default, preenche a matriz por colunas e não por linhas. No entanto, podemos criar uma matriz preenchendo primeiro as linhas e depois as colunas. Para isso, basta definirmos o argumento byrow = TRUE. Vejamos o resultado do exemplo anterior com o preenchimento por linhas e depois por colunas.
+
+matriz01 <- matrix( 
+            seq(1, 100), 
+            ncol = 10,
+            nrow = 10,
+            byrow = TRUE)
+
+matriz01
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1    2    3    4    5    6    7    8    9    10
+##  [2,]   11   12   13   14   15   16   17   18   19    20
+##  [3,]   21   22   23   24   25   26   27   28   29    30
+##  [4,]   31   32   33   34   35   36   37   38   39    40
+##  [5,]   41   42   43   44   45   46   47   48   49    50
+##  [6,]   51   52   53   54   55   56   57   58   59    60
+##  [7,]   61   62   63   64   65   66   67   68   69    70
+##  [8,]   71   72   73   74   75   76   77   78   79    80
+##  [9,]   81   82   83   84   85   86   87   88   89    90
+## [10,]   91   92   93   94   95   96   97   98   99   100
+NOTA: Utilizaremos nossa matriz01 em alguns exemplos a seguir.
+
+Outro ponto que merece atenção é a regra de reciclagem dos dados utilizados para a criação da matriz. Execute o código abaixo e observe o que ocorre.
+
+matriz02 <- matrix( 
+            seq(1, 9), 
+            ncol = 2,
+            nrow = 5)
+matriz02
+As matrizes no R também podem guardar dados em texto (character). O exemplo a seguir mostra o armazenamento desse tipo de dado.
+
+set.seed(2) #Define a semente para que o comando sample gere sempre o mesmo resultado.
+matriz03 <- matrix( 
+            sample(c("M", "F"), 100, replace = TRUE), 
+            ncol = 10) 
+
+#Observe que nesse exemplo não temos o parâmetro nrow, no entanto o resultado é o mesmo.
+matriz03
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,] "M"  "F"  "F"  "M"  "F"  "M"  "F"  "M"  "M"  "F"  
+##  [2,] "F"  "M"  "M"  "M"  "M"  "M"  "F"  "M"  "F"  "M"  
+##  [3,] "F"  "F"  "F"  "F"  "M"  "F"  "F"  "M"  "M"  "M"  
+##  [4,] "M"  "M"  "M"  "F"  "M"  "F"  "M"  "M"  "M"  "F"  
+##  [5,] "F"  "M"  "M"  "F"  "F"  "M"  "F"  "M"  "M"  "M"  
+##  [6,] "F"  "F"  "M"  "F"  "F"  "F"  "M"  "F"  "F"  "M"  
+##  [7,] "M"  "F"  "M"  "F"  "F"  "F"  "M"  "M"  "F"  "M"  
+##  [8,] "F"  "M"  "M"  "M"  "M"  "F"  "M"  "F"  "M"  "M"  
+##  [9,] "M"  "M"  "F"  "F"  "F"  "F"  "M"  "M"  "F"  "M"  
+## [10,] "F"  "M"  "M"  "M"  "F"  "F"  "M"  "F"  "M"  "M"
+7.2 Operações matemáticas com matrizes
+As operações com matrizes numéricas seguem praticamente a mesma lógica dos vetores. Ao realizar qualquer operação com uma constante numérica, a operação é feita para todos os elementos da matriz.
+
+matriz01 * 10
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]   10   20   30   40   50   60   70   80   90   100
+##  [2,]  110  120  130  140  150  160  170  180  190   200
+##  [3,]  210  220  230  240  250  260  270  280  290   300
+##  [4,]  310  320  330  340  350  360  370  380  390   400
+##  [5,]  410  420  430  440  450  460  470  480  490   500
+##  [6,]  510  520  530  540  550  560  570  580  590   600
+##  [7,]  610  620  630  640  650  660  670  680  690   700
+##  [8,]  710  720  730  740  750  760  770  780  790   800
+##  [9,]  810  820  830  840  850  860  870  880  890   900
+## [10,]  910  920  930  940  950  960  970  980  990  1000
+Já funções como mean(), sum(), sd() funcionam também como ocorre com os vetores, ou seja, levam em consideração todos os elementos da matriz.
+
+sum(matriz01)
+## [1] 5050
+Há uma série de funções úteis para trabalharmos com matrizes, seguem algumas:
+
+Função	Descrição
+t()	Retorna a matriz transposta
+diag(k)	Cria uma matriz identidade k x k
+det()	Calcula o determinante da matriz
+diag()	Retorna os elementos da diagonal principal
+dim()	Retorna a dimensão da matriz
+ncol	Retorna o número de colunas da matriz
+nrow()	Retorna o número de linhas da matriz
+rowSums()	Retorna a soma das linhas da matriz
+rowMeans()	Retorna a média das linhas das matriz
+colSums()	Retorna a soma das colunas da matriz
+colMeans()	Retorna a média das colunas da matriz
+As operações matemáticas entre matrizes também são possíveis no R. No entanto, temos que observar a dimensão das matrizes envolvidas na operação. Considere as matrizes A e B abaixo.
+A=⎡⎣⎢⎢3568921111911⎤⎦⎥⎥B=⎡⎣⎢⎢34721116761210⎤⎦⎥⎥
+
+Como exerício, crie as matrizes A e B no R e realize as seguintes operações:
+
+A+B
+A∗B
+A−B
+B÷A
+A operação de multiplicação entre matrizes no R tem suas peculiaridades. Se quisermos realizar a multiplicação matricial, devemos utilizar o operador %*%. Matematicamente o resultado será o seguinte:
+
+AB=[∑k=1naikbkj]
+Caso seja utilizado apenas o operador *, o resultado será o seguinte:
+
+A∗B=⎡⎣⎢⎢a11×b11a21×b21a31×b31a12×b12a22×b22a32×b32a13×b13a23×b23a33×b33⎤⎦⎥⎥
+
+7.3 Manipulando matrizes
+Assim como nos vetores, podemos selecionar quaisquer elementos de uma matriz. A diferença é que, para selecionarmos um elemento em uma matriz, devemos informar em qual linha e coluna se encontra o dado que queremos. Digamos que o elemento que desejamos obter o valor se encontra na terceira linha da quarta coluna da nossa matriz01 , criada no item anterior. A solução é a seguinte:
+
+matriz01[3, 4]
+## [1] 24
+Muitas vezes não desejamos extrair o dado de apenas um elemento, mas de uma linha ou de uma coluna inteira de uma matriz. Para selecionarmos uma linha da nossa matriz01, utilizamos o seguinte comando: matriz01[i, ]. Onde i é a posição da linha que desejamos selecionar. Vejamos como fazemos para selecionar a linha 4 da matriz01:
+
+matriz01[4, ]
+##  [1] 31 32 33 34 35 36 37 38 39 40
+Para selecionar um intervalo de linhas, a lógica é semelhante a que utilizamos para intervalos de elementos em vetores. Segue exemplo:
+
+matriz01[2:6, ]
+##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+## [1,]   11   12   13   14   15   16   17   18   19    20
+## [2,]   21   22   23   24   25   26   27   28   29    30
+## [3,]   31   32   33   34   35   36   37   38   39    40
+## [4,]   41   42   43   44   45   46   47   48   49    50
+## [5,]   51   52   53   54   55   56   57   58   59    60
+Na seleção de colunas, o R funciona de maneira igual, bastando informar qual coluna, ou intervalo de colunas, que queremos fazer a seleção. Segue exemplo de seleção da coluna 5:
+
+matriz01[ ,5]
+##  [1]  5 15 25 35 45 55 65 75 85 95
+Faça os exemplos abaixo e observe os resultados.
+
+matriz01[2:4, ]
+
+matriz01[1:3, 7:10]
+
+matriz01[-3, ]
+
+matriz01[-3, -c(3:6)]
+
+mean(matriz01[8:10, 8])
+
+summary(matriz01)
+NOTA: Podemos observar que a lógica do R para matrizes é bem similar a de vetores.
+
+7.4 Nomeando linhas e colunas de uma matriz
+Para facilitar a utilização e leitura dos dados de uma matriz, às vezes é interessante nomear suas linhas e colunas. Como exemplo, suponha que você está diante de uma matriz das notas de matemática de uma turma durante o ano de 2017. Cada linha representa um aluno e cada coluna representa um bimestre. Os dados estão estruturados conforme segue.
+
+notas
+##       [,1] [,2] [,3] [,4]
+##  [1,]    5    7    5    6
+##  [2,]    9    7    4    6
+##  [3,]    6    7    4    5
+##  [4,]    6    7    4    7
+##  [5,]    8   10    5    5
+##  [6,]    8    9    9    6
+##  [7,]    4    4    8   10
+##  [8,]    6    8   10    5
+##  [9,]    8   10    7    8
+## [10,]    8    5    9    5
+Para deixar a leitura mais fácil, podemos nomear as linhas e colunas através das funções rownames() e colnames(), respectivamente. Segue exemplo:
+
+colnames(notas) <- c("bim-1", "bim-2", "bim-3", "bim-4")
+rownames(notas) <- c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Gustavo",
+                     "Severino", "Paulo", "Laura", "Túlio")
+notas
+##          bim-1 bim-2 bim-3 bim-4
+## João         5     7     5     6
+## Pedro        9     7     4     6
+## Amanda       6     7     4     5
+## Fábio        6     7     4     7
+## Fernanda     8    10     5     5
+## Gustavo      8     9     9     6
+## Severino     4     4     8    10
+## Paulo        6     8    10     5
+## Laura        8    10     7     8
+## Túlio        8     5     9     5
+Uma vez com nomes das linhas e colunas, podemos utilizar os mesmos para realizar filtros em nossa matriz. Para exibir apenas as notas da aluna Fernanda, fazemos:
+
+notas["Fernanda", ]
+## bim-1 bim-2 bim-3 bim-4 
+##     8    10     5     5
+O procedimento para seleção das colunas segue a mesma lógica.
+
+7.5 Unindo matrizes
+A união de matrizes é bastante importante para formarmos um conjunto de dados maior a partir de dados menores. Essa união pode ocorrer de duas formas: por linhas e por colunas. Para unirmos duas matrizes através das colunas, utilizamos a função cbind(). Já para fazer a união através das linhas, usamos a função rbind().
+
+Vamos continuar os exemplos com nossa matriz notas. No entanto, considere que, durante o ano de 2017, dois alunos foram transferidos da escola e suas notas de matemática nos dois primeiros bimestres estão armazenadas na matriz notas_transf. Vamos aos dados:
+
+notas_transf
+##            bim-1 bim-2 bim-3 bim-4
+## Dimas          6     8    NA    NA
+## Alessandra     8     9    NA    NA
+Para consolidar os dados, precisamos unir as matrizes notas e notas_transf por linhas. Para executar tal tarefa, vamos usar a função rbind().
+
+rbind(notas, notas_transf)
+##            bim-1 bim-2 bim-3 bim-4
+## João           5     7     5     6
+## Pedro          9     7     4     6
+## Amanda         6     7     4     5
+## Fábio          6     7     4     7
+## Fernanda       8    10     5     5
+## Gustavo        8     9     9     6
+## Severino       4     4     8    10
+## Paulo          6     8    10     5
+## Laura          8    10     7     8
+## Túlio          8     5     9     5
+## Dimas          6     8    NA    NA
+## Alessandra     8     9    NA    NA
+Para unirmos duas matrizes por colunas, o procedimento é similar. Porém, temos que observar que para unir matrizes através das colunas, devemos ter o mesmo número de linhas em todas as matrizes que desejamos unir. A lógica se aplica também à união por linhas, ou seja, as matrizes envolvidas devem ter o mesmo número de colunas.
+
+8 EXERCÍCIOS
+Tente resolver as questões de 1 a 5 sem utilizar o R.
+
+Podemos construir no R uma matriz com dados numéricos e texto? Se sim, qual o tipo de dado dessa matriz?
+
+O que ocorre se definirmos o argumento byrow = TRUE na construção de uma matriz?
+
+Para construir uma matriz com 25 elementos organizados em 5 linhas e 5 colunas, precisamos necessariamente definir os argumentos ncol = e nrow =da função matrix()? Por que?
+
+Considere o seguinte comando:
+
+m <- matrix(
+  c(1, 2, 3),
+  nrow = 2
+)
+Qual o valor do elemento da segunda linha da segunda coluna (m22
+)?
+
+Considerando a matriz m do item anterior, qual o resultado, no R, da seguintes operações:
+3 * m
+m + m
+m > 2
+sum[m == 3]
+NOTA: Para resolvermos os exercícios seguintes, precisamos carregar a nossa base (chuvas.RData). Utilize o seguinte comando: load("chuvas.RData"). (Não se esqueça de colocar o arquivo em seu diretório de trabalho)
+
+A matriz chuvas possui dados (em mm) sobre precipitações em 100 municípios do Brasil, durante um período de 30 dias. Os municípios estão representados em códigos através das linhas e os dias através das colunas. Diante de tais dados, resolva as seguintes questões:
+Qual a média do volume diário de chuvas do período observado?
+Qual município teve o maior volume de chuvas considerando os 30 dias observados?
+Considerando o volume de todos os municípios observados, em qual dia menos choveu?
+Qual o volume de chuvas do município 81 (mun_81) nos primeiros 10 dias observados?
+Qual o volume total de chuvas nos primeiros 15 dias observados? Esse volume foi maior ou menor do que os 15 dias seguintes?
+Crie uma nova coluna (coluna 31 da matriz) com dados das somas de cada uma das linhas e guarde na variável chuvas_somas. Nomeie essa nova coluna de “soma”.
+Crie uma nova matriz com dados de todos municípios, porém com dados apenas dos 15 primeiros dias observados. Guarde o resultado em uma variável chamada chuvas_15dias.
+9 DATA FRAMES E TIBBLES
+9.1 O que é um Data Frame?
+Em síntese, data frames são tabelas de dados. Em seu formato, são bem parecidos com as matrizes, no entanto, possuem algumas diferenças significativas. Podemos idealizar os data frames como sendo matrizes em que cada coluna pode armazenar um tipo de dado diferente. Logo, estamos lidando com um objeto bem mais versátil do que as matrizes e os vetores. Vejamos na prática!
+
+Observe a tabela a seguir. Ela possui dados hipotéticos de seis universitários.
+
+nome	altura	idade	sexo	peso	fumante	uf	renda
+João	1.80	22	masculino	78.3	sim	PB	2
+Pedro	1.77	21	masculino	82.1	não	AL	5
+Amanda	1.71	18	feminino	66.5	sim	PE	10
+Fábio	1.65	20	masculino	88.1	não	PE	20
+Fernanda	1.66	23	feminino	58.0	sim	SP	10
+Gustavo	1.63	19	masculino	75.4	não	CE	NA
+Vamos criar um data frame no R com esses mesmos dados. A função que iremos usar é a data.frame(). Uma vez criado, iremos armazenar esses dados na variável df1.
+
+df1 <- data.frame(
+  nome = c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Gustavo"),
+  altura = c(1.80, 1.77, 1.71, 1.65, 1.66, 1.63),
+  idade = c(22, 21, 18, 20, 23, 19),
+  sexo = c("masculino", "masculino", "feminino", "masculino", "feminino", "masculino"),
+  peso = c(78.3, 82.1, 66.5, 88.1, 58, 75.4),
+  fumante = c(TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+  uf = c("PB", "AL", "PE", "PE", "SP", "CE"),
+  renda = c(2, 5, 10, 20, 10, NA)
+)
+O primeiro ponto a ser observado é que nosso data frame foi criado através de vários vetores. Cada um dos vetores possui um determinado tipo de dado. Vamos exibir o nosso data frame.
+
+df1
+nome
+<fctr>
+altura
+<dbl>
+idade
+<dbl>
+sexo
+<fctr>
+peso
+<dbl>
+fumante
+<lgl>
+uf
+<fctr>
+renda
+<dbl>
+João	1.80	22	masculino	78.3	TRUE	PB	2
+Pedro	1.77	21	masculino	82.1	FALSE	AL	5
+Amanda	1.71	18	feminino	66.5	FALSE	PE	10
+Fábio	1.65	20	masculino	88.1	FALSE	PE	20
+Fernanda	1.66	23	feminino	58.0	TRUE	SP	10
+Gustavo	1.63	19	masculino	75.4	FALSE	CE	NA
+6 rows
+Uma das funções básicas mais importantes para começarmos a trabalhar com data frames é a str(). Essa função dá uma visão clara da estrutura do nosso objeto, bem como informa os tipos de dados existentes.
+
+str(df1)
+## 'data.frame':    6 obs. of  8 variables:
+##  $ nome   : Factor w/ 6 levels "Amanda","Fábio",..: 5 6 1 2 3 4
+##  $ altura : num  1.8 1.77 1.71 1.65 1.66 1.63
+##  $ idade  : num  22 21 18 20 23 19
+##  $ sexo   : Factor w/ 2 levels "feminino","masculino": 2 2 1 2 1 2
+##  $ peso   : num  78.3 82.1 66.5 88.1 58 75.4
+##  $ fumante: logi  TRUE FALSE FALSE FALSE TRUE FALSE
+##  $ uf     : Factor w/ 5 levels "AL","CE","PB",..: 3 1 4 4 5 2
+##  $ renda  : num  2 5 10 20 10 NA
+Analisando o resultado da função, podemos verificar que nosso data frame possui 6 observações e 8 variáveis. As observações e variáveis nada mais são do que nossas linhas e colunas, respectivamente. Uma outra informação importante é saber o tipo de dado que cada variável (coluna) apresenta. Podemos facilmente constatar que quatro das nossas variáveis são numéricas, três são fatores e uma lógica.
+
+O RStudio possui uma maneira mais rápida e intuitiva para apresentar os mesmos dados.
+
+Exibição do data frame no RStudio
+Exibição do data frame no RStudio
+
+9.2 Manipulando data frames
+A manipulação de data frames é similar à manipulação de matrizes em muitos pontos. A seleção de elementos segue a mesma lógica. Vamos selecionar a terceira linha da segunda coluna do nosso objeto df1.
+
+df1[3, 2]
+## [1] 1.71
+Podemos fazer, similar à operação com matrizes, a seleção de algumas colunas. Vamos selecionar apenas as colunas com dados de nome, sexo e uf.
+
+df1[ ,c("nome", "sexo", "uf")]
+nome
+<fctr>
+sexo
+<fctr>
+uf
+<fctr>
+João	masculino	PB
+Pedro	masculino	AL
+Amanda	feminino	PE
+Fábio	masculino	PE
+Fernanda	feminino	SP
+Gustavo	masculino	CE
+6 rows
+Para extrairmos observações, a lógica é a mesma. Segue exemplo de seleção da primeira e da última linha de nosso data frame:
+
+df1[c(1, 6), ]
+ 
+ 
+nome
+<fctr>
+altura
+<dbl>
+idade
+<dbl>
+sexo
+<fctr>
+peso
+<dbl>
+fumante
+<lgl>
+uf
+<fctr>
+renda
+<dbl>
+1	João	1.80	22	masculino	78.3	TRUE	PB	2
+6	Gustavo	1.63	19	masculino	75.4	FALSE	CE	NA
+2 rows
+Selecionar variáveis em um data frame é bastante simples usando a sintaxe: df$x. Onde df é o data frame e x a variável que desejamos selecionar. Para selecionar todos os dados contidos na variável altura, podemos fazer:
+
+df1$altura
+## [1] 1.80 1.77 1.71 1.65 1.66 1.63
+Já para selecionar o quarto elemento da variável altura, podemos escrever:
+
+df1$altura[4]
+## [1] 1.65
+NOTA: O RStudio auxilia bastante no trabalho com data frames. Ao digitarmos $ após o nome do nosso objeto, uma lista das variáveis irá aparecer para seleção. Além de economizar tempo, tal função reduz a ocorrência de erros.
+
+Uma função bastante importante para selecionarmos dados conforme vários critérios e de forma mais intuitiva é a subset(). Ao trabalharmos com grandes data frames uma seleção mais intuitiva facilita a vida não só de quem está escrevendo o código como também a de quem irá ler o mesmo.
+
+Suponha que desejamos dados apenas dos alunos com mais de 1.65 metros de altura e com mais de 20 anos de idade. A seleção pode ser feita facilmente da seguinte forma:
+
+subset(df1, altura > 1.65 & idade > 20)
+ 
+ 
+nome
+<fctr>
+altura
+<dbl>
+idade
+<dbl>
+sexo
+<fctr>
+peso
+<dbl>
+fumante
+<lgl>
+uf
+<fctr>
+renda
+<dbl>
+1	João	1.80	22	masculino	78.3	TRUE	PB	2
+2	Pedro	1.77	21	masculino	82.1	FALSE	AL	5
+5	Fernanda	1.66	23	feminino	58.0	TRUE	SP	10
+3 rows
+Leia sobre a função subset() e faça as seguintes seleções no df1:
+
+Estudantes do sexo masculino e que sejam fumantes;
+Estudantes que possuam peso acima de 60Kg;
+Estudantes com peso abaixo de 80Kg ou com altura acima de 1.70m;
+Selecione todas as observações das variáveis nome, altura, idade e peso (as demais colunas devem ser excluídas).
+Estudantes que possuam altura acima 1.70m e abaixo de 1.80m.
+subset(df1, renda > 2)
+ 
+ 
+nome
+<fctr>
+altura
+<dbl>
+idade
+<dbl>
+sexo
+<fctr>
+peso
+<dbl>
+fumante
+<lgl>
+uf
+<fctr>
+renda
+<dbl>
+2	Pedro	1.77	21	masculino	82.1	FALSE	AL	5
+3	Amanda	1.71	18	feminino	66.5	FALSE	PE	10
+4	Fábio	1.65	20	masculino	88.1	FALSE	PE	20
+5	Fernanda	1.66	23	feminino	58.0	TRUE	SP	10
+4 rows
+Outra função bastante útil para uma primeira análise dos dados é a função summary(), já vista em tópicos anteriores. Vamos aplicá-la em algumas variáveis do nosso objeto df1.
+
+summary(subset(df1, select = c(peso, idade, sexo, renda)))
+##       peso           idade              sexo       renda     
+##  Min.   :58.00   Min.   :18.00   feminino :2   Min.   : 2.0  
+##  1st Qu.:68.72   1st Qu.:19.25   masculino:4   1st Qu.: 5.0  
+##  Median :76.85   Median :20.50                 Median :10.0  
+##  Mean   :74.73   Mean   :20.50                 Mean   : 9.4  
+##  3rd Qu.:81.15   3rd Qu.:21.75                 3rd Qu.:10.0  
+##  Max.   :88.10   Max.   :23.00                 Max.   :20.0  
+##                                                NA's   :1
+Podemos ver que, usando poucos comandos, temos várias medidas estatísticas capazes de fornecer informações importantes sobre o nosso conjunto de dados, como a presença de NA em alguma das variáveis.
+
+Outras funções como ncol(), nrow(), t(), dim() e colnames() funcionam com a mesma lógica que já vimos com as matrizes.
+
+colnames(df1)
+## [1] "nome"    "altura"  "idade"   "sexo"    "peso"    "fumante" "uf"     
+## [8] "renda"
+Um dos pacotes padrões do R é o datasets. Esse pacote possui uma série de objetos que podemos utilizar para testes. Um desses objetos é o airquality. Esse data frame possui 6 colunas e 153 linhas e é referente a medições de qualidade do ar em Nova Iorque realizadas entre maio e setembro de 1973. Digite airquality no console e veja os dados contidos no objeto.
+
+Em muitas situações precisamos lidar com data frames com centenas de colunas e milhares de linhas. Exibir todos os dados apenas para fazer uma breve análise nos parece sem sentido, além de poluir desnecessariamente o console. Tanto é que o RStudio possui uma limitação para a exibição de linhas e colunas, exatamente por questões de desempenho e usabilidade. Para fazermos uma breve análise de como estão dispostos os dados em nosso data frame, utilizamos as funções head() e tail(). A primeira exibe as primeiras seis observações dos dados. Já a segunda, exibe as seis últimas. Veja exemplo aplicado ao data frame airquality.
+
+head(airquality)
+ 
+ 
+Ozone
+<int>
+Solar.R
+<int>
+Wind
+<dbl>
+Temp
+<int>
+Month
+<int>
+Day
+<int>
+1	41	190	7.4	67	5	1
+2	36	118	8.0	72	5	2
+3	12	149	12.6	74	5	3
+4	18	313	11.5	62	5	4
+5	NA	NA	14.3	56	5	5
+6	28	NA	14.9	66	5	6
+6 rows
+tail(airquality)
+ 
+ 
+Ozone
+<int>
+Solar.R
+<int>
+Wind
+<dbl>
+Temp
+<int>
+Month
+<int>
+Day
+<int>
+148	14	20	16.6	63	9	25
+149	30	193	6.9	70	9	26
+150	NA	145	13.2	77	9	27
+151	14	191	14.3	75	9	28
+152	18	131	8.0	76	9	29
+153	20	223	11.5	68	9	30
+6 rows
+Tais funções nos dão um enorme ganho de produtividade.
+
+Utilizando o data frame airquality, realize as seguintes operações:
+
+Selecione as observações que possuem a variável Ozone com o valor NA;
+Selecione as observações que estão com vento (Wind) acima da média dessa variável;
+Selecione as observações do meses (Month) 5 e 9;
+Selecione observações com temperatura (Temp) acima de 75, nos meses 7 e 8.
+Ordene de forma decrescente pela variável Temp. (Dica: utilize a função `order())
+9.3 Criando e modificando variáveis
+O processo para criar novas variáveis (colunas) em data frames é igualmente simples a outras operações. Vimos que os dados do objeto airquality são referentes ao ano de 1973. Vamos criar um novo objeto chamado air_novo usando os dados originais do data frame airquality. Após isso, vamos criar uma nova coluna chamada ano, atribuir o valor 1973 e verificar como estão os dados com a função head().
+
+air_novo <- airquality
+
+air_novo$ano <- 1973
+
+head(air_novo)
+ 
+ 
+Ozone
+<int>
+Solar.R
+<int>
+Wind
+<dbl>
+Temp
+<int>
+Month
+<int>
+Day
+<int>
+ano
+<dbl>
+1	41	190	7.4	67	5	1	1973
+2	36	118	8.0	72	5	2	1973
+3	12	149	12.6	74	5	3	1973
+4	18	313	11.5	62	5	4	1973
+5	NA	NA	14.3	56	5	5	1973
+6	28	NA	14.9	66	5	6	1973
+6 rows
+Podemos perceber que o valor 1973 foi aplicado a todas as linhas da coluna ano!
+
+9.4 Transformando variáveis
+Transformar variáveis em um data frame é uma tarefa igualmente simples à criação de uma nova coluna. Em nosso objeto air_novo, a variável Wind está em milhas por hora (mph). Sabendo que 1 mph é igual a 1,609 quilômetros por hora (kph), vamos transformar a nossa variável para que a velocidade do vento fique em kph.
+
+air_novo$Wind <- air_novo$Wind * 1.609 #Veja que a operação é idêntica àquelas com vetores
+
+head(air_novo)
+ 
+ 
+Ozone
+<int>
+Solar.R
+<int>
+Wind
+<dbl>
+Temp
+<int>
+Month
+<int>
+Day
+<int>
+ano
+<dbl>
+1	41	190	11.9066	67	5	1	1973
+2	36	118	12.8720	72	5	2	1973
+3	12	149	20.2734	74	5	3	1973
+4	18	313	18.5035	62	5	4	1973
+5	NA	NA	23.0087	56	5	5	1973
+6	28	NA	23.9741	66	5	6	1973
+6 rows
+A variável Temp do nosso data frame air_novo está em graus Fahrenheit (ºF). Sabendo que:
+
+Celsius=Fahrenheit−321,8
+tranforme a variável Temp de graus Fahrenheit (ºF) para graus Celsius (ºC) e depois use a função head() para conferir o resultado.
+
+ 
+ 
+Ozone
+<int>
+Solar.R
+<int>
+Wind
+<dbl>
+Temp
+<dbl>
+Month
+<int>
+Day
+<int>
+ano
+<dbl>
+1	41	190	11.9066	19.44444	5	1	1973
+2	36	118	12.8720	22.22222	5	2	1973
+3	12	149	20.2734	23.33333	5	3	1973
+4	18	313	18.5035	16.66667	5	4	1973
+5	NA	NA	23.0087	13.33333	5	5	1973
+6	28	NA	23.9741	18.88889	5	6	1973
+6 rows
+9.5 Convertendo tipos de variáveis
+Frequentemente determinada variável não está com o tipo de dado que desejamos. Às vezes é necessário converter uma variável do tipo texto em fator, ou uma variável numérica em texto, por exemplo. Isso faz todo sentido quando queremos manter um padrão em diferentes data frames. Vejamos algumas funções importantes para realizar essa tarefa.
+
+Função	Descrição
+as.character()	Cria um objeto do tipo character
+as.numeric()	Cria um objeto do tipo numeric
+as.factor()	Cria um objeto do tipo factor
+as.Date()	Converte um objeto do tipo character para um objeto tipo Date
+Veja um exemplo de conversão da variável ano (air_novo) de numeric para factor.
+
+air_novo$ano <- as.factor(air_novo$ano)
+
+class(air_novo$ano)
+## [1] "factor"
+Veja que nossa variável ano agora está em fator.
+
+Vimos que em nosso data frame df1 todas as variáveis, que não são numéricas ou lógicas, estão como fator. Isso se deve especificamente ao fato do argumento stringsAsFactors estar, por padrão, com o valor TRUE. Logo, todo dado tipo texto será convertido para fator já na criação do nosso objeto. Crie um novo data frame com o argumento stringsAsFactors = FALSE e veja o que ocorre.
+
+df2 <- data.frame(
+  nome = c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Gustavo"),
+  altura = c(1.80, 1.77, 1.71, 1.65, 1.66, 1.63),
+  idade = c(22, 21, 18, 20, 23, 19),
+  sexo = c("masculino", "masculino", "feminino", "masculino", "feminino", "masculino"),
+  peso = c(78.3, 82.1, 66.5, 88.1, 58, 75.4),
+  fumante = c(TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+  uf = c("PB", "AL", "PE", "PE", "SP", "CE"),
+  renda = c(2, 5, 10, 20, 10, NA),
+  stringsAsFactors = FALSE
+)
+9.6 O que é um tibble?
+Tibbles são similares aos data frames, porém diferentes em dois aspectos: impressão e indexação
+
+Na impressão no console, os tibbles apresentam apenas as dez primeiras linhas e todas as colunas que cabem na tela, tornando mais fácil o trabalho com grandes volumes de dados. Além disso, cada coluna apresenta o seu tipo, algo semelhante ao apresentado quando utilizamos a função str().
+
+Veja um exemplo a seguir da impressão de um tibble no console.
+
+library(nycflights13)
+flights #Tais dados fazem parte do pacote nycflights13
+## # A tibble: 336,776 x 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time
+##    <int> <int> <int>    <int>          <int>     <dbl>    <int>
+##  1  2013     1     1      517            515      2.00      830
+##  2  2013     1     1      533            529      4.00      850
+##  3  2013     1     1      542            540      2.00      923
+##  4  2013     1     1      544            545     -1.00     1004
+##  5  2013     1     1      554            600     -6.00      812
+##  6  2013     1     1      554            558     -4.00      740
+##  7  2013     1     1      555            600     -5.00      913
+##  8  2013     1     1      557            600     -3.00      709
+##  9  2013     1     1      557            600     -3.00      838
+## 10  2013     1     1      558            600     -2.00      753
+## # ... with 336,766 more rows, and 12 more variables: sched_arr_time <int>,
+## #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+## #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+## #   minute <dbl>, time_hour <dttm>
+A segunda diferença, não menos importante, é a forma de indexação. Para indexar um tibble devemos utilizar o nome completo da variável que desejamos. Caso contrário, ocorrerá um erro.
+
+NOTA: Vimos que, nos data frames, podemos indexar uma variável usando $ e digitando apenas a primeira letra da variável que desejamos.
+
+Ainda sobre a indexação, sempre que indexarmos um tibble usando [, o resultado será outro tibble. Usando [[ o resultados será um vetor.
+
+flights[10]
+## # A tibble: 336,776 x 1
+##    carrier
+##    <chr>  
+##  1 UA     
+##  2 UA     
+##  3 AA     
+##  4 B6     
+##  5 DL     
+##  6 UA     
+##  7 B6     
+##  8 EV     
+##  9 B6     
+## 10 AA     
+## # ... with 336,766 more rows
+10 EXERCÍCIOS
+Qual a diferença entre uma matriz e um data frame no R?
+Os data frames podem ser indexados com a mesma sintaxe utilizada para matrizes?
+Qual função básica que utilizamos para verificar a estrutura dos dados de um data frame?
+NOTA: Para resolvermos os exercícios seguintes, precisamos carregar a nossa base (science_df.RData). Utilize o seguinte comando: load("science_df.RData"). (Não se esqueça de colocar o arquivo em seu diretório de trabalho)
+
+Utilizando o data frame science_df, responda as seguintes questões:
+Qual a dimensão do objeto science_df?
+Existe alguma variável do tipo character? Se sim, qual ou quais são?
+Qual a variável fator que possui o maior número de níveis (levels)?
+Na variável PrivPub temos informações sobre o tipo da escola, se privada (private) ou pública (public). Qual a quantidade de escolas públicas e privadas, respectivamente?
+Alguma variável possui valores ausentes (NA)? Se sim, qual ou quais são?
+Ainda com o data frame science_df, realize as seguintes modificações:
+Exclua qualquer observação com valor NA em alguma das variáveis e salve o resultado em science_df (sobrescerver);
+Altere o nome da coluna class para id_class e sobrescreva science_dfcom o resultado;
+Selecione apenas participantes de escolas públicas (variável PrivPub) e sobrescreva science_dfcom o resultado;
+Exclua a variável Class do data frame e sobrescreva science_df com o resultado;
+Modifique a variável sex para character;
+Modifique os valores da variável sex da seguinte forma: altere os valores “m” para “masculino” e os valores “f” para feminino. Sobrescreva os resultados em science_df.
+O que são tibbles e quais as diferenças quando comparados com data frames?
+Após realizar o exercício 5, aplique a função head() no objeto science_df. O resultado deve ser o seguinte:
+
+head(science_df)
+ 
+ 
+State
+<fctr>
+PrivPub
+<fctr>
+school
+<fctr>
+id_class
+<fctr>
+sex
+<chr>
+like
+<dbl>
+1	ACT	public	1	1	feminino	8
+2	ACT	public	1	1	feminino	6
+3	ACT	public	1	1	feminino	5
+4	ACT	public	1	1	feminino	2
+6	ACT	public	1	1	feminino	5
+7	ACT	public	1	1	feminino	6
+6 rows
+11 LISTAS
+11.1 O que é uma lista?
+Em poucas palavras, uma lista no R pode ser entendida como um vetor capaz de armazenar elementos com diferentes tipos de dados. Logo, uma mesma lista pode armazenar um vetor, um data frame e uma matriz, por exemplo. Por esse motivo, as listas podem se apresentar de forma bem mais complexa do que os objetos que conhecemos até agora, uma vez que podem conter outras listas. Vamos à pratica!
+
+Primeiro, vamos relembrar os objetos df1, matriz01 e notas, criados nos tópicos anteriores
+
+df1
+nome
+<fctr>
+altura
+<dbl>
+idade
+<dbl>
+sexo
+<fctr>
+peso
+<dbl>
+fumante
+<lgl>
+uf
+<fctr>
+renda
+<dbl>
+João	1.80	22	masculino	78.3	TRUE	PB	2
+Pedro	1.77	21	masculino	82.1	FALSE	AL	5
+Amanda	1.71	18	feminino	66.5	FALSE	PE	10
+Fábio	1.65	20	masculino	88.1	FALSE	PE	20
+Fernanda	1.66	23	feminino	58.0	TRUE	SP	10
+Gustavo	1.63	19	masculino	75.4	FALSE	CE	NA
+6 rows
+matriz01
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    1    2    3    4    5    6    7    8    9    10
+##  [2,]   11   12   13   14   15   16   17   18   19    20
+##  [3,]   21   22   23   24   25   26   27   28   29    30
+##  [4,]   31   32   33   34   35   36   37   38   39    40
+##  [5,]   41   42   43   44   45   46   47   48   49    50
+##  [6,]   51   52   53   54   55   56   57   58   59    60
+##  [7,]   61   62   63   64   65   66   67   68   69    70
+##  [8,]   71   72   73   74   75   76   77   78   79    80
+##  [9,]   81   82   83   84   85   86   87   88   89    90
+## [10,]   91   92   93   94   95   96   97   98   99   100
+v
+## [1] 20 12 35 19 60
+Veja que temos um data frame, uma matriz e um vetor, respectivamente.
+
+Com esses três objetos, podemos criar uma lista. A função para criar listas no R é a list().
+
+lista01 <- list(df1, matriz01, v)
+Para visualizar a estrutura do nosso novo objeto, podemos também utilizar a função str().
+
+str(lista01)
+## List of 3
+##  $ :'data.frame':    6 obs. of  8 variables:
+##   ..$ nome   : Factor w/ 6 levels "Amanda","Fábio",..: 5 6 1 2 3 4
+##   ..$ altura : num [1:6] 1.8 1.77 1.71 1.65 1.66 1.63
+##   ..$ idade  : num [1:6] 22 21 18 20 23 19
+##   ..$ sexo   : Factor w/ 2 levels "feminino","masculino": 2 2 1 2 1 2
+##   ..$ peso   : num [1:6] 78.3 82.1 66.5 88.1 58 75.4
+##   ..$ fumante: logi [1:6] TRUE FALSE FALSE FALSE TRUE FALSE
+##   ..$ uf     : Factor w/ 5 levels "AL","CE","PB",..: 3 1 4 4 5 2
+##   ..$ renda  : num [1:6] 2 5 10 20 10 NA
+##  $ : int [1:10, 1:10] 1 11 21 31 41 51 61 71 81 91 ...
+##  $ : num [1:5] 20 12 35 19 60
+Podemos ter uma visão resumida dos três objetos que compõem nossa lista. Nesse ponto é importante lembrar que as listas no R não possuem dimensão e sim tamanho. Logo, a função ser utilizada para saber o tamanho de uma lista é a `length().
+
+11.2 Manipulando listas
+Para manipularmos listas no R, a sintaxe é similar a que utilizamos com vetores. Para nos referirmos aos elementos da lista, utilizamos [ ]. Veja exemplo a seguir.
+
+lista01[3]
+## [[1]]
+## [1] 20 12 35 19 60
+No entanto, na maioria dos casos, desejamos acessar o objeto guardado em determinada posição da nossa lista. Dessa forma, utilizamos [[ ]] para indexarmos. Digamos que você queira acessar o terceiro elemento do vetor v, armazenado na lista01. Sabendo que se trata de um vetor, basta fazer:
+
+lista01[[3]][3]
+## [1] 35
+Como um segundo exemplo, vamos acessar a primeira linha do data frame df1, guardado na primeira posição da mesma lista.
+
+lista01[[1]][1, ]
+ 
+ 
+nome
+<fctr>
+altura
+<dbl>
+idade
+<dbl>
+sexo
+<fctr>
+peso
+<dbl>
+fumante
+<lgl>
+uf
+<fctr>
+renda
+<dbl>
+1	João	1.8	22	masculino	78.3	TRUE	PB	2
+1 row
+Assim como nos outros objetos que conhecemos até agora, podemos indexar uma lista através dos nomes de seus elementos. Isso torna o trabalho mais rápido quando temos que lidar com listas maiores. Para demonstrar o funcionamento, vamos criar uma lista02, com os mesmos elementos da lista01 , porém, nomeando os seus elementos. O data frame df1 será chamado de data_frame; a matriz01 será chamada de matriz; o vetor v será chamado de vetor.
+
+lista02 <- list(data_frame = df1,
+                matriz = matriz01, 
+                vetor = v)
+Vamos observar a estrutura da nossa lista02 agora:
+
+str(lista02)
+## List of 3
+##  $ data_frame:'data.frame':  6 obs. of  8 variables:
+##   ..$ nome   : Factor w/ 6 levels "Amanda","Fábio",..: 5 6 1 2 3 4
+##   ..$ altura : num [1:6] 1.8 1.77 1.71 1.65 1.66 1.63
+##   ..$ idade  : num [1:6] 22 21 18 20 23 19
+##   ..$ sexo   : Factor w/ 2 levels "feminino","masculino": 2 2 1 2 1 2
+##   ..$ peso   : num [1:6] 78.3 82.1 66.5 88.1 58 75.4
+##   ..$ fumante: logi [1:6] TRUE FALSE FALSE FALSE TRUE FALSE
+##   ..$ uf     : Factor w/ 5 levels "AL","CE","PB",..: 3 1 4 4 5 2
+##   ..$ renda  : num [1:6] 2 5 10 20 10 NA
+##  $ matriz    : int [1:10, 1:10] 1 11 21 31 41 51 61 71 81 91 ...
+##  $ vetor     : num [1:5] 20 12 35 19 60
+Para indexar o terceiro elemento da nossa lista (o vetor), o processo é bem mais simples e intuitivo. Basta digitarmos:
+
+lista02$vetor
+## [1] 20 12 35 19 60
+Se desejar acessar a terceira linha da matriz guardada no segundo elemento da lista02, use:
+
+lista02$matriz[3, ]
+##  [1] 21 22 23 24 25 26 27 28 29 30
+Bem mais simples, não?
+
+NOTA: Para indexar uma lista, o R também permite usar a primeira letra do nome do elemento da lista. No entanto, recomendamos utilizar o nome completo, visando uma leitura mais fácil do código e evitar erros. Digite lista02$d no console e veja o que acontece.
+
+11.3 Combinando e modificando listas
+Começaremos a aprender a modificar listas no R fazendo exclusões de seus elementos. A forma mais simples de excluir elementos de uma lista é atribuindo NULL ao elemento que desejamos excluir. Vamos excluir o terceiro elemento da lista02.
+
+lista02[[3]] <- NULL
+
+length(lista02)
+## [1] 2
+Veja que, após atribuir NULL ao elemento 3 da lista, a lista passou a ter tamanho 2. Outra forma seria fazermos lista02[-3] e sobrescrever o objeto. É importante lembrar que, ao atribuir NULL a um ou mais elementos da lista, a lista é automaticamente modificada. Se quisessemos exibir todos os elementos exceto o terceiro, a forma mais prática é: lista02[-3].
+
+Para combinarmos listas, o processo é similar à combinação de vetores. No exemplo seguinte, vamos criar duas listas e exibir a combinação das duas.
+
+lista03 <- list(TRUE, "Tribunal", 20, pi)
+lista04 <- list(FALSE, NULL, 45, "Contas")
+c(lista03, lista04)
+## [[1]]
+## [1] TRUE
+## 
+## [[2]]
+## [1] "Tribunal"
+## 
+## [[3]]
+## [1] 20
+## 
+## [[4]]
+## [1] 3.141593
+## 
+## [[5]]
+## [1] FALSE
+## 
+## [[6]]
+## NULL
+## 
+## [[7]]
+## [1] 45
+## 
+## [[8]]
+## [1] "Contas"
+Outra função bastante útil para trabalharmos com listas é a unlist(). Essa função exibe os elementos da lista em forma de vetor. Vamos aplicá-la a lista04 e observar o resultado.
+
+unlist(lista04)
+## [1] "FALSE"  "45"     "Contas"
+Existem diversas funções no R que podemos utilizar para aplicações mais avançadas com listas. Pacotes como o purrr trazem funções bastante úteis para manipular, sumarizar, modificar e combinar listas. No entanto, para o objetivo desse curso, as operações vistas até agora são suficientes.
+
+12 INSTALANDO E CONHECENDO PACOTES DO R
+12.1 O que é um pacote do R?
+Até aqui utilizamos o que chamamos de Base R, ou seja, sintaxe e funções básicas do R usando apenas os pacotes padrões e pré-carregados. Ao digitar ?sum()no console, por exemplo, podemos ver que se trata de uma função do pacote {base}.
+
+No entanto, um dos motivos que tem tornado o R bastante popular nos últimos anos foi o crescimento da sua comunidade de desenvolvedores e, consequentemente, de pacotes disponíveis para utilização. Atualmente o CRAN (Comprehensive R Archive Network) possui mais de 14 mil pacotes disponíveis, para as mais diversas aplicações. A utilização de alguns desses pacotes aumenta de forma acentuada a experiência com o R. Poderemos constatar que muitas das tarefas que vimos até então podem ser realizadas de forma mais simples, ágil e intuitiva utilizando funções específicas trazidas por determinados pacotes. Você inclusive pode fazer o seu próprio pacote!
+
+Vamos então à resposta da questão: O que é um pacote?
+
+Segundo Adler (Adler 2012):
+
+Um pacote é um conjunto relacionado de funções, arquivos de ajuda e arquivos de dados que foram empacotados juntos. Pacotes em R são similares a módulos em Pearl, bibliotecas em C/C++ e classes em Java.
+
+Para ver os pacotes carregados por padrão no R, use o comando seguinte:
+
+getOption("defaultPackages")
+## [1] "datasets"  "utils"     "grDevices" "graphics"  "stats"     "methods"
+Se você deseja ver todos os pacotes disponíveis em sua biblioteca, utilize o comando library(). Para visualizar os pacotes carregados, use (.packages()).
+
+12.2 Instalando pacotes no R
+Uma vez que o repositório de pacotes está disponível na internet, o primeiro requisito para instalar pacotes no R é possuir uma conexão com a internet. Se você está usando o RStudio, instalar um pacote é bem simples, uma vez que já existe um repositório padrão. O segundo passo é saber o nome do pacote.
+
+Você pode encontrar uma lista dos pacotes diponíveis no CRAN clicando aqui.
+
+Vamos comecar instalando um dos pacotes mais famosos do R, o dplyr. Para instalar o citado pacote, basta fazer:
+
+install.packages("dplyr")
+Você visualizará o progresso de instalação no console.
+
+Uma vez instalado, sempre que desejarmos utilizar uma função de um determinado pacote, devemos carregar o mesmo. Podemos fazer isso usando a função library(). Vamos carregar o pacote dplyr.
+
+library(dplyr)
+Utilize o comando (.packages()) para constatar que o pacote está carregado!
+
+O carregamento de um pacote também pode ser feito através da função require()!
+
+12.3 Descobrindo pacotes do R
+Como já foi mencionado, o R possui milhares de pacotes disponíveis no CRAN. Não é raro pesquisarmos por alguma palavra-chave e encontrar dezenas, às vezes centenas, de resultados. O caminho mais fácil é ler um pouco sobre o que você deseja fazer no R para saber quais são as suas necessidades. Às vezes conseguimos fazer várias tarefas utilizando apenas um pacote; às vezes precisamos de bem mais. Tudo depende do problema que você deseja resolver! No entanto, há alguns pacotes já consolidados no R, com um número expressivo de downloads e de usuários. O site RDocumentation.org nos dá uma noção mais precisa sobre isso.
+
+Podemos descobrir pacotes do R de várias formas, através de uma simples pesquisa no Google, de livros, sites especializados para desenvolvedores como StackOverflow e GitHub, blogs, cursos e etc.
+
+Recentemente vários dos mais famosos pacotes do R foram reunidos em um único pacote chamado tidyverse (Para mais informações acesse tidyverse.org).
+
+Pacote	Breve descrição
+dplyr	Manipulação e transformação de dados
+tidyr	Manipulação e transformação de dados
+readr	Importação de vários tipos de arquivos (csv, tsv, fwf)
+purrr	Manipulação avançada de listas e vetores
+ggplot2	Gráficos dos mais variados tipos
+readxl	Importação de planilhas excel (.xls, .xlsx)
+lubridate	Manipulação de dados em formato de data e/ou tempo
+jsonlite	Importação de dados em JSON
+magrittr	Provê a utilização de pipes (%>%)
+xml2	Importação de dados em XML
+rvest	Utilizado para web scraping
+heaven	Leitura e escrita de arquivos SPSS, SAS e Stata
+DBI	Conexão a base de dados (MySQL, PostgresSQL, SQLite…)
+data.table	Leitura e escrita de grandes bases de dados
+ggmap	Mapas geográficos
+Podemos ver a seguir um exemplo de aplicação do pacote ggmap.
+
+mapa <- ggmap::get_map(location = "Brasil", zoom = 4, 
+                language = "pt", maptype = "roadmap")
+ggmap::ggmap(mapa)
+
+
+13 CONTROLE DE FLUXO
+No R, similarmente a outras linguagens, podemos executar determinado código de acordo com determinada condição. As declarações condicionais são importantes para a realização de diversas tarefas, inclusive para a economia de tempo e processamento. Vamos ver com mais detalhes nos tópicos seguintes.
+
+13.1 Declarações condicionais (if e else)
+Suponha que você esteja diante de 200 caixas de um determinado produto. Seu chefe pediu para verificar o conteúdo apenas das caixas que não possuem etiquetas. Logo, o critério que você irá adotar para decidir se irá verificar ou não é a presença de etiqueta na caixa. Podemos, em linhas gerais, escrever a execução dessa tarefa da seguinte forma:
+
+SE a caixar não possui etiqueta, verifique a caixa; SENÃO, passe para a próxima caixa.
+
+Para utilizarmos as declarações condicionais no R, o raciocínio é semelhante. Vamos começar com um exemplo utilizando if. Vamos atribuir um valor à variável cond e testar se a mesma é maior do que 5. Caso a variável seja maior do que 5, vamos imprimir no console o texto “Maior do que 5”. Primeiro vamos atribuir o valor 6 à variável que vamos testar e depois atribuiremos o valor 3, para ver o que ocorre.
+
+cond <- 6
+if(cond > 5){
+  print("Maior do que 5")
+}
+## [1] "Maior do que 5"
+cond <- 3
+if(cond > 5){
+  print("Maior do que 5")
+}
+É fácil perceber que obtivemos a saída no console apenas para o primeiro caso. É que no segundo caso o teste (cond > 5) retornou FALSE, impedindo a execução do comando print("Maior do que 5").
+
+Agora vamos incrementar um pouco mais o nosso código. Caso cond seja menor ou igual a 5, vamos imprimir “Menor ou igual a 5” no console. Para isso, adicionaremos um else da seguinte forma:
+
+cond <- -2
+if(cond > 5){
+  print("Maior do que 5")
+} else {
+  print("Menor ou igual a 5")
+}
+## [1] "Menor ou igual a 5"
+Veja que agora, caso o valor de cond não seja maior do que 5, executamos uma outra tarefa, que é a exibição da mensagem “Menor ou igual a 5”.
+
+Como melhoria do nosso algoritmo, vamos exibir uma mensagem específica para cada uma das seguintes condições:
+
+número maior do que 5;
+número igual a 5;
+número menor do que 5.
+Para acomodarmos essa nova situação, utilizamos else if para testar a condição cond == 5. A solução é a seguinte:
+
+cond <- 5
+if(cond > 5){
+  print("Maior do que 5")
+} else if (cond == 5){
+  print("Igual a 5")
+} else {
+  print("Menor do que 5")
+}
+## [1] "Igual a 5"
+E caso a variável cond seja NA, o que ocorre?
+
+Como exercício, corrija o código do exemplo anterior para que atenda uma quarta condição. Se o valor de cond for igual a NA, devemos exibir a mensagem “Valor ausente”.
+
+Uma outra forma de fazer testes condicionais de forma mais simples é utilizando a função ifelse(). Vamos a um exemplo:
+
+vetor_cond1 <- c(0, 4, 3, 2, 7)
+ifelse(vetor_cond1 > 5, "Maior do que 5", "Menor ou igual a 5")
+## [1] "Menor ou igual a 5" "Menor ou igual a 5" "Menor ou igual a 5"
+## [4] "Menor ou igual a 5" "Maior do que 5"
+Veja que nesse caso utilizamos um vetor. A condição foi testada para cada um dos elementos do vetor. Poderíamos usar também uma matriz com os valores a serem testados.
+
+Como exercício, utilize ifelse() para testar se os elementos do vetor vetor_cond2 são maiores, menores ou iguais a 10. A saídas devem ser as seguintes:
+
+Se o elemento for maior do que 10, devemos retornar: “Maior do que 10”
+Se o elemento for menor do que 10, devemos retornar: “Menor do que 10”
+Se o elemento for igual a 10, devemos retornar: “Igual a 10”
+Os testes retornarão um vetor de resultados.
+
+vetor_cond2 <- c(-1, 0, 3, 5, 17, 19, 3, 2, 10, 12, 88, 10)
+14 IMPORTAÇÃO E ARMAZENAMENTO DE DADOS
+Na realização de nossas tarefas, podemos nos deparar com dados em diversos formatos, como:
+
+CSV - Comma-separated values;
+TXT - Arquivo texto;
+JSON - JavaScript Object Notation;
+XML - eXtensible Markup Language;
+TSV - Tab-separated values;
+XLS e XLSX - Arquivos do MS Excel;
+HTML - HyperText Markup Language.
+PDF - Portable Document Format.
+Além de lidar com todos os formatos citados, o R possui pacotes para leitura de arquivos gerados por softwares como Stata, SPSS e SAS, muito utilizados em aplicações estatísticas e análise de dados. Na verdade, existe uma infinidade de formatos que o R consegue importar. Esses são apenas os principais.
+
+O R também consegue se conectar às mais diferentes bases de dados, como:
+
+Microsoft SQL Server;
+Oracle;
+PostgreSQL;
+Amazon Redshift;
+Apache Hive;
+Apache Impala;
+Salesforce;
+Teradata;
+Google BigQuery.
+No entanto, para o objetivo do nosso curso, vamos aprender a ler os arquivos nos formatos mais populares, além de descobrir algumas características dos pacotes e funções utilizadas.
+
+14.1 Importando arquivos CSV
+Os arquivos CSV são bastante utilizados para disponibilização de dados. É um formato bem antigo e que utiliza vírgulas para separação dos valores. No entanto, implementações mais sofisticadas utilizam aspas duplas (“”) entorno do conteúdo e podem ter outro tipo de separador, como o ponto e vírgula (;).
+
+Há pacotes muito bons para leitura de arquivos CSV como o readr e o data.table. No entanto, começaremos usando funções dos pacotes básicos do R.
+
+O arquivo CSV que vamos trabalhar em nosso exemplo é referente aos empenhos do Governo do Estado da Paraíba, mês de junho de 2017. Esse arquivo está disponibilizado no site da Transparência Estadual.
+
+O arquivo está nomeado como: empenho_original_exercicio_2017_mes_6.csv
+
+Lembre-se que, para ler o arquivo, o mesmo deve estar na sua pasta de trabalho (Verifique a pasta com a função getwd())!
+
+Vamos importar o arquivo CSV citado e guardar em empenhos_6_estado. Faça da seguinte forma:
+
+empenhos_6_estado <- read.csv2("empenho_original_exercicio_2017_mes_6.csv")
+Como podemos ver, o arquivo foi lido e atribuído ao nosso objeto de nome empenhos_6_estado. Com o RStudio, podemos visualizar facilmente parte dos dados clicando no objeto no Global Enviroment ou simplesmente usando a função View().
+
+Podemos constatar que nossos dados possuem 19.604 linhas e 37 colunas. As colunas parecem estar corretamente delimitadas, porém ao passamos apenas o nome do arquivo como argumento, a função utilizou vários outros argumentos com valores padrão, o que certamente ocasionou um ou mais problemas com os nossos dados.
+
+Vamos visualizar a estrutura dos dados utilizando a função str().
+
+str(empenhos_6_estado)
+## 'data.frame':    19604 obs. of  37 variables:
+##  $ EXERCICIO                          : int  2017 2017 2017 2017 2017 2017 2017 2017 2017 2017 ...
+##  $ CODIGO_UNIDADE_GESTORA             : int  10001 10001 10001 10001 10001 10001 10001 10001 10001 10001 ...
+##  $ NUMERO_EMPENHO                     : int  1071 1072 1075 1076 1077 1078 1079 1080 1081 1082 ...
+##  $ NUMERO_EMPENHO_ORIGEM              : int  1071 1072 1075 1076 1077 1078 1079 1080 1081 1082 ...
+##  $ DATA_EMPENHO                       : Factor w/ 29 levels "2017-06-01 00:00:00",..: 1 1 2 2 2 6 6 6 6 6 ...
+##  $ HISTORICO_EMPENHO                  : Factor w/ 11037 levels "        - AQUISICAO DE LEPONEX100 MG 30 CP. DESTINADO  AO PACIENTE: IVAN MORAIS DE  LUCENAJUNIOR. DEMANDA JUDIC"| __truncated__,..: 8288 8280 8322 8321 8281 8280 8370 8309 8348 8345 ...
+##  $ CODIGO_SITUACAO_EMPENHO            : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ CODIGO_TIPO_EMPENHO                : int  11 11 11 11 11 11 11 11 11 11 ...
+##  $ DESCRICAO_TIPO_EMPENHO             : Factor w/ 1 level "PRINCIPAL": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ NOME_SITUACAO_EMPENHO              : Factor w/ 5 levels "EXTERNO(PAGO PELA SEC. DAS FINAN?AS)",..: 4 4 4 4 4 4 4 4 4 4 ...
+##  $ VALOR_EMPENHO                      : Factor w/ 5033 levels "0.04","0.07",..: 2269 2019 815 815 1822 1694 4453 1440 1216 245 ...
+##  $ CODIGO_MODALIDADE_LICITACAO        : int  6 0 4 4 0 0 5 6 5 5 ...
+##  $ CODIGO_MOTIVO_DISPENSA_LICITACAO   : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ CODIGO_TIPO_CREDITO                : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ NOME_TIPO_CREDITO                  : Factor w/ 2 levels "ORDIN?RIO","ORDIN\xc1RIO": 2 2 2 2 2 2 2 2 2 2 ...
+##  $ DESTINO_DIARIAS                    : Factor w/ 1134 levels "","7008597","A. GRANDE",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ DATA_SAIDA_DIARIAS                 : Factor w/ 128 levels "","2015-06-13 00:00:00",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ DATA_CHEGADA_DIARIAS               : Factor w/ 133 levels "","2015-06-13 00:00:00",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ NOME_CREDOR                        : Factor w/ 8391 levels "_DANIELE MORGADA D. CUNHA",..: 4037 7543 361 361 825 922 1117 5947 462 7846 ...
+##  $ CPFCNPJ_CREDOR                     : Factor w/ 8219 levels "***.000.024-**",..: 7905 27 2586 2586 4130 1304 7324 7620 2966 1074 ...
+##  $ TIPO_CREDOR                        : Factor w/ 4 levels "PESSOA F?SICA",..: 4 2 2 2 2 2 4 4 2 2 ...
+##  $ CODIGO_MUNICIPIO                   : int  250750 250750 250750 250750 250750 250750 250750 250750 250750 250750 ...
+##  $ NOME_MUNICIPIO                     : Factor w/ 210 levels "AGUA BRANCA",..: 87 87 87 87 87 87 87 87 87 87 ...
+##  $ NUMERO_PROCESSO_PAGAMENTO          : Factor w/ 7824 levels " 2017074570",..: 6788 5642 6454 6393 5542 4774 6778 6768 4275 5098 ...
+##  $ NUMERO_CONTRATO                    : Factor w/ 1226 levels "_-","-","/","\\",..: 308 1204 1204 1204 1204 1204 1204 1204 1204 1204 ...
+##  $ CODIGO_UNIDADE_ORCAMENTARIA        : int  1101 1101 1101 1101 1101 1101 1101 1101 1101 1101 ...
+##  $ CODIGO_FUNCAO                      : int  1 28 1 1 28 28 1 1 1 1 ...
+##  $ CODIGO_SUBFUNCAO                   : int  122 846 122 122 846 846 122 122 122 122 ...
+##  $ CODIGO_PROGRAMA                    : int  5046 0 5046 5046 0 0 5046 5046 5046 5046 ...
+##  $ CODIGO_ACAO                        : int  4216 751 4216 4216 751 751 4195 4216 4199 4199 ...
+##  $ CODIGO_FONTE_RECURSO               : int  10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 ...
+##  $ CODIGO_NATUREZA_DESPESA            : int  33903000 33909300 33903600 33903600 33909300 33909300 33903900 33903000 33903600 33903600 ...
+##  $ CODIGO_CATEGORIA_ECONOMICA_DESPESA : int  3 3 3 3 3 3 3 3 3 3 ...
+##  $ CODIGO_GRUPO_NATUREZA_DESPESA      : int  3 3 3 3 3 3 3 3 3 3 ...
+##  $ CODIGO_MODALIDADE_APLICACAO_DESPESA: int  90 90 90 90 90 90 90 90 90 90 ...
+##  $ CODIGO_ELEMENTO_DESPESA            : int  30 93 36 36 93 93 39 30 36 36 ...
+##  $ CODIGO_ITEM_DESPESA                : int  2 99 10 10 99 99 1 15 15 15 ...
+Um dos problemas que podemos detectar é na codificação do arquivo. As colunas em texto que contém acentuação estão com problemas. Veja um exemplo da variável TIPO_CREDOR:
+
+empenhos_6_estado$TIPO_CREDOR[1:3]
+## [1] PESSOA JUR\xcdDICA PESSOA F\xcdSICA   PESSOA F\xcdSICA  
+## 4 Levels: PESSOA F?SICA PESSOA F\xcdSICA ... PESSOA JUR\xcdDICA
+Um segundo problema que encontramos é a variável VALOR_EMPENHO, que deveria ser numérica e está como fator.
+
+Como exercício, leia a ajuda da função read.csv2() e importe novamente o arquivo CSV fazendo as seguintes correções (alterações) na importação:
+
+A variável VALOR DO EMPENHO deve ser numérica;
+A acentuação dos textos devem estar corretas;
+A variável CODIGO_UNIDADE_GESTORA deve estar como fator;
+As variáveis referentes a datas devem estar no formato data (“Date”);
+Na variável NUMERO_CONTRATO, devemos substituir “S/N” e “S/C” por NA.
+Um pacote bastante popular para a importação de arquivos CSV é o readr. Caso não o tenha instalado, faça a instalação e carregue o mesmo utilizando:
+
+library(readr)
+As funções para ler arquivos CSV do mencionado pacote são: read_csv(), read_csv2() ou read_delim(). Vamos utilizar a função read_delim(), apropriada para ler arquivos com qualquer tipo de separador.
+
+NOTA: Não é raro encontrarmos arquivos CSV com diferentes delimitadores. Podemos encontrar “;”, “|”, " " ou qualquer outro caractere como delimitador. A função read_delim() consegue contornar problemas desse tipo.
+
+Vamos importar o mesmo arquivo de empenhos referentes a o mês de junho/2017, disponibilizado pelo Governo do Estado da Paraíba. A diferença é que agora o arquivo estará zipado. Ler dados compactados nos traz não apenas um ganho de espaço de armazenamento dos dados mas também de produtividade, uma vez que não precisamos descompactar os arquivos para realizarmos a importação.
+
+Vamos ler o arquivo zipado e atribuir ao objeto empenhos_6_estados_zip.
+
+empenhos_6_estado_zip <- read_delim("empenho_original_exercicio_2017_mes_6.csv.zip", delim = ";")
+## Multiple files in zip: reading 'empenho_original_exercicio_2017_mes_6.csv'
+## Parsed with column specification:
+## cols(
+##   .default = col_character(),
+##   EXERCICIO = col_integer(),
+##   CODIGO_UNIDADE_GESTORA = col_integer(),
+##   NUMERO_EMPENHO = col_integer(),
+##   NUMERO_EMPENHO_ORIGEM = col_integer(),
+##   DATA_EMPENHO = col_datetime(format = ""),
+##   CODIGO_SITUACAO_EMPENHO = col_integer(),
+##   CODIGO_TIPO_EMPENHO = col_integer(),
+##   VALOR_EMPENHO = col_double(),
+##   CODIGO_MODALIDADE_LICITACAO = col_integer(),
+##   CODIGO_MOTIVO_DISPENSA_LICITACAO = col_integer(),
+##   CODIGO_TIPO_CREDITO = col_integer(),
+##   DATA_SAIDA_DIARIAS = col_datetime(format = ""),
+##   DATA_CHEGADA_DIARIAS = col_datetime(format = ""),
+##   CODIGO_MUNICIPIO = col_integer(),
+##   CODIGO_UNIDADE_ORCAMENTARIA = col_integer(),
+##   CODIGO_FONTE_RECURSO = col_integer(),
+##   CODIGO_NATUREZA_DESPESA = col_integer(),
+##   CODIGO_CATEGORIA_ECONOMICA_DESPESA = col_integer(),
+##   CODIGO_GRUPO_NATUREZA_DESPESA = col_integer(),
+##   CODIGO_MODALIDADE_APLICACAO_DESPESA = col_integer()
+## )
+## See spec(...) for full column specifications.
+Ao utilizar a função read_delim(), informamos que o delimitador (separador) das colunas é ";". Os decimais da coluna “VALOR_EMPENHO”, desta feita, foram lidos corretamente. Poderiamos melhorar nossa importação definindo mais argumentos, passando valores para atribuição de NA e o tipo de dado desejado de determinadas colunas. Tente refazer a importação com o código a seguir.
+
+empenhos_6_estado_zip <- read_delim("empenho_original_exercicio_2017_mes_6.csv.zip", delim = ";",
+                                   col_types =  cols(VALOR_EMPENHO = col_number(),
+                                                     CODIGO_UNIDADE_GESTORA = col_character()),
+                                   locale = locale(decimal_mark = "."),
+                                   na = c("", "NA", "S/N", "S/C")
+                                   )
+14.2 Importanto arquivos TXT e TSV
+A importação de arquivos texto (.txt) também pode ser realizada facilmente utilizando a função read_delim() do pacote readr. O arquivo que iremos trabalhar é o “us_dados_acidentes.txt” e o separador (delimitador) do arquivo é “&” (escolhido propositalmente).
+
+Ocorre que, em certas ocasiões, não queremos importar todo o arquivo, mas apenas parte dele. A função read_delim() permite informar a quantidade de observações que desejamos importar, provendo uma melhor performance na leitura dos dados. No exemplo que iremos apresentar, vamos importar apenas as primeiras 200 linhas de dados. Por fim, iremos transformar as variáveis sex e frontal em fator já na importação dos dados e atribuir a um objeto de nome us_acidentes. Segue o exemplo.
+
+us_acidentes <- read_delim("us_dados_acidentes.txt", delim = "&", n_max = 200,
+                            col_types = cols(
+                                        frontal = col_factor(c(1, 0)),
+                                        sex = col_factor(c("f", "m"))
+                            )
+)
+us_acidentes
+## # A tibble: 200 x 15
+##    dvcat weight dead  airbag seatbelt frontal sex   ageOFocc yearacc
+##    <chr>  <dbl> <chr> <chr>  <chr>    <fct>   <fct>    <int>   <int>
+##  1 25-39   25.1 alive none   belted   1       f           26    1997
+##  2 10-24   25.1 alive airbag belted   1       f           72    1997
+##  3 10-24   32.4 alive none   none     1       f           69    1997
+##  4 25-39  495   alive airbag belted   1       f           53    1997
+##  5 25-39   25.1 alive none   belted   1       f           32    1997
+##  6 40-54   25.1 alive none   belted   1       f           22    1997
+##  7 55+     27.1 alive none   belted   1       m           22    1997
+##  8 55+     27.1 dead  none   none     1       m           32    1997
+##  9 10-24  813   alive none   belted   0       m           40    1997
+## 10 10-24  813   alive none   belted   1       f           18    1997
+## # ... with 190 more rows, and 6 more variables: yearVeh <int>,
+## #   abcat <chr>, occRole <chr>, deploy <int>, injSeverity <int>,
+## #   caseid <chr>
+Ao imprimir o objeto us_acidentes, fica nítido que se trata de um tibble.
+
+A função read_delim() também faz o tratamento dos valores ausentes (NA). No próximo exemplo, o arquivo possui valores ausentes como “—”, sem aspas, como delimitador. Vamos ler as primeiras 10.000 observações do arquivo e informar à função que trate “—” como NA.
+
+us_acidentes_1 <- read_delim("us_dados_acidentes_na.txt", delim = "&", 
+                            n_max = 10000,
+                            na = "---", quoted_na = FALSE
+                            )
+Vamos aplicar summary() na variável injSeverity para constatar que os valores foram transformados em NA corretamente.
+
+summary(subset(us_acidentes_1, select = injSeverity))
+##   injSeverity   
+##  Min.   :0.000  
+##  1st Qu.:1.000  
+##  Median :2.000  
+##  Mean   :1.757  
+##  3rd Qu.:3.000  
+##  Max.   :6.000  
+##  NA's   :53
+Como podemos ver, a variável detectou os 53 valores ausentes corretamente!
+
+Por fim, iremos importar o arquivo “us_dados_acidentes.tsv”, cujo formato é TSV (Tab-separated values). Utilizaremos a função read_tsv() para importar as 2.000 primeiras linhas do arquivo. O processo é praticamente idêntico aos anteriores.
+
+us_acidentes_2 <- read_tsv("us_dados_acidentes.tsv", n_max = 2000)
+Aplicando a função head(), podemos constatar que o arquivo foi importado corretamente.
+
+head(us_acidentes_2)
+dvcat
+<chr>
+weight
+<dbl>
+dead
+<chr>
+airbag
+<chr>
+seatbelt
+<chr>
+frontal
+<int>
+sex
+<chr>
+ageOFocc
+<int>
+25-39	25.069	alive	none	belted	1	f	26	
+10-24	25.069	alive	airbag	belted	1	f	72	
+10-24	32.379	alive	none	none	1	f	69	
+25-39	495.444	alive	airbag	belted	1	f	53	
+25-39	25.069	alive	none	belted	1	f	32	
+40-54	25.069	alive	none	belted	1	f	22	
+6 rows | 1-8 of 15 columns
+Com a prática, você pode definir com mais clareza qual a melhor função ou pacote que atenderá suas necessidades com mais eficiência. É essencial que sempre haja a verificação dos tipos das variáveis importadas, visando reduzir a ocorrência de erros.
+
+14.3 Importando arquivos XLS e XLSX
+Assim como os demais tipos de arquivos vistos até agora, importar arquivos do MS Excel (.xls e .xlsx) com o R também não é mistério. Para isso, utilizaremos o pacote readxl(). É relevante destacar que tal pacote integra o conjunto de pacotes de nome Tidyverse, já abordado anteriormente.
+
+Para nossos exemplos com arquivos do MS Excel, vamos começar com o arquivo “us_acidentes.xls”, de conteúdo idêntico aos vistos anteriormente. Vamos passar apenas o nome do arquivo para a função read_xls(), sem alterar argumentos, e ver o resultado. Vamos atribuir o resultado a um objeto de nome us_acidentes_xls.
+
+library(readxl)
+us_acidentes_xls <- read_xls("us_dados_acidentes.xls")
+
+str(us_acidentes_xls)
+## Classes 'tbl_df', 'tbl' and 'data.frame':    26217 obs. of  15 variables:
+##  $ dvcat      : chr  "25-39" "10-24" "10-24" "25-39" ...
+##  $ weight     : num  25.1 25.1 32.4 495.4 25.1 ...
+##  $ dead       : chr  "alive" "alive" "alive" "alive" ...
+##  $ airbag     : chr  "none" "airbag" "none" "airbag" ...
+##  $ seatbelt   : chr  "belted" "belted" "none" "belted" ...
+##  $ frontal    : num  1 1 1 1 1 1 1 1 0 1 ...
+##  $ sex        : chr  "f" "f" "f" "f" ...
+##  $ ageOFocc   : num  26 72 69 53 32 22 22 32 40 18 ...
+##  $ yearacc    : num  1997 1997 1997 1997 1997 ...
+##  $ yearVeh    : num  1990 1995 1988 1995 1988 ...
+##  $ abcat      : chr  "unavail" "deploy" "unavail" "deploy" ...
+##  $ occRole    : chr  "driver" "driver" "driver" "driver" ...
+##  $ deploy     : num  0 1 0 1 0 0 0 0 0 0 ...
+##  $ injSeverity: num  3 1 4 1 3 3 3 4 1 0 ...
+##  $ caseid     : chr  "2:3:1" "2:3:2" "2:5:1" "2:10:1" ...
+Como podemos ver, o arquivo parece ter sido importado sem problemas. A função read_xls() considera, por default, a primeira linha da planilha excel como cabeçalho.
+
+É comum que um arquivo excel traga mais de uma planilha. Caso deseje ler uma planilha específica dentre várias, você deve alterar o argumento sheet da função, informando a posição ou o nome da mesma.
+
+Uma outra funcionalidade da função read_xls() interessante é que podemos selecionar um conjunto de células para importar. Vamos fazer um exemplo selecionando o intervalo de células “A40:C79”. Dessa forma, as colunas o intervalo de células da linha 40 até a 79, referente às três primeiras colunas será selecionado para importação. Segue um exemplo com definição dos nomes para as três colunas de dados importadas.
+
+library(readxl)
+us_acidentes_xls_int <- read_xls("us_dados_acidentes.xls", range = "A40:C79",
+                                 col_names = c("velocidade", "peso", "situação"))
+
+str(us_acidentes_xls_int)
+## Classes 'tbl_df', 'tbl' and 'data.frame':    40 obs. of  3 variables:
+##  $ velocidade: chr  "10-24" "10-24" "10-24" "10-24" ...
+##  $ peso      : num  199.3 199.3 199.3 199.3 25.1 ...
+##  $ situação  : chr  "alive" "alive" "alive" "alive" ...
+Como podemos constatar, foram importadas apenas as três primeiras colunas e o intervalo de observações da linha 40 até a 79, totalizando 40 linhas de dados.
+
+Passamos agora a tratar dos arquivos .xlsx. No exemplo seguinte, iremos trabalhar com um arquivo que possui dados históricos sobre o levantamento de preços realizado pela Agência Nacional de Petróleo - ANP. A peculiaridade dessa planilha excel é a existência de um cabeçalho que antecede os dados das pesquisas. A função é praticamente idêntica à vista anteriormente.
+
+Como exercício, tente importar o arquivo usando a função read_xlsx(). Após isso, leia sobre a função para solucionar os problemas encontrados. Por fim, faça o tratamento correto dos valores ausentes na planilha excel. O arquivo está nomeado como “anp_combustiveis.xlsx”.
+
+NOTA: Como um guia rápido para importação dos arquivos de dados mais comuns, um excelente recurso são as folhas de dicas (Cheat Sheets), algumas disponibilizadas no site do RStudio. Dê uma olhada na folha de nome Data Import Cheat Sheet. Nela você poderá encontrar, de forma gráfica, informações úteis sobre algumas das funções dos pacotes readr, tibble e tidyr.
+
+14.4 Importando grandes quantidades de dados
+Depois de termos conhecido como importar arquivos de diversos formatos, chegou o momento de conhecermos um pacote bastante importante para a leitura e escrita de grandes arquivos de dados. O pacote data.table foi desenvolvido para prover uma versão de alto desempenho dos data frames que conhecemos.
+
+Para a importação de dados, vamos usar a função fread() do pacote data.table. Caso não o tenha instalado, faça a instalação.
+
+O arquivo que vamos trabalhar é referente a empenhos das administrações municipais paraibanas, de janeiro de 2012 a dezembro de 2016, e se encontra em formato texto. Tal base de dados possui 6.150.634 observações e 25 variáveis.
+
+Uma das primeiras vantagens da função fread() que podemos citar é a detecção automática do separador. Vamos tentar ler o arquivo texto “sagres_municipal_2012_2016.txt” sem indicar o separador do arquivo e verificar como a função se sai. O resultado atribuiremos à variável empenhos.
+
+empenhos <- fread("sagres_municipal_2012_2016.txt")
+Vamos verificar a dimensão do nosso data framne.
+
+dim(empenhos)
+## [1] 6150634      25
+Como podemos ver, as 6.150.634 linhas parecem ter sido lidas corretamente, assim como as 25 variáveis existentes. Vamos ver a estrutura dos dados.
+
+str(empenhos)
+## Classes 'data.table' and 'data.frame':   6150634 obs. of  25 variables:
+##  $ cd_ugestora     : int  101001 101001 101001 101001 101001 101001 101001 101001 101001 101001 ...
+##  $ de_ugestora     : chr  "Câmara Municipal de Água Branca" "Câmara Municipal de Água Branca" "Câmara Municipal de Água Branca" "Câmara Municipal de Água Branca" ...
+##  $ dt_Ano          : int  2012 2012 2012 2012 2012 2012 2012 2012 2012 2012 ...
+##  $ de_UOrcamentaria: chr  "CÂMARA MUN. DE ÁGUA BRANCA" "CÂMARA MUN. DE ÁGUA BRANCA" "CÂMARA MUN. DE ÁGUA BRANCA" "CÂMARA MUN. DE ÁGUA BRANCA" ...
+##  $ de_Funcao       : chr  "Legislativa" "Legislativa" "Legislativa" "Legislativa" ...
+##  $ de_Subfuncao    : chr  "Ação Legislativa" "Ação Legislativa" "Ação Legislativa" "Ação Legislativa" ...
+##  $ de_Programa     : chr  "LEGISLATIVO DESENVOLVIDO" "LEGISLATIVO DESENVOLVIDO" "LEGISLATIVO DESENVOLVIDO" "LEGISLATIVO DESENVOLVIDO" ...
+##  $ de_Acao         : chr  "MANUT. DAS ATIVIDADES DO LEGIS  LATIVO - OUTRAS DESPESAS" "MANUT. DAS ATIVIDADES DO LEGIS  LATIVO - OUTRAS DESPESAS" "MANUT. DAS ATIV. DO LEGISLATIV  O - PESSOAL E ENCARGOS" "MANUT. DAS ATIV. DO LEGISLATIV  O - PESSOAL E ENCARGOS" ...
+##  $ de_CatEconomica : chr  "Despesa Corrente" "Despesa Corrente" "Despesa Corrente" "Despesa Corrente" ...
+##  $ de_NatDespesa   : chr  "Outras Despesas Correntes" "Outras Despesas Correntes" "Pessoal e Encargos Sociais" "Pessoal e Encargos Sociais" ...
+##  $ de_Modalidade   : chr  "Aplicações Diretas" "Aplicações Diretas" "Aplicações Diretas" "Aplicações Diretas" ...
+##  $ cd_elemento     : int  39 39 11 11 11 36 39 39 39 39 ...
+##  $ de_Elemento     : chr  "Outros Serviços de Terceiros - Pessoa Jurídica" "Outros Serviços de Terceiros - Pessoa Jurídica" "Vencimentos e Vantagens Fixas - Pessoal Civil" "Vencimentos e Vantagens Fixas - Pessoal Civil" ...
+##  $ cd_subelemento  : int  42 58 99 99 99 20 61 91 53 49 ...
+##  $ de_subelemento  : chr  "LOCAÇÃO DE SOFTWARES" "SERVIÇOS DE PUBLICIDADE E PROPAGANDA" "SEM SUBELEMENTO" "SEM SUBELEMENTO" ...
+##  $ de_tipolicitacao: chr  "Dispensa por Valor" "Dispensa por Valor" "Dispensa por Valor" "Dispensa por Valor" ...
+##  $ nu_Licitacao    : chr  "0" "0" "0" "0" ...
+##  $ nu_Empenho      : chr  "19" "27" "35" "43" ...
+##  $ dt_empenho      : chr  "16/01/2012" "20/01/2012" "23/01/2012" "23/01/2012" ...
+##  $ vl_Empenho      : num  500 200 622 19800 4976 ...
+##  $ cd_credor       : chr  "9164369000104" "2674135000168" "2316556000117" "2316556000117" ...
+##  $ no_Credor       : chr  "ELMAR PROCESSAMENTO DE DADOS LTDA" "RADIO COMUNITARIA DE AGUA BRANCA" "BANCO DO BRASIL" "BANCO DO BRASIL" ...
+##  $ nu_Obra         : chr  "0" "0" "0" "0" ...
+##  $ tp_FonteRecursos: chr  "NULL" "NULL" "NULL" "NULL" ...
+##  $ de_TipoRecursos : chr  "NULL" "NULL" "NULL" "NULL" ...
+##  - attr(*, ".internal.selfref")=<externalptr>
+As variáveis numéricas parecem ter sido reconhecidas sem problemas. Logo, podemos constatar que apenas passando o nome do arquivo, a função fread()conseguiu importar o arquivo sem dificuldades. No entando, se você sabe qual é o separador do arquivo, informe-o!
+
+Assim como outras funções, a fread() também permite importar dados de uma URL ou de um arquivo compactado.
+
+Outro argumento interessante da função é que podemos informar qual (ou quais) colunas desejamos importar ou qual (ou quais) desejamos descartar. Como exemplo, importe novamente o arquivo “sagres_municipal_2012_2016.txt”, desta feita, selecione apenas as seguintes variáveis para a importação:
+
+cd_ugestora;
+de_ugestora;
+dt_Ano;
+nu_Empenho;
+dt_empenho;
+vl_Empenho.
+Feito isso, confira se houve a importação apenas das seis variáveis selecionadas.
+
+É importante lembrar que a função fread()irá retornar, por padrão, um objeto do tipo data table. Caso queira como retorno um data frame, basta alterar o argumento data.table para FALSE. Há outros argumentos de grande importância para a tarefa de importação de dados disponíveis na função. Seguem alguns:
+
+Principais argumentos da função fread().
+Argumento	Breve descrição
+header	Define se a primeira linha é um cabeçalho
+nrows	Define a quantidade de linhas a ser lida
+na.strings	Define quais valores serão considerados como `NA
+dec	Define o separador de decimais
+encoding	Define a codificação do arquivo (“UTF-8” e “Latin-1” são opções)
+col.names	Define o nome das colunas (vetor de caracteres)
+skip	Define as linhas que devem ser ignoradas na leitura
+15 MANIPULAÇÃO DE DADOS
+Nesta seção, passaremos a utilizar funções dos pacotes dplyr e tidyr, integrantes do núcleo do pacote tidyverse. Ambos os pacotes são bastante conhecidos pelos usuários do R e possuem diversas funções importantes para a manipulação de data frames e tibbles. Conheceremos e utilizaremos os cinco verbos mais famosos do pacote dplyr, quais sejam:
+
+filter();
+summarise();
+select();
+mutate ();
+arrange().
+Em relação ao pacote tidyr, utilizaremos funções para alterar o formato dos dados, separar e combinar colunas e manipular valores ausentes.
+
+15.1 Manipulação de dados com os pacotes dplyr e tidyr
+15.1.1 Filtrando observações
+A primeira função que utilizaremos é a função filter() do pacote dplyr. Como já podemos deduzir, a função serve para filtrar observações. Antes de apresentar exemplos da função, vamos carregar o pacote tidyverse.
+
+library(tidyverse)
+Para nossos primeiros exemplos, vamos utilizar o data frame df1, criado anteriormente. O objeto foi criado com os seguintes dados:
+
+df1 <- data.frame(
+  nome = c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Gustavo"),
+  altura = c(1.80, 1.77, 1.71, 1.65, 1.66, 1.63),
+  idade = c(22, 21, 18, 20, 23, 19),
+  sexo = c("masculino", "masculino", "feminino", "masculino", "feminino", "masculino"),
+  peso = c(78.3, 82.1, 66.5, 88.1, 58, 75.4),
+  fumante = c(TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+  uf = c("PB", "AL", "PE", "PE", "SP", "CE"),
+  renda = c(2, 5, 10, 20, 10, NA)
+)
+É verdade que já realizamos filtros utilizando a função subset(), mas utilizar a função filter() é igualmente simples, sem contar que podemos utilizá-la conjuntamente com outras funções do pacote dplyr, como veremos mais a diante.
+
+Vamos realizar nosso primeiro filtro no objeto df1, de forma a selecionar apenas aquelas observações com variável peso acima de 70.
+
+filter(df1, peso > 70)
+nome
+<fctr>
+altura
+<dbl>
+idade
+<dbl>
+sexo
+<fctr>
+peso
+<dbl>
+fumante
+<lgl>
+uf
+<fctr>
+renda
+<dbl>
+João	1.80	22	masculino	78.3	TRUE	PB	2
+Pedro	1.77	21	masculino	82.1	FALSE	AL	5
+Fábio	1.65	20	masculino	88.1	FALSE	PE	20
+Gustavo	1.63	19	masculino	75.4	FALSE	CE	NA
+4 rows
+Para realizar um filtro com mais de um critério, a sintaxe é igualmente simples. Vamos filtrar as observações com peso maior do que 70 e com idade menor do que 20.
+
+filter(df1, idade < 20 & peso > 70)
+nome
+<fctr>
+altura
+<dbl>
+idade
+<dbl>
+sexo
+<fctr>
+peso
+<dbl>
+fumante
+<lgl>
+uf
+<fctr>
+renda
+<dbl>
+Gustavo	1.63	19	masculino	75.4	FALSE	CE	NA
+1 row
+NOTA: Podemos encontrar a função filter() também no pacote stats (Base R). Por isso, temos que nos certificar que estamos carregando o pacote dplyr ou utilizar a sintaxe dplyr::filter() para termos a certeza que estamos usando a função correta.
+
+Como exercício, filtre as observações do df1, utilizando a função filter(), que sejam fumantes e do sexo feminino.
+
+Filtrando observações
+Filtrando observações
+
+15.1.2 Selecionando variáveis
+Para a extração de variáveis (colunas) de nossos dados , utilizamos a função select(), também do pacote dplyr.
+
+Vamos aplicar exemplos utilizando as 200 primeiras observações do arquivo “us_dados_acidentes.txt”, visto anteriormente. Segue o código para importação dos dados.
+
+us_acidentes <- read_delim("us_dados_acidentes.txt", delim = "&", n_max = 200,
+                            col_types = cols(
+                                        frontal = col_factor(c(1, 0)),
+                                        sex = col_factor(c("f", "m"))
+                            )
+)
+Vamos selecionar as variáveis dead, airbag, frontal e ageOFocc. A forma é a seguinte:
+
+select(us_acidentes, dead, airbag, frontal, ageOFocc)
+## # A tibble: 200 x 4
+##    dead  airbag frontal ageOFocc
+##    <chr> <chr>  <fct>      <int>
+##  1 alive none   1             26
+##  2 alive airbag 1             72
+##  3 alive none   1             69
+##  4 alive airbag 1             53
+##  5 alive none   1             32
+##  6 alive none   1             22
+##  7 alive none   1             22
+##  8 dead  none   1             32
+##  9 alive none   0             40
+## 10 alive none   1             18
+## # ... with 190 more rows
+Como podemos ver, todas as observações das quatro variáveis que informamos foram corretamente selecionadas.
+
+No entanto, podemos também estabelecer critérios de acordo com as características dos nomes das variáveis. Por exemplo, vamos selecionar todas as variáveis do objeto us_acidentes que contenham year em seu nome. Para isso, utilizaremos a função contains() como critério de seleção.
+
+select(us_acidentes, contains("year"))
+## # A tibble: 200 x 2
+##    yearacc yearVeh
+##      <int>   <int>
+##  1    1997    1990
+##  2    1997    1995
+##  3    1997    1988
+##  4    1997    1995
+##  5    1997    1988
+##  6    1997    1985
+##  7    1997    1984
+##  8    1997    1987
+##  9    1997    1984
+## 10    1997    1987
+## # ... with 190 more rows
+Da mesma forma, podemos selecionar todas as variáveis que terminem com “t” utilizando a função ends_with(). Segue exemplo.
+
+select(us_acidentes, ends_with("t"))
+## # A tibble: 200 x 4
+##    dvcat weight seatbelt abcat  
+##    <chr>  <dbl> <chr>    <chr>  
+##  1 25-39   25.1 belted   unavail
+##  2 10-24   25.1 belted   deploy 
+##  3 10-24   32.4 none     unavail
+##  4 25-39  495   belted   deploy 
+##  5 25-39   25.1 belted   unavail
+##  6 40-54   25.1 belted   unavail
+##  7 55+     27.1 belted   unavail
+##  8 55+     27.1 none     unavail
+##  9 10-24  813   belted   unavail
+## 10 10-24  813   belted   unavail
+## # ... with 190 more rows
+Podemos facilmente passar uma sequência para informar um intervalo de variáveis, por exemplo. Vamos selecionar as variáveis da coluna 3 até a coluna 7. Basta fazermos o seguinte:
+
+select(us_acidentes, c(3:7, 11))
+## # A tibble: 200 x 6
+##    dead  airbag seatbelt frontal sex   abcat  
+##    <chr> <chr>  <chr>    <fct>   <fct> <chr>  
+##  1 alive none   belted   1       f     unavail
+##  2 alive airbag belted   1       f     deploy 
+##  3 alive none   none     1       f     unavail
+##  4 alive airbag belted   1       f     deploy 
+##  5 alive none   belted   1       f     unavail
+##  6 alive none   belted   1       f     unavail
+##  7 alive none   belted   1       m     unavail
+##  8 dead  none   none     1       m     unavail
+##  9 alive none   belted   0       m     unavail
+## 10 alive none   belted   1       f     unavail
+## # ... with 190 more rows
+Como exercício, use a função select() para selecionar as colunas de 4 a 8 e a coluna 12, do objeto us_acidentes.
+
+Para mais possibilidades de utilização da função select() leia a ajuda da mesma.
+
+15.1.3 Modificando dados
+Muitas vezes queremos adicionar uma nova variável, que pode ser uma operação envolvendo outras variáveis já existentes. Para realizar essa tarefa, utilizamos a função mutate(). Vamos criar uma nova variável de nome dif que será a diferenca entre yearacc e yearVeh.
+
+mutate(us_acidentes, dif = (yearacc - yearVeh))
+## # A tibble: 200 x 16
+##    dvcat weight dead  airbag seatbelt frontal sex   ageOFocc yearacc
+##    <chr>  <dbl> <chr> <chr>  <chr>    <fct>   <fct>    <int>   <int>
+##  1 25-39   25.1 alive none   belted   1       f           26    1997
+##  2 10-24   25.1 alive airbag belted   1       f           72    1997
+##  3 10-24   32.4 alive none   none     1       f           69    1997
+##  4 25-39  495   alive airbag belted   1       f           53    1997
+##  5 25-39   25.1 alive none   belted   1       f           32    1997
+##  6 40-54   25.1 alive none   belted   1       f           22    1997
+##  7 55+     27.1 alive none   belted   1       m           22    1997
+##  8 55+     27.1 dead  none   none     1       m           32    1997
+##  9 10-24  813   alive none   belted   0       m           40    1997
+## 10 10-24  813   alive none   belted   1       f           18    1997
+## # ... with 190 more rows, and 7 more variables: yearVeh <int>,
+## #   abcat <chr>, occRole <chr>, deploy <int>, injSeverity <int>,
+## #   caseid <chr>, dif <int>
+Podemos ver que agora temos 16 variáveis, uma vez que a variável dif ocupa a décima sexta coluna do nosso conjunto de dados.
+
+Podemos aplicar também uma função a todas variáveis de um determinado tipo. Como exemplo, vamos aplicar a raiz quadrada em todas as variáveis do tipo integer do nosso objeto.
+
+mutate_if(us_acidentes, is.integer, funs(sqrt(.)))
+## # A tibble: 200 x 15
+##    dvcat weight dead  airbag seatbelt frontal sex   ageOFocc yearacc
+##    <chr>  <dbl> <chr> <chr>  <chr>    <fct>   <fct>    <dbl>   <dbl>
+##  1 25-39   25.1 alive none   belted   1       f         5.10    44.7
+##  2 10-24   25.1 alive airbag belted   1       f         8.49    44.7
+##  3 10-24   32.4 alive none   none     1       f         8.31    44.7
+##  4 25-39  495   alive airbag belted   1       f         7.28    44.7
+##  5 25-39   25.1 alive none   belted   1       f         5.66    44.7
+##  6 40-54   25.1 alive none   belted   1       f         4.69    44.7
+##  7 55+     27.1 alive none   belted   1       m         4.69    44.7
+##  8 55+     27.1 dead  none   none     1       m         5.66    44.7
+##  9 10-24  813   alive none   belted   0       m         6.32    44.7
+## 10 10-24  813   alive none   belted   1       f         4.24    44.7
+## # ... with 190 more rows, and 6 more variables: yearVeh <dbl>,
+## #   abcat <chr>, occRole <chr>, deploy <dbl>, injSeverity <dbl>,
+## #   caseid <chr>
+Há uma série de outras funções variantes do verbo mutate(), como: mutate_all() e mutate_at(). Utilize a documentação do pacote para mais detalhes e mais possibilidades de transformação.
+
+15.1.4 Renomeando variáveis
+Podemos facilmente renomear as variáveis utilizando a função rename(), também do pacote dplyr. Vamos renomear as variáveis do objeto us_acidentes da seguinte forma:
+
+sex passará a ser sexo;
+weight passará a ser peso;
+seatbelt passará a ser cinto.
+Basta fazer:
+
+rename(us_acidentes,
+       sexo = sex,
+       peso = weight,
+       cinto = seatbelt
+       )
+dvcat
+<chr>
+peso
+<dbl>
+dead
+<chr>
+airbag
+<chr>
+cinto
+<chr>
+frontal
+<fctr>
+sexo
+<fctr>
+ageOFocc
+<int>
+25-39	25.069	alive	none	belted	1	f	26	
+10-24	25.069	alive	airbag	belted	1	f	72	
+10-24	32.379	alive	none	none	1	f	69	
+25-39	495.444	alive	airbag	belted	1	f	53	
+25-39	25.069	alive	none	belted	1	f	32	
+40-54	25.069	alive	none	belted	1	f	22	
+55+	27.078	alive	none	belted	1	m	22	
+55+	27.078	dead	none	none	1	m	32	
+10-24	812.869	alive	none	belted	0	m	40	
+10-24	812.869	alive	none	belted	1	f	18	
+...
+1-10 of 200 rows | 1-8 of 15 columns
+Veja que as variáveis foram corretamente modificadas.
+
+15.1.5 Operações utilizando pipes (%>%)
+Antes de passarmos para as demais funções utilizadas para a manipulação de dados, é de essencial importância conhecermos o operador pipe %>%. O pipe é uma ferramenta poderosa para realização de múltiplas operações em sequência. Originalmente, operações com pipes necessitam do carregamento do pacote magrittr. No entanto, os pacotes integrantes da família tidyverse já carregam automaticamente o operador (%>%).
+
+Para entendimento de como funciona o pipe, vamos fazer um exemplo em que iremos filtrar observações do objeto df1 que tenham peso maior do que 70 e selecionar as variáveis nome e peso. Para realizar essa tarefa em um só comando, fazemos:
+
+select(filter(df1, peso > 70), nome, peso)
+##      nome peso
+## 1    João 78.3
+## 2   Pedro 82.1
+## 3   Fábio 88.1
+## 4 Gustavo 75.4
+Veja que a função select() está sendo aplicada ao resultado da função filter(df1, peso > 70).
+
+Para o caso acima, não é tão complicado entendermos o resultado. Porém, imagine que tenhamos que fazer diversas operações, como agrupar, filtrar, sumarizar e selecionar. Além do código ficar bastante confuso, perdemos em produtividade. Com pipes, todo esse processo fica mais fácil. Vamos refazer a operação anterior de filtragem e seleção.
+
+df1 %>% 
+  filter(peso > 70) %>% 
+  select(nome, peso)
+##      nome peso
+## 1    João 78.3
+## 2   Pedro 82.1
+## 3   Fábio 88.1
+## 4 Gustavo 75.4
+Veja que o código ficou bem mais limpo e de fácil compreensão. Primeiro digitamos o objeto que queremos aplicar a função filter(), depois aplicamos select() ao resultado da filtragem. As quebras de linhas são apenas para organizar o código. Podemos também fazer:
+
+df1 %>% filter(peso > 70) %>%  select(nome, peso)
+##      nome peso
+## 1    João 78.3
+## 2   Pedro 82.1
+## 3   Fábio 88.1
+## 4 Gustavo 75.4
+O resultado é o igual!
+
+Agora vamos adicionar um terceiro passo ao nosso código, que é alterar o nome da variável peso para kg. Basta fazer:
+
+df1 %>% 
+  filter(peso > 70) %>% 
+  select(nome, peso) %>% 
+  rename(kg = peso)
+##      nome   kg
+## 1    João 78.3
+## 2   Pedro 82.1
+## 3   Fábio 88.1
+## 4 Gustavo 75.4
+Observe que digitamos o nome do objeto uma única vez!
+
+Para usuários do Windows, basta digitar Ctrl+Shift+M para inserção do operador %>% no código. Para usuários do Mac OS, basta digitar Cmd+Shift+M.
+
+Como exercício, utilize o objeto us_acidentes (visto no item anterior) e faça as seguintes operações, na ordem descrita, utilizando pipes:
+
+filtre as observações com a variável ageOFocc maior do que 30 e com a variável frontal igual a 1;
+selecione as variáveis dvcat, weight, dead, airbag, ageOFocc, yearacc e yearVeh;
+crie uma nova coluna chamada dif que corresponde à diferença entre yearacc e yearVeh;
+renomeie as variáveis dvcat para impact e ageOFocc para age.
+O resultado deve ser o seguinte:
+
+impact
+<chr>
+weight
+<dbl>
+dead
+<chr>
+airbag
+<chr>
+age
+<int>
+yearacc
+<int>
+yearVeh
+<int>
+dif
+<int>
+10-24	25.069	alive	airbag	72	1997	1995	2
+10-24	32.379	alive	none	69	1997	1988	9
+25-39	495.444	alive	airbag	53	1997	1995	2
+25-39	25.069	alive	none	32	1997	1988	9
+55+	27.078	dead	none	32	1997	1987	10
+10-24	923.996	alive	airbag	67	1997	1991	6
+25-39	29.081	alive	none	71	1997	1990	7
+25-39	29.081	alive	none	63	1997	1990	7
+10-24	244.390	alive	none	41	1997	1990	7
+25-39	30.148	alive	none	32	1997	1993	4
+...
+1-10 of 71 rows
+15.1.6 Resumindo e agrupando dados
+Uma vez que conhecemos o funcionamento do operador pipe ( %>% ), vamos utilizá-lo de agora em diante. Nosso próximo passo é conhecer as funções group_by() e summarise().
+
+Vamos utilizar a função group_by() em nosso data frame df1, já visto nos exercícios anteriores.
+
+df1 %>%  
+  group_by(sexo)
+## # A tibble: 6 x 8
+## # Groups:   sexo [2]
+##   nome     altura idade sexo       peso fumante uf    renda
+##   <fct>     <dbl> <dbl> <fct>     <dbl> <lgl>   <fct> <dbl>
+## 1 João       1.80  22.0 masculino  78.3 T       PB     2.00
+## 2 Pedro      1.77  21.0 masculino  82.1 F       AL     5.00
+## 3 Amanda     1.71  18.0 feminino   66.5 F       PE    10.0 
+## 4 Fábio      1.65  20.0 masculino  88.1 F       PE    20.0 
+## 5 Fernanda   1.66  23.0 feminino   58.0 T       SP    10.0 
+## 6 Gustavo    1.63  19.0 masculino  75.4 F       CE    NA
+Perceba que a ordem em que os dados aparecem não é alterada, no entanto, podemos ver que há a informação Groups: sexo [2] na exibição do nosso objeto, indicando a presença de dois grupos na variável sexo. Podemos ver como a atuação da função quando usamos conjuntamente com outras funções do pacote dplyr, como a função summarise().
+
+A função summarise() trabalha com outras funções com o intuito de resumir dados, ou seja, ela recebe um vetor como entrada e retorna um valor singular. Vamos fazer um exemplo em que desejamos saber a média de idade das pessoas presentes no data frame df1. No entanto, não queremos apenas essa informação, desejamos a média de peso dos sexos masculino e feminino.
+
+df1 %>% 
+  group_by(sexo) %>% 
+  summarise(media = mean(peso))
+## # A tibble: 2 x 2
+##   sexo      media
+##   <fct>     <dbl>
+## 1 feminino   62.2
+## 2 masculino  81.0
+Veja que ao utilizar a função summarise() após agruparmos por sexo, a média será calculada para cada um dos sexos existentes. Facilmente podemos concluir que a média de peso do sexo masculino é de 80.975Kg, já a do sexo feminino é de 62.250Kg.
+
+Vamos agora adicionar um novo dado ao resultado, que é o desvio padrão das alturas e atribuirmos a uma variável de nome dp_altura. Vamos tambel criar uma variável total que irá indicar o número de observações em cada um dos sexos. Fazemos:
+
+df1 %>% 
+  group_by(sexo) %>% 
+  summarise(media = mean(peso), dp_altura = sd(altura), total = n())
+## # A tibble: 2 x 4
+##   sexo      media dp_altura total
+##   <fct>     <dbl>     <dbl> <int>
+## 1 feminino   62.2    0.0354     2
+## 2 masculino  81.0    0.0850     4
+Veja que com poucos comandos temos 3 informações agrupadas por sexo, quais sejam: média do peso, desvio padrão das alturas e total de observações.
+
+Ao resumir dados, temos que, mais uma vez, ter cuidado com os valores ausentes (NA), uma vez que se aplicarmos a função de resumo, sem o tratamento correto, podemos obter NA como resultado. Continuemos o exemplo anterior, só que adicionando uma coluna a mais para informar a média da renda (m_renda) de cada um dos sexos. Temos:
+
+df1 %>% 
+  group_by(sexo) %>% 
+  summarise(media = mean(peso), dp_altura = sd(altura), total = n(), m_renda = mean(renda))
+## # A tibble: 2 x 5
+##   sexo      media dp_altura total m_renda
+##   <fct>     <dbl>     <dbl> <int>   <dbl>
+## 1 feminino   62.2    0.0354     2    10.0
+## 2 masculino  81.0    0.0850     4    NA
+Veja que temos NA no campo da média das observações do sexo masculino. Para obtermos a média excluindo os valores ausentes, basta definir o argumento na.rm = TRUE na função mean(). Veja solução:
+
+df1 %>% 
+  group_by(sexo) %>% 
+  summarise(media = mean(peso), 
+            dp_altura = sd(altura), 
+            total = n(), 
+            m_renda = mean(renda, na.rm = TRUE)
+            )
+## # A tibble: 2 x 5
+##   sexo      media dp_altura total m_renda
+##   <fct>     <dbl>     <dbl> <int>   <dbl>
+## 1 feminino   62.2    0.0354     2   10.0 
+## 2 masculino  81.0    0.0850     4    9.00
+15.1.7 Ordenando dados
+Para ordenar dados de acordo com determinados critérios, podemos usar a função arrange() do pacote dplyr. Vamos ordenar nosso objeto df1 em ordem decrescente pela variável idade.
+
+df1 %>% 
+  arrange(desc(idade))
+##       nome altura idade      sexo peso fumante uf renda
+## 1 Fernanda   1.66    23  feminino 58.0    TRUE SP    10
+## 2     João   1.80    22 masculino 78.3    TRUE PB     2
+## 3    Pedro   1.77    21 masculino 82.1   FALSE AL     5
+## 4    Fábio   1.65    20 masculino 88.1   FALSE PE    20
+## 5  Gustavo   1.63    19 masculino 75.4   FALSE CE    NA
+## 6   Amanda   1.71    18  feminino 66.5   FALSE PE    10
+Vamos agora agrupar por sexo e depois ordenarmos por idade.
+
+df1 %>% 
+  group_by(sexo) %>% 
+  arrange(desc(idade), .by_group = TRUE)
+## # A tibble: 6 x 8
+## # Groups:   sexo [2]
+##   nome     altura idade sexo       peso fumante uf    renda
+##   <fct>     <dbl> <dbl> <fct>     <dbl> <lgl>   <fct> <dbl>
+## 1 Fernanda   1.66  23.0 feminino   58.0 T       SP    10.0 
+## 2 Amanda     1.71  18.0 feminino   66.5 F       PE    10.0 
+## 3 João       1.80  22.0 masculino  78.3 T       PB     2.00
+## 4 Pedro      1.77  21.0 masculino  82.1 F       AL     5.00
+## 5 Fábio      1.65  20.0 masculino  88.1 F       PE    20.0 
+## 6 Gustavo    1.63  19.0 masculino  75.4 F       CE    NA
+Veja que primeiro temos as duas observações do sexo feminino ordenadas por idade, para só então surgirem as do sexo masculino, também ordenadas por idade. Para que isso ocorra, devemos definir o argumento .by_group = TRUE.
+
+15.1.8 Combinando variáveis
+Para nossos exemplos de combinações de variáveis, iremos criar alguns objetos. O primeiro objeto que iremos criar é um data frame de nome df3 com dados complementares ao nosso data frame df1, visto em exemplos anteriores. Vamos criá-lo com os seguintes dados:
+
+df3 <- data.frame(
+  nome = c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Gustavo"),
+  filhos = c(1, 0, 1, 0, 1, 0),
+  tipo_sang = c("A+", "O+", "B-", "O+", "AB", "B+"),
+  cid_natal = c("Cajazeiras", "Arapiraca", "Caruaru", "Recife", "São Paulo", "Fortaleza")
+)
+A primeira função que iremos usar é a bind_cols(). Essa função faz a união de data frames com a mesma quantidade de linhas. Recomendamos extrema cautela ao utilizar essa função, pois você deve ter certeza que os dados estão ordenados corretamente. Vejamos na prática!
+
+bind_cols(df1,df3)
+##       nome altura idade      sexo peso fumante uf renda    nome1 filhos
+## 1     João   1.80    22 masculino 78.3    TRUE PB     2     João      1
+## 2    Pedro   1.77    21 masculino 82.1   FALSE AL     5    Pedro      0
+## 3   Amanda   1.71    18  feminino 66.5   FALSE PE    10   Amanda      1
+## 4    Fábio   1.65    20 masculino 88.1   FALSE PE    20    Fábio      0
+## 5 Fernanda   1.66    23  feminino 58.0    TRUE SP    10 Fernanda      1
+## 6  Gustavo   1.63    19 masculino 75.4   FALSE CE    NA  Gustavo      0
+##   tipo_sang  cid_natal
+## 1        A+ Cajazeiras
+## 2        O+  Arapiraca
+## 3        B-    Caruaru
+## 4        O+     Recife
+## 5        AB  São Paulo
+## 6        B+  Fortaleza
+Veja que a união só ocorreu de forma correta porque as observações do objeto df3 se referem às observações do objeto df1. Caso o objeto df3 estivesse ordenado de forma diferente, poderiamos ter dados de Pedro unido com dados de Amanda, por exemplo. Esse tipo de união é comum quando não temos uma chave para usar, mas temos a certeza que as observações correspondem perfeitamente. Observe que a variável nome do df3 teve seu nome alterado para nome1 na união. Isso ocorreu automaticamente para evitar duplicidade de variáveis no nosso objeto resultado. A seguir, vamos ver como trabalhar melhor com casos como esse.
+
+15.1.9 União à esquerda (left join)
+Vimos no exemplo anterior que para usar a função bind_cols() devemos ter a mesma quantidade de linhas em ambos os objetos. Na união à esquerda isso não se faz necessário. Isso porque só serão unidos, ao objeto à esquerda, observações que possuem a mesma chave no objeto à esquerda e à direita.
+
+left_join(df1, df3)
+##       nome altura idade      sexo peso fumante uf renda filhos tipo_sang
+## 1     João   1.80    22 masculino 78.3    TRUE PB     2      1        A+
+## 2    Pedro   1.77    21 masculino 82.1   FALSE AL     5      0        O+
+## 3   Amanda   1.71    18  feminino 66.5   FALSE PE    10      1        B-
+## 4    Fábio   1.65    20 masculino 88.1   FALSE PE    20      0        O+
+## 5 Fernanda   1.66    23  feminino 58.0    TRUE SP    10      1        AB
+## 6  Gustavo   1.63    19 masculino 75.4   FALSE CE    NA      0        B+
+##    cid_natal
+## 1 Cajazeiras
+## 2  Arapiraca
+## 3    Caruaru
+## 4     Recife
+## 5  São Paulo
+## 6  Fortaleza
+Veja que, ao fazer a união com a função, left_join() temos apenas uma variável nome no data frame resultado! Isso porque ao não informar nenhuma chave, a função faz a união utilizando todas as variáveis em comum nos dois objetos. No caso, temos apenas a variável nome em comum, ou seja, apenas uma chave.
+
+Normalmente, uma boa chave é um código único para cada observação, como CPF, matrícula, CNPJ e etc. Por isso temos que ter bastante cuidado ao utilizá-las.
+
+Vamos agora para um próximo exemplo, para deixar mais claro como funciona a função left_join(). Suponha que agora temos um data frame df4 e que não tenha dados sobre o aluno “João” e sim sobre um outro aluno de nome “Teodoro”. Vamos visualizar nossos dados.
+
+df4 <- data.frame(
+  nome = c("Teodoro", "Pedro", "Amanda", "Fábio", "Fernanda", "Gustavo"),
+  filhos = c(0, 0, 1, 0, 1, 0),
+  tipo_sang = c("0+", "O+", "B-", "O+", "AB", "B+"),
+  cid_natal = c("Natal", "Arapiraca", "Caruaru", "Recife", "São Paulo", "Fortaleza")
+)
+df4
+##       nome filhos tipo_sang cid_natal
+## 1  Teodoro      0        0+     Natal
+## 2    Pedro      0        O+ Arapiraca
+## 3   Amanda      1        B-   Caruaru
+## 4    Fábio      0        O+    Recife
+## 5 Fernanda      1        AB São Paulo
+## 6  Gustavo      0        B+ Fortaleza
+Veja que os demais alunos estão em ambos os data frames. Agora, vamos proceder uma união à esquerda e verificar o que ocorre!
+
+left_join(df1, df4)
+##       nome altura idade      sexo peso fumante uf renda filhos tipo_sang
+## 1     João   1.80    22 masculino 78.3    TRUE PB     2     NA      <NA>
+## 2    Pedro   1.77    21 masculino 82.1   FALSE AL     5      0        O+
+## 3   Amanda   1.71    18  feminino 66.5   FALSE PE    10      1        B-
+## 4    Fábio   1.65    20 masculino 88.1   FALSE PE    20      0        O+
+## 5 Fernanda   1.66    23  feminino 58.0    TRUE SP    10      1        AB
+## 6  Gustavo   1.63    19 masculino 75.4   FALSE CE    NA      0        B+
+##   cid_natal
+## 1      <NA>
+## 2 Arapiraca
+## 3   Caruaru
+## 4    Recife
+## 5 São Paulo
+## 6 Fortaleza
+Veja que os dados referentes ao aluno “Teodoro” sumiram do resultado. Isso por que o mesmo não possui correspondência no df1 (objeto à esquerda da função). Já os dados de “João”, que não possui correspondentes no objeto df4, foram automaticamente preenchidos com NA. Esse é o motivo da operação se chamar união à esquerda.
+
+15.1.10 União à direita (right join)
+A união à direita segue lógica similar. Uniremos ao objeto da direita observações que contenham correspondência no objeto da esquerda. Neste ponto, vamos mostrar uma funcionalidade importante das funções de união. Nem sempre temos variáveis com o mesmo nome no objeto que desejamos unir, o que acaba por atrapalhar o trabalho da função, caso isso não seja informado. As uniões realizadas anteriormente ocorreram sem problemas devido a presença da variável nome em ambos objetos.
+
+Digamos que a variável (coluna) nome do data frame df4, mostrado anteriormente, agora seja aluno.
+
+df4
+##      aluno filhos tipo_sang cid_natal
+## 1  Teodoro      0        0+     Natal
+## 2    Pedro      0        O+ Arapiraca
+## 3   Amanda      1        B-   Caruaru
+## 4    Fábio      0        O+    Recife
+## 5 Fernanda      1        AB São Paulo
+## 6  Gustavo      0        B+ Fortaleza
+Vamos tentar realizar a união à direita apenas passando os nomes dos data frames a serem unidos.
+
+right_join(df1, df4)
+Não conseguimos, uma vez que a função não consegue encontrar variáveis em comum. Para resolver esse problema, basta informar à função que a variável nome do df1 e a variável aluno, do df4, é a nossa chave.
+
+right_join(df1, df4, by = c("nome" = "aluno"))
+##       nome altura idade      sexo peso fumante   uf renda filhos tipo_sang
+## 1  Teodoro     NA    NA      <NA>   NA      NA <NA>    NA      0        0+
+## 2    Pedro   1.77    21 masculino 82.1   FALSE   AL     5      0        O+
+## 3   Amanda   1.71    18  feminino 66.5   FALSE   PE    10      1        B-
+## 4    Fábio   1.65    20 masculino 88.1   FALSE   PE    20      0        O+
+## 5 Fernanda   1.66    23  feminino 58.0    TRUE   SP    10      1        AB
+## 6  Gustavo   1.63    19 masculino 75.4   FALSE   CE    NA      0        B+
+##   cid_natal
+## 1     Natal
+## 2 Arapiraca
+## 3   Caruaru
+## 4    Recife
+## 5 São Paulo
+## 6 Fortaleza
+Com o argumento correto, a junção foi realizada corretamente! Porém, observe que, com a função right_join(), a observação do objeto df1 que não encontrou correspondencia em df4 foi descartada, ou seja, a do aluno de nome “João”. Já o aluno “Teodoro” permaneceu no resultado.
+
+15.1.11 União interna (inner join)
+Para a união interna, vamos utilizar a função inner_join(). Essa união irá oferecer como resultado apenas observações que existirem em ambos objetos. Logo, se aplicarmos a função com os data frames df1 e df4, as observações dos alunos “João” e “Teodoro” serão descartadas.
+
+inner_join(df1, df4, by = c("nome" = "aluno"))
+##       nome altura idade      sexo peso fumante uf renda filhos tipo_sang
+## 1    Pedro   1.77    21 masculino 82.1   FALSE AL     5      0        O+
+## 2   Amanda   1.71    18  feminino 66.5   FALSE PE    10      1        B-
+## 3    Fábio   1.65    20 masculino 88.1   FALSE PE    20      0        O+
+## 4 Fernanda   1.66    23  feminino 58.0    TRUE SP    10      1        AB
+## 5  Gustavo   1.63    19 masculino 75.4   FALSE CE    NA      0        B+
+##   cid_natal
+## 1 Arapiraca
+## 2   Caruaru
+## 3    Recife
+## 4 São Paulo
+## 5 Fortaleza
+Veja que obtivemos cinco observações como resultado. A função inner_join() é importante para construirmos um conjunto de dados completo em todas as suas variáveis.
+
+15.1.12 União total (full join)
+A união total é realizada através da função full_join()
+
+full_join(df1, df4, by = c("nome" = "aluno"))
+##       nome altura idade      sexo peso fumante   uf renda filhos tipo_sang
+## 1     João   1.80    22 masculino 78.3    TRUE   PB     2     NA      <NA>
+## 2    Pedro   1.77    21 masculino 82.1   FALSE   AL     5      0        O+
+## 3   Amanda   1.71    18  feminino 66.5   FALSE   PE    10      1        B-
+## 4    Fábio   1.65    20 masculino 88.1   FALSE   PE    20      0        O+
+## 5 Fernanda   1.66    23  feminino 58.0    TRUE   SP    10      1        AB
+## 6  Gustavo   1.63    19 masculino 75.4   FALSE   CE    NA      0        B+
+## 7  Teodoro     NA    NA      <NA>   NA      NA <NA>    NA      0        0+
+##   cid_natal
+## 1      <NA>
+## 2 Arapiraca
+## 3   Caruaru
+## 4    Recife
+## 5 São Paulo
+## 6 Fortaleza
+## 7     Natal
+15.1.13 Diferenças de dados (semi join e anti join)
+Duas funções de bastante importância para uma análise prévia antes de proceder as uniões são semi_join() e anti_join(). Essas funções também são conhecidas por realizarem filtering join, ou seja, elas filtram um determinado objeto com base em sua correspondência com outro objeto.
+
+Vamos iniciar nossos exemplos aplicando a função semi_join() entre os data frames df1 e df4.
+
+semi_join(df1, df4, by = c("nome" = "aluno"))
+##       nome altura idade      sexo peso fumante uf renda
+## 1    Pedro   1.77    21 masculino 82.1   FALSE AL     5
+## 2   Amanda   1.71    18  feminino 66.5   FALSE PE    10
+## 3    Fábio   1.65    20 masculino 88.1   FALSE PE    20
+## 4 Fernanda   1.66    23  feminino 58.0    TRUE SP    10
+## 5  Gustavo   1.63    19 masculino 75.4   FALSE CE    NA
+Observe que não foi realizada nenhuma união, mas o retorno das observações presentes no objeto df1 que possuem correspondência no objeto df4.
+
+Seguindo a lógica, a função anti_join() retornará as observações do objeto df1 que não possuem correspondência no objeto df4.
+
+anti_join(df1, df4, by = c("nome" = "aluno"))
+##   nome altura idade      sexo peso fumante uf renda
+## 1 João    1.8    22 masculino 78.3    TRUE PB     2
+Como já sabíamos, apenas a observação do aluno “João” não tinha correspondência. Se quisermos testar qual ou quais observações do df4 não possuem correspondência no objeto df1, basta invertermos a ordem dos argumentos da função. Temos:
+
+anti_join(df4, df1, by = c("aluno" = "nome"))
+##     aluno filhos tipo_sang cid_natal
+## 1 Teodoro      0        0+     Natal
+15.1.14 Combinando observações com as funções union, intersect, setdiff e bind_rows
+Nessa seção, iremos conhecer o funcionamento de funções igualmente importantes para a manipulação de dados. São elas:
+
+union()
+setdiff()
+intersect()
+bind_rows()
+Operação das funções setdiff, intersect e union
+Operação das funções setdiff, intersect e union
+
+Diferentemente das funções vistas anteriormente, essas funções são úteis para operar data frames com variáveis idênticas. Vamos criar novos dados com as mesmas variáveis do nosso objeto df1, porém com uma observação diferente. Esses dados serão armazenados no objeto de nome df5.
+
+df5 <- data.frame(
+  nome = c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Raquel"),
+  altura = c(1.80, 1.77, 1.71, 1.65, 1.66, 1.77),
+  idade = c(22, 21, 18, 20, 23, 24),
+  sexo = c("masculino", "masculino", "feminino", "masculino", "feminino", "feminino"),
+  peso = c(78.3, 82.1, 66.5, 88.1, 58, 66.2),
+  fumante = c(TRUE, FALSE, FALSE, FALSE, TRUE, FALSE),
+  uf = c("PB", "AL", "PE", "PE", "SP", "BA"),
+  renda = c(2, 5, 10, 20, 10, 8)
+)
+Uma vez com os dados, vamos utilizar a função setdiff() para verificar quais observações estão no df5 e que não estão no df1.
+
+setdiff(df5, df1)
+##     nome altura idade     sexo peso fumante uf renda
+## 1 Raquel   1.77    24 feminino 66.2   FALSE BA     8
+Vemos que o resultado está correto. Apenas a informação da aluna “Raquel” não está no data frame df1.
+
+Se quisermos fazer o contrário, basta invertermos a ordem dos argumentos da função.
+
+setdiff(df1, df5)
+##      nome altura idade      sexo peso fumante uf renda
+## 1 Gustavo   1.63    19 masculino 75.4   FALSE CE    NA
+Dando seguimento, vamos fazer um exempo da função intersect() utilizando os mesmos dados.
+
+intersect(df1, df5)
+##       nome altura idade      sexo peso fumante uf renda
+## 1     João   1.80    22 masculino 78.3    TRUE PB     2
+## 2    Pedro   1.77    21 masculino 82.1   FALSE AL     5
+## 3   Amanda   1.71    18  feminino 66.5   FALSE PE    10
+## 4    Fábio   1.65    20 masculino 88.1   FALSE PE    20
+## 5 Fernanda   1.66    23  feminino 58.0    TRUE SP    10
+Como o próprio nome sugere, a função retorna apenas as observações presentes em ambos data frames, ou seja, a interseção!
+
+A função union() faz a união das observações existentes em ambos os objetos, removendo dados duplicados.
+
+union(df1, df5)
+##       nome altura idade      sexo peso fumante uf renda
+## 1   Raquel   1.77    24  feminino 66.2   FALSE BA     8
+## 2  Gustavo   1.63    19 masculino 75.4   FALSE CE    NA
+## 3 Fernanda   1.66    23  feminino 58.0    TRUE SP    10
+## 4    Fábio   1.65    20 masculino 88.1   FALSE PE    20
+## 5   Amanda   1.71    18  feminino 66.5   FALSE PE    10
+## 6    Pedro   1.77    21 masculino 82.1   FALSE AL     5
+## 7     João   1.80    22 masculino 78.3    TRUE PB     2
+Veja que ao total temos 7 observações, 5 em comum e 2 pertencentes a objetos distintos.
+
+Para finalizar, veremos um exemplo com a função bind_rows(). Para isso, vamos criar dois data frames de nomes df6 e df7, como segue:
+
+df6 <- data.frame(
+  nome = c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Raquel"),
+  idade = c(22, 21, 18, 20, 23, 24),
+  sexo = c("masculino", "masculino", "feminino", "masculino", "feminino", "feminino"),
+  fisica1 = c(7.8, 6.7, 5.5, 9.4, 8.1, 4),
+  calculo1 = c(8, 5.9, 6.4, 7.5, 7, 5),
+  algebra = c(6.9, 7.2, 6, 6.8, 6.5, 3),
+  estatistica = c(8, 8, 7, 9.5, 7, 8)
+)
+df7 <- data.frame(
+  nome = c("Hugo", "Francisco", "Vanessa", "Jaime", "Roberta", "Tereza"),
+  idade = c(20, 20, 19, 24, 21, 18),
+  sexo = c("masculino", "masculino", "feminino", "masculino", "feminino", "feminino"),
+  fisica1 = c(7, 7, 5.8, 6, 8.6, 6),
+  calculo1 = c(9.5, 6.9, 6.7, 7.5, 8, 3),
+  algebra = c(8.9, 4.2, 6, 7.8, 6.1, NA),
+  estatistica = c(8.5, 8, 7.5, 10, 7, 7)
+)
+Suponha que os dados sejam referentes a duas turmas de um curso de engenharia. Os dados do df6 se referem aos alunos da turma “A” e os dados do df7 se referem aos alunos da turma “B”. Você deseja unir os dados de ambas as turmas. Basta fazer o seguinte:
+
+bind_rows(df6, df7)
+##         nome idade      sexo fisica1 calculo1 algebra estatistica
+## 1       João    22 masculino     7.8      8.0     6.9         8.0
+## 2      Pedro    21 masculino     6.7      5.9     7.2         8.0
+## 3     Amanda    18  feminino     5.5      6.4     6.0         7.0
+## 4      Fábio    20 masculino     9.4      7.5     6.8         9.5
+## 5   Fernanda    23  feminino     8.1      7.0     6.5         7.0
+## 6     Raquel    24  feminino     4.0      5.0     3.0         8.0
+## 7       Hugo    20 masculino     7.0      9.5     8.9         8.5
+## 8  Francisco    20 masculino     7.0      6.9     4.2         8.0
+## 9    Vanessa    19  feminino     5.8      6.7     6.0         7.5
+## 10     Jaime    24 masculino     6.0      7.5     7.8        10.0
+## 11   Roberta    21  feminino     8.6      8.0     6.1         7.0
+## 12    Tereza    18  feminino     6.0      3.0      NA         7.0
+Ocorre que, ao unir os dados sem um identificador, você não terá mais como distinguir a qual turma pertence determinado aluno. Uma forma de resolver isso é criar uma lista com os objetos que deseja unir, nomear cada um dos elementos da lista e após unir com a função bind_rows(), desta vez definindo também o argumento .id. Veja o exemplo.
+
+lista_df <- list(df6, df7)
+
+names(lista_df) <- c("A", "B")
+bind_rows(lista_df, .id = "turma")
+##    turma      nome idade      sexo fisica1 calculo1 algebra estatistica
+## 1      A      João    22 masculino     7.8      8.0     6.9         8.0
+## 2      A     Pedro    21 masculino     6.7      5.9     7.2         8.0
+## 3      A    Amanda    18  feminino     5.5      6.4     6.0         7.0
+## 4      A     Fábio    20 masculino     9.4      7.5     6.8         9.5
+## 5      A  Fernanda    23  feminino     8.1      7.0     6.5         7.0
+## 6      A    Raquel    24  feminino     4.0      5.0     3.0         8.0
+## 7      B      Hugo    20 masculino     7.0      9.5     8.9         8.5
+## 8      B Francisco    20 masculino     7.0      6.9     4.2         8.0
+## 9      B   Vanessa    19  feminino     5.8      6.7     6.0         7.5
+## 10     B     Jaime    24 masculino     6.0      7.5     7.8        10.0
+## 11     B   Roberta    21  feminino     8.6      8.0     6.1         7.0
+## 12     B    Tereza    18  feminino     6.0      3.0      NA         7.0
+Após a união, vemos que agora existe uma nova variável chamada turma, informando a respectiva turma de cada um dos alunos.
+
+15.1.15 Manipulando valores ausentes
+Para manipulação de valores ausentes, usaremos funções do pacote tidyr (também integrante do pacote tidyverse). Temos diversas funções do pacote básico do R que lidam muito bem com valores ausentes. Podemos citar:
+
+na.omit()
+na.exclude()
+na.pass()
+No entanto, vamos continuar aprendendo funções do pacote tidyr, uma vez que utilizaremos outras funções do mesmo pacote nos tópicos seguintes.
+
+Como exemplo, veja que no nosso data frame df7 temos um valor ausente (NA) na sexta observação.
+
+df7
+##        nome idade      sexo fisica1 calculo1 algebra estatistica
+## 1      Hugo    20 masculino     7.0      9.5     8.9         8.5
+## 2 Francisco    20 masculino     7.0      6.9     4.2         8.0
+## 3   Vanessa    19  feminino     5.8      6.7     6.0         7.5
+## 4     Jaime    24 masculino     6.0      7.5     7.8        10.0
+## 5   Roberta    21  feminino     8.6      8.0     6.1         7.0
+## 6    Tereza    18  feminino     6.0      3.0      NA         7.0
+Para retornar o mesmo objeto sem qualquer valor ausente, basta utilizarmos a função drop_na(). Segue exemplo:
+
+drop_na(df7)
+##        nome idade      sexo fisica1 calculo1 algebra estatistica
+## 1      Hugo    20 masculino     7.0      9.5     8.9         8.5
+## 2 Francisco    20 masculino     7.0      6.9     4.2         8.0
+## 3   Vanessa    19  feminino     5.8      6.7     6.0         7.5
+## 4     Jaime    24 masculino     6.0      7.5     7.8        10.0
+## 5   Roberta    21  feminino     8.6      8.0     6.1         7.0
+Veja que a observação referente à aluna Tereza foi devidamente removida. Dessa forma, a função retorna apenas observações que não possuam nenhum valor ausente.
+
+Ocorre que, em muitos casos, queremos a exclusão de observações que não possuam NA em apenas algumas variáveis. Para isso, vamos selecionar as variáveis que desejamos realizar o teste. Vamos selecionar apenas as variáveis idade, fisica1 e estatistica.
+
+drop_na(df7, idade, fisica1, estatistica)
+##        nome idade      sexo fisica1 calculo1 algebra estatistica
+## 1      Hugo    20 masculino     7.0      9.5     8.9         8.5
+## 2 Francisco    20 masculino     7.0      6.9     4.2         8.0
+## 3   Vanessa    19  feminino     5.8      6.7     6.0         7.5
+## 4     Jaime    24 masculino     6.0      7.5     7.8        10.0
+## 5   Roberta    21  feminino     8.6      8.0     6.1         7.0
+## 6    Tereza    18  feminino     6.0      3.0      NA         7.0
+Veja que, determinando quais as variáveis checar, todas as observações foram retornadas. Isso ocorreu porque nas variáveis idade, fisica1 e estatistica não temos valores ausentes.
+
+Outra função de igual importância para manipulação de valores ausentes é a função replace_na(). Tal função permite a substituição de valores ausentes por um outro valor, seja esse numérico ou texto, por exemplo. Suponha que você deseja atribuir nota zero na disciplina de algebra para a aluna Tereza, basta informar a variável e o valor a ser atribuído no lugar do valor ausente.
+
+replace_na(df7, list(algebra = 0))
+##        nome idade      sexo fisica1 calculo1 algebra estatistica
+## 1      Hugo    20 masculino     7.0      9.5     8.9         8.5
+## 2 Francisco    20 masculino     7.0      6.9     4.2         8.0
+## 3   Vanessa    19  feminino     5.8      6.7     6.0         7.5
+## 4     Jaime    24 masculino     6.0      7.5     7.8        10.0
+## 5   Roberta    21  feminino     8.6      8.0     6.1         7.0
+## 6    Tereza    18  feminino     6.0      3.0     0.0         7.0
+Veja que o valor ausente da disciplina algebra, da aluna Tereza, foi substituído por 0.0. Casou houvesse outras observações nessa variável com NA, as mesmas seriam substituídas também por 0.0.
+
+Como exercício, substitua todos os valores ausentes do objeto airquality (objeto prá-carregado do R) por 0.0.
+
+15.1.16 Separando e combinando colunas
+Para separação de colunas, vamos criar um novo conjunto de dados chamado df8.
+
+df8 <-  data.frame(nome = c("Hugo", "Francisco", "Vanessa", "Jaime", "Roberta", "Tereza"),
+                   protocolo = c("345/2017", "654/2017", "365/2017", "777/2017", "633/2017", "221/2017"),
+                   matricula = c(20151809, 20142654, 20151054, 20142876, 20141439, 20142771)
+                  )
+df8               
+##        nome protocolo matricula
+## 1      Hugo  345/2017  20151809
+## 2 Francisco  654/2017  20142654
+## 3   Vanessa  365/2017  20151054
+## 4     Jaime  777/2017  20142876
+## 5   Roberta  633/2017  20141439
+## 6    Tereza  221/2017  20142771
+Esse data frame possui dados hipotétivos de nomes de alunos, processos protocolados, e matrículas de uma universidade. Veja que o número do protocolo é formado por um número de ordem seguido de uma barra (“/”) e de quatro dígitos finais que indicam o ano de protocolo. Suponha que você deseja dividir essas informações em duas variáveis. A primeira referente a identificação de ordem do processo e a segunda referente ao ano do protocolo. Para fazer isso, usamos a função separate(), do pacote tidyr. Informamos o separador através do argumento sep = e o nome das novas variáveis através do argumento into =.
+
+separate(df8, protocolo, sep = "/", into = c("id", "ano"))
+##        nome  id  ano matricula
+## 1      Hugo 345 2017  20151809
+## 2 Francisco 654 2017  20142654
+## 3   Vanessa 365 2017  20151054
+## 4     Jaime 777 2017  20142876
+## 5   Roberta 633 2017  20141439
+## 6    Tereza 221 2017  20142771
+Veja que, após o uso da função, a variável protocolo desaparece e as novas duas variáveis são criadas com as respectivas informações.
+
+NOTA: Veja como mudar o comportamento da função consultando a ajuda da mesma
+
+Vamos repetir o mesmo processo anterior, só que dessa vez com dados numéricos. Em muitos casos, a posição ou intervalo dos números traz uma determinada informação que desejamos utilizar, seja para filtrar, plotar gráficos, agrupar dados e etc. No nosso data frame exemplo, os quatro primeiros dígitos se referem ao ano que o aluno ingressou na universidade, o quinto dígito se refere ao período de ingresso e os demais dígitos são referentes à ordem de matrícula. Sabendo disso, podemos dividir a variável matrícula em três outras, quais sejam: ano do ingresso, período e ordem de matrícula. Nesse caso, ao invés de definir um separador específico, informamos as posições de término das variáveis. No caso da última coluna, a mesma foi formada com os dígitos restantes. Segue exemplo:
+
+separate(df8, matricula, sep = c(4, 5), 
+         into = c("ano_ingresso", "periodo", "ordem")
+         )
+##        nome protocolo ano_ingresso periodo ordem
+## 1      Hugo  345/2017         2015       1   809
+## 2 Francisco  654/2017         2014       2   654
+## 3   Vanessa  365/2017         2015       1   054
+## 4     Jaime  777/2017         2014       2   876
+## 5   Roberta  633/2017         2014       1   439
+## 6    Tereza  221/2017         2014       2   771
+Veja que as novas variáveis foram corretamente criadas!
+
+15.1.17 Alterando layout dos dados
+Antes de falarmos sobre as alterações no formato dos dados, vamos inicialmente conhecer qual o formato de dados ideal para trabalharmos no R. Existe um formato de dados consistente para trabalharmos com a maioria dos pacotes do R, conhecido como tidy data. Esse formato de dados nos permite fazer análises corretas, plotar, filtrar, sumarizar e realizar, sem maiores preocupações, todas as análises vistas até então.
+
+“Os conjuntos de dados Tidy são todos iguais, mas cada conjunto de dados bagunçado é bagunçado a sua maneira.” Hadley Wickham (Wickham and Grolemund 2016)
+
+As três características para que um conjunto de dados seja tidy data são:
+
+Cada variável deve estar em sua própria coluna;
+Cada observação deve possuir sua própria linha;
+Cada valor deve ter sua própria célula.
+Tidy data - Adaptado de (Wickham and Grolemund 2016)
+Tidy data - Adaptado de (Wickham and Grolemund 2016)
+
+Vamos aos exemplos!
+
+Para os nossos próximos exemplos, criaremos um data frame com o coeficiente de rendimento escolar de alguns alunos durante três períodos. Veja que a nota de cada um dos períodos está em uma coluna específica.
+
+df9 <- data.frame(aluno =  c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Raquel"),
+                  P1 = c(7.6, 6.1, 7.4, 8.8, 7.3, 6.8),
+                  P2 = c(7.9, 6.9, 8, 8.5, 7.7, 7.3),
+                  P3 = c(8.3, 7.4, 8.2, 7.5, 8.3, 7.6)
+)
+
+df9
+##      aluno  P1  P2  P3
+## 1     João 7.6 7.9 8.3
+## 2    Pedro 6.1 6.9 7.4
+## 3   Amanda 7.4 8.0 8.2
+## 4    Fábio 8.8 8.5 7.5
+## 5 Fernanda 7.3 7.7 8.3
+## 6   Raquel 6.8 7.3 7.6
+No entanto, observando bem, os períodos P1, P2, e P3 devem ser observações da variável período. Para reorganizarmos os dados para a forma tidy data, vamos utilizar a função gather() da seguinte forma.
+
+gather(df9, key = "periodo",  value = "cre", -aluno)
+##       aluno periodo cre
+## 1      João      P1 7.6
+## 2     Pedro      P1 6.1
+## 3    Amanda      P1 7.4
+## 4     Fábio      P1 8.8
+## 5  Fernanda      P1 7.3
+## 6    Raquel      P1 6.8
+## 7      João      P2 7.9
+## 8     Pedro      P2 6.9
+## 9    Amanda      P2 8.0
+## 10    Fábio      P2 8.5
+## 11 Fernanda      P2 7.7
+## 12   Raquel      P2 7.3
+## 13     João      P3 8.3
+## 14    Pedro      P3 7.4
+## 15   Amanda      P3 8.2
+## 16    Fábio      P3 7.5
+## 17 Fernanda      P3 8.3
+## 18   Raquel      P3 7.6
+Observe que devemos informar três argumentos. A primeiro deles é o key (chave), que será o nome da variável que irá receber as variáveis das colunas desejadas. O segundo é o value, que será o nome da variável que irá conter os valores referentes à cada observação da variável chave. E o terceiro corresponde a seleção das colunas que desejamos transformar em observações que, nesse caso, serão: P1, P2, P3. Por questão de praticidade, no exemplo anterior usamos -aluno , ou seja, todas as variáveis do df9 exceto aluno. Também poderíamos fazer:
+
+gather(df9, key = "periodo",  value = "cre", P1, P2, P3)
+Teste o código acima e veja que o resultado será o mesmo!
+
+A próxima função que veremos, muito utilizada para alterar o layout dos dados, é a spread(), também do pacote tidyr. Para nosso exemplo, vamos criar um data frame df10.
+
+df10 <- data.frame(aluno =  c("João", "João", "Pedro", "Pedro", "Amanda", "Amanda"),
+                 variavel = c("idade", "renda", "idade", "renda", "idade", "renda"),
+                  valor = c(22, 2, 21, 5, 18, 10)
+)
+df10
+##    aluno variavel valor
+## 1   João    idade    22
+## 2   João    renda     2
+## 3  Pedro    idade    21
+## 4  Pedro    renda     5
+## 5 Amanda    idade    18
+## 6 Amanda    renda    10
+Veja que temos nitidamente duas variáveis em uma mesma coluna: idade e renda. Como vimos, para termos dados organizados, cada variável deve possuir sua própria coluna. Usando a função spread(), podemos corrigir isso facilmente.
+
+spread(df10, variavel, valor)
+##    aluno idade renda
+## 1 Amanda    18    10
+## 2   João    22     2
+## 3  Pedro    21     5
+Podemos encarar a função spread() como uma função inversa da gather().
+
+Como exercício, recrie o objeto df9 da forma original, aplique a função gather() e sobrescreva df9. Feito isso, use a função spread() para obter os dados em sua forma original.
+
+16 EXPORTANDO DADOS
+Nessa seção, iremos aprender a exportar e salvar dados. Recorrentemente você precisará trabalhar os resultados obtidos com o R em outros softwares como MS Excel, MS Word, Power Point ou mesmo guardar para uso em outro momento. Os formatos que iremos aprender a exportar dados do R são os mais usuais e atendem perfeitamente aos objetivos do curso.
+
+16.1 Exportando dados em CSV
+Assim como vimos na importação de arquivos CSV, para executar a exportação de dados em CSV nós temos algumas funções básicas do R para realizar tal procedimento, como: write.csv(), write.csv2(), write.table(). No entanto, usaremos as funções integrantes do pacote readr, já conhecido em tópicos anteriores e integrante da família Tidyverse.
+
+Para nossos exemplos precisaremos carregar os pacotes readr e DAAG1, este último contém vários conjuntos de dados que vamos utilizar como exemplo.
+
+Vamos começar carregando os pacotes necessários.
+
+library(readr)
+library(DAAG)
+O primeiro conjunto de dados que vamos exportar possui o nome carprice. Trata-se de um data frame com 48 linhas e 9 colunas contendo dados sobre preços de veículos americanos. Para exportarmos em CSV, usando vírgula como separador, vamos utilizar a função write_csv(). O nome do arquivo será exportado_01.csv. Fazemos:
+
+write_csv(carprice, "exportado_01.csv", na = "NA")
+Verifique no seu diretório de trabalho se o arquivo foi exportado corretamente. Observe que para esse caso, usamos o argumento na = "NA" , ou seja, onde houver valor ausente será inserido NA. No entanto, poderíamos deixar vazio o campo usando na = "".
+
+Outro ponto que merece destaque é que podemos informar um outro diretório (que não o de trabalho) para escrita do arquivo. Isso facilita bastante quando queremos escrever determinados resultados separados em pastas.
+
+Dando continuidade, vamos utilizar a função write_delim() para gravar um arquivo CSV, dessa vez separado por ; ao invés de vírgula. A separação de arquivos CSV com ponto e vírgula é muito utilizada em países que possuem a vírgula como separador de decimal. Nesse exemplo, vamos usar - para os valores ausentes (NA).
+
+write_delim(carprice, "exportado_02.csv", delim = ";", na = "-")
+Veja que com a função do exemplo anterior, podemos definir qualquer separador. Caso haja um dado em texto que possua ; em seu conteúdo, a função automaticamente irá iserir aspas ao redor do conteúdo.
+
+Para conhecer mais sobre os argumentos das funções write_csv() e write_delim() , leia o arquivo de ajuda.
+
+16.2 Exportando dados em TXT e TSV
+Exportar dados em arquivo texto (TXT) ou em TSV é igualmente simples aos exemplos vistos anteriormente. Para exportar dados em arquivo texto, vamos usar a função write_delim(). No exemplo seguinte, usaremos também um dado resente no pacote DAAG de nome biomass. Porém, usaremos “|” como delimitador e, onde houver NA, o arquivo tratá a sigla “ND”.
+
+write_delim(biomass, "exportado_03.txt", delim = "|", na = "ND")
+Para o arquivo TSV, basta usar a função write_tsv() da seguinte forma:
+
+write_tsv(biomass, "exportado_04.tsv", na = "ND")
+Obviamente, o delimitador do arquivo TSV é a tabulação.
+
+16.3 Exportando dados em XLS e XLSX
+Para proceder a exportação de dados em formato XLS ou XLSX, utilizaremos o pacote WriteXLS(). Instale-o e faça o carregamento do mesmo.
+
+install.packages("WriteXLS")
+library(WriteXLS)
+Usaremos a mesma função para arquivos XLS e XLSX. A única diferença entre a geração dos dois tipos de arquivo é a extensão (.xls ou .xlsx). O interessante dessa função é que podemos gravar diferentes objetos em uma mesma pasta do Excel, criando diferentes planilhas para cada conjunto de dados. Vamos exportar em XLSX os objetos monica e carprice, ambos do pacote DAAG. O nome do arquivo será “exportado_05.xlsx”.
+
+WriteXLS(c("monica", "carprice"), "exportado_05.xlsx", 
+         SheetNames = c("Monica", "Car Price"))
+Verifique se o arquivo foi criado corretamente.
+
+16.4 Exportando grande volume de dados
+Assim como usamos a função fread() do pacote data.table para proceder a importação de arquivos grandes, vamos utilizar a função correspondente para a escrita de dados, também do pacote data.table() e de nome fwrite().
+
+A função fwrite() é absurdamente rápida na escrita de dados. Segundo a própria documentação do pacote, a função fwrite() consegue executar em apenas 2 segundos o que a função write.csv() (do pacote básico do R) faz em 1 minuto. Além disso, a fwrite() é bastante flexível, podendo exportar em TXT ou CSV, como podemos ver através dos seus argumentos.
+
+library(data.table)
+fwrite(x, file = "", append = FALSE, quote = "auto",
+  sep = ",", sep2 = c("","|",""),
+  eol = if (.Platform$OS.type=="windows") "\r\n" else "\n",
+  na = "", dec = ".", row.names = FALSE, col.names = TRUE,
+  qmethod = c("double","escape"),
+  logicalAsInt = FALSE, dateTimeAs = c("ISO","squash","epoch","write.csv"),
+  buffMB = 8L, nThread = getDTthreads(),
+  showProgress = getOption("datatable.showProgress"),
+  verbose = getOption("datatable.verbose"))
+Como exercício, exporte alguns dos objetos usados nos exemplos anteriores com a função fwrite().
+
+16.5 Salvando objetos do R (Rds e RData)
+Nessa seção, vamos conhecer os formatos de arquivo nativos do R: .Rds e .Rdata. Esses formatos são bastante usados para salvar objetos do R de forma eficiente, uma vez que possuem foco em velocidade e compressão. Para nossos exemplos, utilizaremos o objeto nassCDS, integrante do pacote DAAG. Trata-se de um data frame com 26.217 observações e 15 variáveis.
+
+Vamos salvar nosso objeto no formato .RData utilizando a função save() (Pacote básico do R) e definir o nome do arquivo como exportado_06.RData. Basta fazer:
+
+save(nassCDS, file = "exportado_06.RData")
+Ao verificar o arquivo exportado, podemos verificar que o mesmo ocupa apenas 326KB. Apenas para termos uma ideia do poder de compressão, o mesmo arquivo exportado em CSV ocupa 2,3MB, ou seja, mais de sete vezes o tamanho do arquivo RData!
+
+Arquivo exportado no formato RData
+Arquivo exportado no formato RData
+
+Para carregar o arquivo salvo em RData, usamos a função load(). Ao utilizar essa função, o R irá carregar o objeto no ambiente global com o mesmo nome que possuía quando foi salvo. Logo, se ao exportar o objeto possuía nome x1, ao ser importado ele terá o mesmo nome. Se não for utilizado corretamente, poderá haver a substituição de objeto já existente no ambiente global.
+
+NOTA: O segundo argumento da função save() não é o nome do arquivo. Portanto, não esqueça de usar file =.
+
+Com a função save(), podemos salvar diversos objetos ao mesmo tempo em um único arquivo .RData.
+
+Execute o código a seguir e depois use a função load para carregar os objetos salvos.
+
+k1 <- 30
+k2 <- 32
+
+save(k1, k2, file = "teste.RData")
+rm(k1, k2) #Remove as variáveis antes do carregamento
+load("teste.RData")
+Uma das vantagens de salvarmos um objeto em Rds é exatamente a possibilidade de alteração do nome do objeto no carregamento. Para salvar um objeto em .Rds, usamos a função saveRDS(). Como exemplo, vamos criar um objeto k3 e salvá-lo em .Rds. Após isso, vamos removê-lo do nosso ambiente.
+
+k3 <- 1:100
+
+saveRDS(k3, file = "objeto_k3.Rds" )
+rm(k3)
+Para leitura de arquivos .Rds, usamos a função readRDS(). Veja que, para termos nosso objeto no ambiente global, devemos obrigatoriamente atribuí-lo a uma variável. Ao invés de k3, nosso objeto agora se chamará w3.
+
+w3 <- readRDS("objeto_k3.Rds")
+Com isso, concluimos que, se você está salvando dados que podem ser utilizados por outras pessoas, salve seus arquivos preferencialmente em formato .Rds. Isso evitará possíveis conflitos com nomes de objetos já criados.
+
+A leitura de arquivos, tanto em .RData como em .Rds, é extremamente rápida, o que torna tais formatos bastante populares entre usuários do R.
+
+NOTA: Se você deseja salvar todo o seu ambiente de trabalho em .RData, utilize a função save.image(). Leia a ajuda da mesma para aprender o funcionamento.
+
+17 GRÁFICOS BÁSICOS
+Os pacotes gráficos do R são bastante poderosos, como o lattice, ggvis e ggplot2 (apenas para citar alguns dos mais conhecidos). Há uma infinidade de pacotes no CRAN que podemos usar para plotar gráficos mais complexos. Seguem alguns exemplos.
+
+
+
+No entanto, visando o objetivo do nosso curso, iremos trabalhar apenas com os gráficos básicos do R, ou seja, aqueles gerados com funções carregadas por default.
+
+17.1 Gráfico de dispersão
+O primeiro gráfico que iremos aprender a plotar no R é o gráfico de dispersão. Esses gráficos geralmente possuem bastante utilidade quando queremos visualizar a relação entre duas variáveis. Através de um gráfico de dispersão podemos verificar rapidamente se há suspeitas de forte correlação entre as variáveis testadas. Para nossos exemplos, continuaremos a utilizar dados do pacote DAAG.
+
+Para nosso primeiro gráfico, utilizaremos dados do objeto ais. Esses dados são referentes a características de atletas australianos e possuem variáveis sobre o sangue, peso, massa corporal e etc. No nosso exemplo, definiremos alguns argumentos como título do gráfico, título do eixo x, título do eixo y, cor, forma e tamanho dos pontos.
+
+Vamos plotar a variável wt (peso em Kg) contra a variável ht (altura em cm) do nosso objeto ais.
+
+plot(ais$wt, ais$ht, main = "Peso x Altura",
+     xlab = "Peso (Kg)", ylab = "Altura (cm)", col = "red", pch = 16,
+     cex = 1.1)
+
+
+Descrição de alguns argumentos gráficos
+Descrição	Argumento
+Título do gráfico	main =
+Título do eixo x	xlab =
+Título do eixo y	ylab =
+Altera a cor dos pontos	col =
+Altera o tipo de ponto do gráfico	pch =
+Altera o tamanho do ponto e textos do gráfico	cex =
+Podemos alterar os símbolos dos pontos através do argumento pch. Cada código corresponde a um determinado símbolo, que são utilizados muitas vezes para diferenciar categorias de variáveis.
+
+Códigos dos pontos usados em gráficos
+Códigos dos pontos usados em gráficos
+
+Vamos agora, utilizando os mesmos dados, incrementar um pouco mais o nosso gráfico. Vamos fazer com que os pontos sejam diferentes de acordo com o sexo do atleta. Adicionalmente, vamos inserir uma legenda no gráfico com a função legend(); duas linhas com a função abline() e um grid com a função grid(). Leia o código e verifique o que cada função executou!
+
+sexo_graf <- factor(ais$sex, levels = c("f", "m"), labels = c("feminino", "masculino"))
+
+plot(ais$wt, ais$ht, pch = as.integer(sexo_graf), main = "Peso x Altura",
+               xlab = "Peso (Kg)", ylab = "Altura (cm)", col = sexo_graf
+     )
+legend(105, 165, legend =  as.character(levels(sexo_graf)), 
+       pch = 1:length(levels(sexo_graf)),
+       col = c("black", "red")
+       )
+abline(h = 200, v = 100, lty = 2)
+grid()
+
+
+Como exercício plote um gráfico de dispersão entre a variável wt e pcBfat, ambas do objeto ais. O gráfico deve ter as seguintes características:
+
+O título deve ser: Peso x Percentual de Gordura;
+O título do eixo x deve ser: Peso;
+O título do eixo y deve ser: Percentual de Gordura;
+A cor dos pontos deve ser darkgreen;
+O símbolo dos pontos deve ter o código igual a 4 (pch = 4);
+O gráfico deve possuir um grid;
+O gráfico deve possuir uma linha pontilhada (lty = 2) horizontal correspondente ao valor 32 do eixo y.
+O resultado final deve ser o seguinte:
+
+
+
+17.2 Gráfico de barras
+Passamos agora para o gráfico em barras, bastante utilizados com variáveis categóricas. Para construirmos um gráfico em barras vamos utilizar a função barplot().
+
+Continuaremos a utilizar os dados do objeto ais em nossos exemplos. A variável sport do objeto possui informações sobre as modalidades esportivas de cada um dos atletas. Vamos construir um gráfico de barras para apresentar o número de atletas em cada um dos esportes. Para isso, vamos manipular os nossos dados para que possamos obter a quantidade de atletas em cada esporte (usaremos o pacote dplyr) e guardaremos o resultado em um objeto chamado esportes.
+
+Após isso, plotaremos o nosso gráfico informando a variável quantidade do nosso objeto esportes, uma vez que a função barplot necessita de um vetor ou uma matriz informando as alturas (quantidades) de cada um dos esportes. Informaremos argumentos adicionais na função, os quais serão comentados a seguir.
+
+esportes <- ais %>% 
+              group_by(sport) %>% 
+              summarise(qnt = n())
+
+barplot(esportes$qnt, main = "Esportes dos atletas",
+        xlab = "Esportes", ylab = "Quantidade", ylim = c(0,40), 
+        names.arg = esportes$sport, cex.names = 0.7, col = "lightblue")
+
+
+Descrição de alguns argumentos gráficos utilizados
+Descrição	Argumento
+Título do gráfico	main =
+Título do eixo x	xlab =
+Título do eixo y	ylab =
+Altera a cor das barras	col =
+Altera o tamanho dos nomes das barras	cex.names =
+Altera os nomes das barras	names.arg =
+Define o intervalo do eixo y	ylim =
+Como exercício, tente plotar novamente o gráfico adicionando os seguintes argumentos: las = 2, density = 25, angle = 45, col = #556B2F.
+
+NOTA: Você pode alterar as cores dos gráficos através dos códigos Hex de cada cor. A cor vermelha possui código Hex #FF0000, por exemplo. Há uma infinidade de sites com os códigos de cada uma das cores na internet.
+
+17.3 Histograma
+Para construirmos histogramas no R o procedimento é igualmente simples aos gráficos que vimos até aqui. Assim como nos outros tipos de gráficos, adicionaremos alguns argumentos para deixar nosso gráfico mais elegante. Vamos criar nosso gráfico com a variável pcBfat do objeto ais (pacote DAAG). A função que iremos utilizar é a hist() do pacote básico graphics.
+
+hist(ais$pcBfat, main = "Histograma do percentual de gordura dos atletas",
+     xlab = "Percentual de gordura", ylab = "Frequência", breaks = seq(5, 40, 2.5),
+     density = 30, angle = 45, col = "gray", labels = TRUE, ylim = c(0,50))
+
+
+Um argumento bastante importante da função hist() é o breaks =. Com ele podemos definir o tamanho de cada intervalo do histograma. No exemplo acima, usamos uma sequência de 5 a 40 com intervalos de 2.5 (breaks = seq(5, 40, 2.5)). Você pode experimentar outros intervalos para ver como o gráfico se comporta. Para o preenchimento das barras, foram utilizados os argumentos density = 30, angle = 45, col = "gray", isso fez com que o preencimentos fossem feitos com linhas cinzas, em ângulos de 45 graus, e com densidade igual a 30. Caso você aumente a densidade, as linhas ficarão mais próximas.
+
+Como exercício, crie um histograma da variável lmb (massa corporal magra), também do objeto ais. Plote o histograma sem argumentos além dos dados hist(ais$lbm) e depois faça os ajustes para melhoria da aparência.
+
+17.4 Gráficos de linhas
+Os gráficos de linhas são muito utilizados para séries temporais como, por exemplo, o preço de uma ação em um determinado período de tempo. Para construir nosso gráfico de linhas, usaremos o data frame de nome SP500W90, integrante do pacote DAAG. Não é demais lembrar que, para acessar o objeto, você deve carregar o pacote citado.
+
+Para construção do gráfico de linhas, vamos informar os valores do eixo x, que serão os dias e os valores do eixo y, que será o valor do índice do respectivo dia. O argumento type = "l" informa que desejamos um gráfico de linhas. Vamos plotar nosso gráfico e fazer alguns comentários sobre os argumentos e funções que utilizamos.
+
+plot(SP500W90$day, SP500W90$closing, type = "l", 
+     main = "Índice S&P 500 - 100 dias de 1990",
+     xlab = "Dias", ylab = "Valor", col = "red", lwd = 1.5, axes = FALSE)
+abline(h = 345, lty = 2)
+axis(1, seq(0, 150, 5))
+axis(2, seq(320, 360, 5))
+
+
+Vários dos argumentos utilizados no gráfico acima já foram vistos nos gráficos anteriores. Nesse exemplo, optamos por não plotar os eixos com a função plot(). Para isso, usamos o argumento axes = FALSE. Uma vez sem os eixos, usamos a função axis() duas vezes, a primeira para inserir o eixo x e a segunda para inserir o eixo y. Essas modificações, que podem também ser realizadas em outros tipos de gráficos, são importantes quando queremos detalhar mais as nossas escalas.
+
+Como exercício, tente alterar os parâmetros do gráfico ou aplicar em outro conjunto de dados.
+
+17.5 Boxplot
+Os boxplots2 são gráficos de grande importância para nos dar uma ideia de posição, dispersão, assimetria, causas e valores atípicos (outliers). Usaremos a função boxplot() para construir o nosso gráfico.
+
+Em relação aos dados, voltaremos a utilizar os do objeto ais (pacote DAAG). Iremos construir um boxplot da variável wt (peso) para cada um dos esportes.
+
+boxplot(wt ~ sport, data = ais, main = "Boxplot dos pesos dos atletas",
+        xlab = "Esportes", ylab = "Peso", las = 2, col = "gray85", cex.axis = 0.8)
+
+
+Os pontos presentes nos boxplots dos esportes Netball, Row e T_Sprnt são os valores atípicos.
+
+Nesse ponto é importante destacar que a função boxplot() pode receber uma fórmula, como o caso acima (wt ~ sport) ou os dados que desejamos ver a distribuição. Quando trabalhamos com uma fórmula no argumento, necessariamente devemos definir o argumento data =, uma vez que este apontará para o objeto que contém as variáveis da fórmula.
+
+Poderíamos plotar um boxplot com apenas uma variável. Veja o exemplo usando a variável pcBfat do data frame ais.
+
+boxplot(ais$pcBfat, main = "Boxplot do percentual de gordura",
+        ylab = "Percentual de gordura corporal", las = 2, col = "#ff9999", cex.axis = 0.8)
+
+
+Como exercício, plote a variável rcc por sexo (variável sex) dos atletas.
+
+17.6 Gráfico de pizza
+Os gráficos de pizza normalmente são utilizados quando queremos demonstrar a representatividade de cada categoria de determinada variável na formação do total. Para o nosso exemplo, usaremos o data frame construído a partir do objeto ais, conforme foi demonstrado no item sobre gráficos de barras.
+
+esportes <- ais %>% 
+              group_by(sport) %>% 
+              summarise(qnt = n())
+Dessa forma, teremos o quantitativo de atletas por esportes. Utilizando a função pie, vamos definir as quantidades para gerar as “fatias” do gráfico e em seguida, através do argumento labels =, informar as etiquetas do gráfico.
+
+pie(esportes$qnt, labels = esportes$sport, main = "Esportes",
+    col = heat.colors(10, alpha = 0.6))
+
+
+No exemplo, usamos a função heat.colors() para construção da paleta de cores. As cores das fatias podem ser definidas com um vetor de caracteres com os nomes ou com os códigos Hex das mesmas.
+
+O gráfico básico de pizza do R não são tão práticos como alguns outros vistos até aqui, mas atendem às tarefas básicas mais comuns. Há uma série de formas de customizá-los, o que não será apresentado no presente curso.
+
+
+
+# REFERÊNCIAS
+## Pacotes recomendados
+
+### Análise inferencial
+*easyanova
+*ExpDes.pt
+
+### Regressão linear
+Comandos para Regressão linear
+*lm
+*nlme
+
+### Gráficos
+*corrplot - 
+*scatterplot3d
+*ggplot2 - gramática para construão de gráficos
+*qgraph
+*RColorBrewer - criação de palletas de cores
+
+### Análise multivariada
+*biotools
+*ade4
+
+### Modelos mistos (REML-BLUP):
+*Ime4
+*pedigreemm
+*sommer
+
+### Inferência BVayesiana
+*MCMCglmn
+*rJags
+*stan
+
+### Reder neurais artificiais
+*RSNNS
+*neuralnet
+*Keras
+
+### Lógica Fuzzy
+*FuzzyToolkitUoN
+
+## Bases de dados
+[Inde, indice de metadados](https://www.inde.gov.br/)
+[Inde, fauna ameaçada de extinção](https://metadados.inde.gov.br/geonetwork/srv/por/catalog.search;jsessionid=1C21A136D8AF8D2CCCFED5E63BEFD754#/metadata/4eefeb5e-bdd8-4779-82db-ad0dd4ff6e8b)
+[Inde, Áreas embargadas - ICMBio](https://metadados.inde.gov.br/geonetwork/srv/por/catalog.search;jsessionid=1C21A136D8AF8D2CCCFED5E63BEFD754#/metadata/8eb9a9f4-cf5f-49af-a6e1-498530bddbd3)
+[Inde, Autos de Infração - ICMBio](https://metadados.inde.gov.br/geonetwork/srv/por/catalog.search;jsessionid=1C21A136D8AF8D2CCCFED5E63BEFD754#/metadata/9dbc4a2e-75c1-4074-a777-3d987ffbf471)
+
+## Cursos
+DataCamp
+
+## Sites
+Revolutions;
+R-bloggers;
+KDnuggets.
+
+## Referências com sítio internet
+Ferreira E, Lisboa W, Introdução ao R - Curso Básico de Linguagem R, Janeiro de 2018, acessado em 01/10/*2024, disponível em https://bookdown.org/wevsena/curso_r_tce/curso_r_tce.html
+
+Adler, J. 2012. R in a Nutshell: A Desktop Quick Reference. O’Reilly Media. https://books.google.com.br/books?id=YK4Qb5x-hoIC.
+
+Cotton, R. 2013. Learning R: A Step-by-Step Function Guide to Data Analysis. O’Reilly Media. https://books.google.com.br/books?id=7dyzAAAAQBAJ.
+
+Gardener, M. 2012. The Essential R Reference. Wiley. https://books.google.com.br/books?id=xvF6hZ0T9ocC.
+
+Teetor, P. 2011a. 25 Recipes for Getting Started with R: Excerpts from the R Cookbook. O’Reilly Media. https://books.google.com.br/books?id=cQy-1yvvq-UC.
+
+———. 2011b. R Cookbook: Proven Recipes for Data Analysis, Statistics, and Graphics. O’Reilly Media. https://books.google.com.br/books?id=KIHuSXyhawEC.
+
+Wickham, H., and G. Grolemund. 2016. R for Data Science: Import, Tidy, Transform, Visualize, and Model Data. O’Reilly Media. https://books.google.com.br/books?id=I6y3DQAAQBAJ.
