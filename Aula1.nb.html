@@ -1752,52 +1752,6 @@ display: none;
 
 
 <!-- rnb-text-begin -->
-<div id="preâmbulo" class="section level1">
-<h1>Preâmbulo</h1>
-<p>Este documento é um estudo que visa desenvolver uma metodologia para
-publicação de resultados de monitoramento ecológico. Os objetivos é
-utilizar as tecnologias <a href="http://rmarkdown.rstudio.com">R
-Markdown</a>, para produção de conteúdo, e <a href="http://github.com/">GitHub</a>, para hospedagem e controle de
-versão (VCS) colaborativa. A referência adotada pra implementação é o
-tutorial <a href="https://happygitwithr.com/">Happy Git</a>.</p>
-<div id="implementação-do-procedimento" class="section level2">
-<h2>Implementação do procedimento</h2>
-<p>Estamos trabalhando localmente com linux, onde foi implementado o
-sistema de segurança SSH. Portanto a comunicação com servidor externo
-foi estabelecida através da porta, ou caminho, (SSH) do projeto no
-GitHub: <code>git@github.com:DanDamb/aula1.git</code></p>
-<p>Para saber o local/caminho SSS use o
-comando<code>&gt;git remote show origin</code> no terminal.</p>
-<p>Já está implementado o <a href="https://dandamb.github.io/aula1/">Indice</a> e a <a href="https://dandamb.github.io/aula1/Aula1.nb.html">Aula 1</a>. Que por
-enquanto tem o mesmo conteúdo web.</p>
-<p><a href="https://dandamb.github.io/aula1/Aula1.nb.html">Aula
-1</a></p>
-<p>O procedimento de produção do material, no momento, é 1. gerar o
-conteúdo no em linguagem de marcação RMarkdown no RStudio e gerenciar o
-controle de verções com o Git. Os comandos básicos no Git são os
-seguintes.</p>
-<ol start="0" style="list-style-type: decimal">
-<li>para sincronizar a pasta local com o projeto:</li>
-</ol>
-<pre><code> git init
- git remote set-url origin git@github.com:DanDamb/aula1.git</code></pre>
-<ol style="list-style-type: decimal">
-<li>para verificar o status dos arquivos do projeto:</li>
-</ol>
-<pre><code>git status</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>para verificar a localização remota dos arquivod do projeto</li>
-</ol>
-<pre><code>git remote -v</code></pre>
-<p>que no nosso caso resulta em:</p>
-<pre><code>  origin  git@github.com:DanDamb/aula1.git (fetch)
-  origin  git@github.com:DanDamb/aula1.git (push)</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>para ‘commitar’ os arquivos locais no repositório GitHub:</li>
-</ol>
-<pre><code> git commit -a -m &quot;mensagem do commit&quot;
- git push -u origin main</code></pre>
-<p>Este material está sendo produzido com tecnologia <a href="http://rmarkdown.rstudio.com">R Markdown</a></p>
 <p>Try executing this chunk by clicking the <em>Run</em> button within
 the chunk or by placing your cursor inside it and pressing
 <em>Ctrl+Shift+Enter</em>.</p>
@@ -1818,10 +1772,8 @@ editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not
 run any R code chunks. Instead, the output of the chunk when it was last
 run in the editor is displayed.</p>
 <!-- rnb-text-end -->
-</div>
-</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXVsYSAxIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIFByZcOibWJ1bG8KRXN0ZSBkb2N1bWVudG8gw6kgdW0gZXN0dWRvIHF1ZSB2aXNhIGRlc2Vudm9sdmVyIHVtYSBtZXRvZG9sb2dpYSBwYXJhIHB1YmxpY2HDp8OjbyBkZSByZXN1bHRhZG9zIGRlIG1vbml0b3JhbWVudG8gZWNvbMOzZ2ljby4KT3Mgb2JqZXRpdm9zIMOpIHV0aWxpemFyIGFzIHRlY25vbG9naWFzIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSwgcGFyYSBwcm9kdcOnw6NvIGRlIGNvbnRlw7pkbywgZSBbR2l0SHViXShodHRwOi8vZ2l0aHViLmNvbS8pLCBwYXJhIGhvc3BlZGFnZW0gZSBjb250cm9sZSBkZSB2ZXJzw6NvIChWQ1MpIGNvbGFib3JhdGl2YS4KQSByZWZlcsOqbmNpYSBhZG90YWRhIHByYSBpbXBsZW1lbnRhw6fDo28gw6kgbyB0dXRvcmlhbCBbSGFwcHkgR2l0XShodHRwczovL2hhcHB5Z2l0d2l0aHIuY29tLykuCgojIyBJbXBsZW1lbnRhw6fDo28gZG8gcHJvY2VkaW1lbnRvCkVzdGFtb3MgdHJhYmFsaGFuZG8gbG9jYWxtZW50ZSBjb20gbGludXgsIG9uZGUgZm9pIGltcGxlbWVudGFkbyBvIHNpc3RlbWEgZGUgc2VndXJhbsOnYSBTU0guClBvcnRhbnRvIGEgY29tdW5pY2HDp8OjbyBjb20gc2Vydmlkb3IgZXh0ZXJubyBmb2kgZXN0YWJlbGVjaWRhIGF0cmF2w6lzIGRhIHBvcnRhLCBvdSBjYW1pbmhvLCAoU1NIKSBkbyBwcm9qZXRvIG5vIEdpdEh1YjogYGBgZ2l0QGdpdGh1Yi5jb206RGFuRGFtYi9hdWxhMS5naXRgYGAKClBhcmEgc2FiZXIgbyBsb2NhbC9jYW1pbmhvIFNTUyB1c2UgbyBjb21hbmRvYGBgPmdpdCByZW1vdGUgc2hvdyBvcmlnaW5gYGAgbm8gdGVybWluYWwuCgpKw6EgZXN0w6EgaW1wbGVtZW50YWRvIG8gW0luZGljZV0oaHR0cHM6Ly9kYW5kYW1iLmdpdGh1Yi5pby9hdWxhMS8pIGUgYSBbQXVsYSAxXShodHRwczovL2RhbmRhbWIuZ2l0aHViLmlvL2F1bGExL0F1bGExLm5iLmh0bWwpLiBRdWUgcG9yIGVucXVhbnRvIHRlbSBvIG1lc21vIGNvbnRlw7pkbyB3ZWIuCgpbQXVsYSAxXShodHRwczovL2RhbmRhbWIuZ2l0aHViLmlvL2F1bGExL0F1bGExLm5iLmh0bWwpCgpPIHByb2NlZGltZW50byBkZSBwcm9kdcOnw6NvIGRvIG1hdGVyaWFsLCBubyBtb21lbnRvLCDDqQoxLiBnZXJhciBvIGNvbnRlw7pkbyBubyBlbSBsaW5ndWFnZW0gZGUgbWFyY2HDp8OjbyBSTWFya2Rvd24gbm8gUlN0dWRpbyBlIGdlcmVuY2lhciBvIGNvbnRyb2xlIGRlIHZlcsOnw7VlcyBjb20gbyBHaXQuCk9zIGNvbWFuZG9zIGLDoXNpY29zIG5vIEdpdCBzw6NvIG9zIHNlZ3VpbnRlcy4KCjApIHBhcmEgc2luY3Jvbml6YXIgYSBwYXN0YSBsb2NhbCBjb20gbyBwcm9qZXRvOgpgYGAKIGdpdCBpbml0CiBnaXQgcmVtb3RlIHNldC11cmwgb3JpZ2luIGdpdEBnaXRodWIuY29tOkRhbkRhbWIvYXVsYTEuZ2l0CmBgYAoKMSkgcGFyYSB2ZXJpZmljYXIgbyBzdGF0dXMgZG9zIGFycXVpdm9zIGRvIHByb2pldG86CmBgYApnaXQgc3RhdHVzCmBgYAoKCjIpIHBhcmEgdmVyaWZpY2FyIGEgbG9jYWxpemHDp8OjbyByZW1vdGEgZG9zIGFycXVpdm9kIGRvIHByb2pldG8KYGBgCmdpdCByZW1vdGUgLXYKYGBgCnF1ZSBubyBub3NzbyBjYXNvIHJlc3VsdGEgZW06CmBgYAogIG9yaWdpbiAgZ2l0QGdpdGh1Yi5jb206RGFuRGFtYi9hdWxhMS5naXQgKGZldGNoKQogIG9yaWdpbiAgZ2l0QGdpdGh1Yi5jb206RGFuRGFtYi9hdWxhMS5naXQgKHB1c2gpCmBgYAoKMykgcGFyYSAnY29tbWl0YXInIG9zIGFycXVpdm9zIGxvY2FpcyBubyByZXBvc2l0w7NyaW8gR2l0SHViOgpgYGAKIGdpdCBjb21taXQgLWEgLW0gIm1lbnNhZ2VtIGRvIGNvbW1pdCIKIGdpdCBwdXNoIC11IG9yaWdpbiBtYWluCmBgYAoKRXN0ZSBtYXRlcmlhbCBlc3TDoSBzZW5kbyBwcm9kdXppZG8gY29tIHRlY25vbG9naWEgW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIAoKVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiAKCmBgYHtyfQpwbG90KGNhcnMpCmBgYAoKQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLgoKV2hlbiB5b3Ugc2F2ZSB0aGUgbm90ZWJvb2ssIGFuIEhUTUwgZmlsZSBjb250YWluaW5nIHRoZSBjb2RlIGFuZCBvdXRwdXQgd2lsbCBiZSBzYXZlZCBhbG9uZ3NpZGUgaXQgKGNsaWNrIHRoZSAqUHJldmlldyogYnV0dG9uIG9yIHByZXNzICpDdHJsK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuCgpUaGUgcHJldmlldyBzaG93cyB5b3UgYSByZW5kZXJlZCBIVE1MIGNvcHkgb2YgdGhlIGNvbnRlbnRzIG9mIHRoZSBlZGl0b3IuIENvbnNlcXVlbnRseSwgdW5saWtlICpLbml0KiwgKlByZXZpZXcqIGRvZXMgbm90IHJ1biBhbnkgUiBjb2RlIGNodW5rcy4gSW5zdGVhZCwgdGhlIG91dHB1dCBvZiB0aGUgY2h1bmsgd2hlbiBpdCB3YXMgbGFzdCBydW4gaW4gdGhlIGVkaXRvciBpcyBkaXNwbGF5ZWQuCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXVsYSAxIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgoKClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDdHJsK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KcGxvdChjYXJzKQpgYGAKCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4KCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ3RybCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLgoKVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLgo=</div>
 
 
 

@@ -1,9 +1,12 @@
 ---
 title: "Tutorial linguagem R"
-output: html_notebook
+output: 
+  html_notebook: 
+    toc: true
+    number_sections: true
 ---
 
-# 1 INTRODUÇÃO
+# INTRODUÇÃO
 Esta página é um exercício para o aprendizado do uso básico e de algumas ferramentas estatísticas usuais do **R**.
 Simultaneamente pretendemos fazer algumas análises básicas de alguns dos dados públicos disponibilizados pelo *ICMBio*.
 O objetivo é aprender o básico através da função *?* de ajuda do *R*. A ajuda é apresentada ao digitar na linha de comando do console *? seguido do nome* da função, do pacote (ou biblioteca) de funções, como o exemplo a seguir:
@@ -53,8 +56,11 @@ sample> sample(x, replace = TRUE)
 ```
 
 
-# 2 TIPOS
-O R suporta muitos tipos de dados. Os *tipos* mais básicos são os seguintes:
+# TIPOS
+
+O R suporta muitos tipos de dados. Os *tipos* básicos e combinações destes são os seguintes:
+
+Os tipos básicos servem de elementos para a construção dos tipos compostos.
 
 Tipo de Dados|Descrição|Exemplo
 ---------|-----------|--------
@@ -65,14 +71,12 @@ Lógico|Representa valores booleanos, TRUE ou FALSE.|```TRUE, FALSE```
 Complexo|Representa números complexos com partes reais e imaginárias.|```2 + 3i```
 Raw|Representa bytes brutos de dados.|```as.raw(c(0x41, 0x42))```
 
-Com os tipos básicos é possível construído tipos mais complexos:
+Com os tipos básicos é possível construído tipos mais complexos.
 
 TIPO|DESCRIÇÃO
 ----|-------------------------------------
-Numérico|O tipo padrão para cálculos matemáticos, que pode incluir números inteiros e decimais
-Inteiro|Usado para valores discretos, como IDs exclusivos. A função as.integer() pode armazenar e converter valores em inteiros
-Lógico|Representa valores VERDADEIRO ou FALSO. Valores lógicos podem ser multiplicados por valores numéricos, com TRUE interpretado como 1 e FALSE como 0
-Caractere|Representa valores de sequência alfabética. Um tipo especial de sequência de caracteres é "fator", que provavelmente está em uma ordem.
+Caractere|Representa valores de sequência alfabética. 
+Fator|Um tipo especial de sequência de caracteres, que podem possuir ordem. Exemplo: ```factor(c(0,0,1,0,1,1,0),c(0,1),c("Verdadeiro","Falso"))```
 Vetor|Pode ser numérico, caractere ou lógico. Por ex. ```c(1,2,5.3,6,-2,4)``` é um vetor numérico.
 Matriz|Todas as colunas em uma matriz devem ter o mesmo modo e comprimento. Por ex. ```matrix(c(11,12,21,22),2,2)```.
 Data Frame|Mais geral do que uma matriz, pois colunas diferentes podem ter modos diferentes
@@ -90,6 +94,8 @@ A seguir utilizamos a função *cat()*, para imprimir, de maneira mais clara, os
  cat(" 2 + 3i ->  ", typeof(2 + 3i), "\n")
  cat(" as.raw(c(0x41, 0x42)) ->  ", typeof(as.raw(c(0x41, 0x42))), "\n")
 ```
+
+# CONSTANTES
 
 Existem algumas constantes predefinidas como tipos especiais no *R*:
 
@@ -117,8 +123,8 @@ $\infty-\infty$|`Inf-Inf`|$NaN$|`r typeof(Inf/Inf)`
 
 Importante ter em mente que a implementação do *R* optou por esta forma para manter a consistencia da maior parte dos algoritmos utilizados na implementação da linguagem, não visando uma coerência com qualquer fundamentação matemática ou teoria estatística.
 
+# OPERAÇÕES BÁSICA
 
-# 3 OPERAÇÕES BÁSICA
 ## Aritméticas e lógicas
 
 Operador | Descrição | Exemplo | Código
@@ -138,7 +144,7 @@ Operador | Descrição | Exemplo | Código
 & | Operador lógico “E"|$3 & 5$|```  3&5 ```
 \| | Operador lógico “OU"|$3 + 5$|```  3|5 ```
 
-A seguir apresentaremos exemplos da execução do código, para tal utilizaremos o comando ```print()```:
+A seguir apresentaremos exemplos de uso de operadores, para tal utilizaremos o comando ```print()```:
 ```{r}
 print(3+5)
 print(3-5)
@@ -157,111 +163,100 @@ print(TRUE&FALSE)
 print(TRUE|FALSE)
 ```
 
-
-NOTA: Para representar o infinito, o R utiliza Inf e -Inf. Faça o teste realizando a seguinte operação no console: 1 / 0
-
-4.3 Operações lógicas
-As operações lógicas são frequentemente utilizadas no R, principalmente nas funções de controle de fluxo. Diversas linguagens de programação utilizam a lógica booleana em que os valores lógicos podem ser TRUE ou FALSE. No R, além dos estados TRUE ou FALSE, há também um terceiro para indicar valor ausente (missing value) identificado por NA. Tais palavras são reservadas no R, o que indica que você não poderá criar variáveis com tais nomes. É importante destacar que o R é case sensitive, o que indica que existe a diferenciação entre letras maiúsculas e minúsculas. Portanto, quando formos representar os estados TRUE, FALSE ou NA, devemos escrever com todas as letras maiúsculas.
-
-Também podemos representar TRUE e FALSE digitando apenas a primeira letra maiúscula. Faça os exemplos abaixo e analise os resultados do console.
-
+Ou ainda:
+```{r}
+3 != 5
+3 < 5
+3 == 5
 3 > 5
-
-48 != 10
-
+3*FALSE / 5*TRUE
+5 + NA
+TRUE&FALSE
+TRUE|FALSE
 TRUE == T
-
-39 > 100
-
-(30 > 10) & (4 < 3)
-
-F == TRUE
-
 TRUE + TRUE
+```
 
-FALSE / 2
+# VARIÁVEIS
 
-NA + 3
+No *R*, uma variável é como um contêiner que contém um valor. Você pode pensar nisso como um local de armazenamento nomeado na memória do computador. Esses valores podem ser de diferentes tipos, como números, texto ou valores lógicos (*TRUE/FALSE*). Variáveis permitem que você armazene, manipule e reutilize dados dentro de seus programas R.
 
-TRUE + NA
+## 5.1 - Criando variáveis
 
-class(TRUE)
-NOTA: Devemos ter bastante cuidado com os valores ausentes (NA). Caso não haja o tratamento correto, tais valores podem interferir sensivelmente no código executado. Veremos isso com mais clareza ao longo do nosso curso.
+Usando o Operador de atribuição para a esquerda (**<-**) : 
+```{r}
+MinhaVariavel <- 10
+MinhaVariavelTexto <- "Bem vind@ ao R!"
+MinhaVariavelLogica <- TRUE
+```
 
-4.4 Criando variáveis
-Até então, realizamos algumas operações sem a necessidade de armazenar dados. No entanto, em operações mais complexas é praticamente impossível não utilizarmos variáveis. Com a criação de uma variável, podemos facilmente reusá-la ao longo de nosso código. Vejamos um exemplo.
+Usando o Operador de atribuição para a direita (**->**) : 
+```{r}
+MinhaVariavel <- 10
+MinhaVariavelTexto <- "Bem vind@ ao R!"
+MinhaVariavelLogica <- TRUE
+```
 
-x <- 3
+Embora o sinal de igual possa ser usado para atribuição, ele geralmente não é recomendado em R porque às vezes pode causar confusão em certos contextos.
 
-x + 10
-## [1] 13
-No exemplo anterior, criamos uma variável x para armazenar o valor numérico 3. Ao realizarmos a operação x + 10, automaticamente o valor atribuído a x é recuperado. Para criarmos uma variável, utilizamos o símbolo <- ou =. No entanto, a notação <- é a mais utilizada e será a adotada ao longo do nosso curso. Faça o exemplo seguinte e analise os resultados.
+Usando o Operador de igualdade (**=**) :
+```{r}
+MinhaVariavel = 10  # Pode causar confusão em algumas situações
+```
 
-x <- 25
+## 5.2 - Automatizando a criação de variáveis
 
-x = 30
+Ainda existe uma quarta maneira de criar variáveis, através da função *assign()*. É uma função mais especializada para criar variáveis na linguagem *R*. Objetivo da função *assign()* é permitir que você crie variáveis onde o nome da variável é determinado dinamicamente. Isso significa que o nome da variável pode ser construído ou modificado dentro do próprio código.
+Importante ter atenção para utilizar este tipo de função, pois facilmente podem gerar *erro de overflow*.
 
-31 -> x
+Criando variáveis em loop: 
+```{r message=TRUE}
+nomes <- c("nomes","var_name")
+for (i in 1:3) {
+  var_name <- paste0("variable_", i) # Cria nomes de variáveis como "variable_1", "variable_2", etc.
+  assign(var_name, i * 10) # Atribui valores a essas variáveis criadas dinamicamente
+  nomes<-append(nomes,var_name)
+}
+print(nomes)
+```
 
-x <- x + 1
-Os nomes das variáveis podem conter letras, números, pontos e sublinha (_), mas não podem iniciar com um número ou um ponto seguido de número.
+Criando variáveis via entrada do Usuário:
+```{r}
+user_input <- readline("Digite um nome de variável: ")
+assign(user_input, 100)
+```
 
-NOTA: Por questão de estética e praticidade, é recomendável que você mantenha os nomes das variáveis apenas com letras minúsculas. As variáveis devem ter nomes curtos e revelar um pouco da informação que guarda. Isso facilitará a leitura do código!
+Exemplo de aplicação para a criação de variáveis: 
+```{r}
+# Crie uma variável para armazenar o raio de um círculo
+radius <- as.integer(readline("Digite o tamanho do raio: "))
+print(radius)
+# Calcule a área do círculo
+if(is.numeric(radius)){
+  area <- pi * radius^2
+  cat("A área do círculo de raio =",radius," é igual a ",area)
+}
+```
 
-Outra forma de criarmos variáveis é utilizando a função assign(), apesar de menos usual. Vejamos um exemplo a seguir.
+## 5.3 - Listando variáveis
+As funções *ls()* e *objects()* retornam um vetor de cadeias de caracteres fornecendo os nomes dos objetos e variáveis no ambiente especificado.
 
-assign("x", 99) #Note que é necessária a utilização de aspas para indicar o nome da variável
+Usando o *ls()*:
+```{r}
+ls()
+```
 
-x
-## [1] 99
-4.5 Outras classes de variáveis
-Além das classes numéricas e lógicas, podemos armazenar em uma variável dados em forma de texto (character) ou como fator (factor). A primeira forma é utilizada para armazenar qualquer dado texto, como o nome de uma pessoa. Já a segunda é geralmente utilizada para armazenar variáveis categóricas como, por exemplo, o sexo de uma pessoa. Seguem exemplo de criação de uma variável que irá armazenar um dado em texto.
+## 5.4 - Eliminando variáveis
 
-nome <- "Antônio Santos"
+As funções *remove()* e *rm()* podem ser usados para remover objetos. Eles podem ser especificados sucessivamente como *strings*, *listas*, *vetores* de caracteres, ou por meio de uma combinação de ambos. Todos os objetos assim especificados serão removidos.
 
-nome
-## [1] "Antônio Santos"
-NOTA: Por questão didática, veremos como criar uma variável do tipo fator um pouco adiante, após conhecermos os vetores.
+Eliminando variáveis com a função *rm()*:
+```{r message=TRUE}
+rm("nomes","var_name","variable_1","variable_2","variable_3")
+```
 
-4.6 Listando e removendo variáveis
-Para listar todas as variáveis criadas, usamos a função ls(). Digite a função no console e verifique as variáveis disponíveis no momento. Para remover uma variável, usamos a função rm() com o nome da variável que desejamos remover. Vamos atribuir 3 à uma variável de nome k1 e depois vamos removê-la do nosso ambiente.
+Com o comando ```rm(list = ls())``` é possível remover praticamente todas as variáveis do ambiente, portanto, **use com cuidado !!**.
 
-k1 <- 3
-rm(k1)
-Sempre que começamos a executar um novo script, é recomendável limpar todas as variáveis carregadas, visando evitar conflitos e outros problemas. Basta utilizar o comando:
-
-rm(list = ls())
-5 VETORES
-5.1 O que é um vetor?
-Até então aprendemos a armazenar dados em variáveis. No entanto, muitas vezes precisamos armazenar uma sequência de dados. Suponhamos que você deseja armazenar as idades de uma turma de 30 alunos. Criar uma variável para cada um dos alunos nos parece um pouco sem sentido. É para isso que o R dispõe de alguns objetos capazes de lidar com grandes quantidades de dados de uma maneira mais inteligente.
-
-O objeto que iremos conhecer agora se chama vetor. Na linguagem R, um vetor é uma sequência de dados de um mesmo tipo. Para criarmos um vetor no R a função utilizada é a c() e o processo é bastante simples. Vejamos um exemplo de criação de um vetor com os componentes {3, 23, 44} atribuído a uma variável y.
-
-y <- c(3, 23, 44)
-
-y
-## [1]  3 23 44
-Como já foi mencionado, os vetores armazenam dados de um mesmo tipo. Isso quer dizer que não podemos armazenar um dado numérico e um dado tipo texto (character) no mesmo vetor. Seguem alguns exemplos.
-
-z <- c("João", "Paulo", "Pedro", "Francisco")
-
-class(z)
-## [1] "character"
-k <- c(TRUE, FALSE, TRUE, TRUE)
-
-class(k)
-## [1] "logical"
-Ao tentarmos criar um vetor com tipos de dados heterogêneos, o R converterá para character. O entendimento desse procedimento facilitará a detecção e a solução de alguns problemas no processo de manipulação e tratamento de dados.
-
-k <- c(TRUE, 3, "Pedro")
-
-class(k)
-## [1] "character"
-Agora que conhecemos um pouco de vetores, vamos criar uma variável tipo factor a partir de uma variável numérica. Suponha que você esteja diante de um conjunto de dados em que os gêneros feminino e masculino estejam representados pelos números 1 e 2, respectivamente. Podemos transformar essa informação em fator da seguinte forma:
-
-genero <- c(1, 2, 1, 2)
-
-genero <- factor(genero, levels = c(1, 2), labels = c("feminino", "masculino"))
 
 genero
 ## [1] feminino  masculino feminino  masculino
@@ -271,414 +266,417 @@ Para mais detalhes, leia sobre a função factor().
 5.2 Indexando vetores
 Uma vez que aprendemos como criar vetores, chegou o momento de aprendermos a manipulá-los e a realizar algumas operações. Vamos começar criando um vetor com cinco elementos numéricos e depois realizar algumas operações.
 
-#Criando o vetor e atribuindo à variavél de nome "v"
-v <- c(20, 12, 35, 19, 60)
-Uma vez que temos nosso vetor v, podemos recuperar todos os valores de uma só vez ou apenas um ou alguns componentes desejados. A posição inicial de um vetor no R possui valor 1 e segue da esquerda para a direita. Portanto, se quisermos obter o valor contido na posição 2 do nosso vetor v, usamos a seguinte notação: v[2]. Vejamos:
+# VETORES
 
-v[2]
-## [1] 12
-Podemos também selecionar um intervalo de componentes do vetor, o que é bastante útil e rápido. Se quisermos selecionar os dados das posições 2 a 4 do nosso vetor, basta fazermos:
+## Criação de vetores
 
-v[2:4]
-## [1] 12 35 19
-Para exibirmos todos os componentes do vetor exceto o de uma determinada posição, utilizamos o sinal - ao indexar o nosso vetor. O exemplo seguinte selecionará todos os elementos do nosso vetor v, exceto o elemento da posição 4.
+Criando um vetor com nomes e exibindo-os:
+```{r}
+nomes<-c("Mafalda", "Papá", "Mamã", "Filipe", "Manolito", "Susanita", "Guille", "Miguel", "Liberdade", "Burocracia")
+print(nomes)
+```
+Mostrando do quarto ao sétimo nome:
+```{r}
+print(nomes[4:7])
+```
 
-v[-4]
-## [1] 20 12 35 60
-Como um último exemplo, vamos indexar nosso vetor para que retorne apenas as posições 2 e 5. Isso pode ser feito facilmente da seguinte maneira:
+Mostrando todos on nomes menos o sexto:
+```{r}
+print(nomes[-6])
+```
 
-v[c(2, 5)]
-## [1] 12 60
-NOTA: Há diferentes formas de indexarmos vetores e obtermos o mesmo resultado. Com o tempo, você vai descobrindo a forma mais usual e conveniente para chegar ao resultado desejado.
+Mostrando em ordem reversa:
+```{r}
+print(nomes[9:1])
+```
 
-5.3 Operações matemáticas e lógicas com vetores
-Além de indexar, devemos também conhecer como é que o R interpreta algumas operações quando utilizamos vetores. Com um vetor contendo dados numéricos, podemos realizar diversas operações. Seguem exemplos utilizando o vetor v criado no tópico anterior.
+## Operando com vetores
 
-v
-## [1] 20 12 35 19 60
-v * 3
-## [1]  60  36 105  57 180
-v + 1
-## [1] 21 13 36 20 61
-v / 7
-## [1] 2.857143 1.714286 5.000000 2.714286 8.571429
-Podemos observar que ao realizarmos qualquer operação entre um vetor numérico e um número, a operação é realizada para cada um dos componentes do vetor, gerando um vetor resultado.
+Calculando o valor de $\pi$:
+```{r}
+a<-c(1:1000)
+print(a[1:5])
+b<- 1 / (a^4)
+print(b[1:5])
+meu_pi<-sqrt(sqrt(90*sum(b)))
+print(meu_pi)
+```
 
-Podemos também somar dois vetores, desde que um deles seja de tamanho igual ou múltiplo do outro. O exemplo a seguir esclarece.
+Comparações com e entre vetores:
+```{r}
+print(b[1:5]>0.01)
+print(a[1:5]==b[1:5])
 
-j <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+```
 
-w <- c(11, 12, 13, 14, 15)
-#Soma dos vetores j e w
-j + w
-##  [1] 12 14 16 18 20 17 19 21 23 25
-Ao realizar uma operação lógica com um vetor obtemos como resultado um vetor lógico. Vejamos uma operação com o vetor w do exercício anterior.
+Usando a mesma lágica podemos selecionar elementos pela condição:
+```{r}
+print(a[a<=5])
+b[which(b >= 0.01)]
 
-w >= 13
-## [1] FALSE FALSE  TRUE  TRUE  TRUE
-Esse vetor resultado é importante para filtrarmos elementos do nosso vetor. Suponhamos que desejamos selecionar os elementos do vetor w que sejam maiores ou iguais a 13. Podemos fazer isso de uma maneira muito simples, utilizando a expressão w >= 13 como indexador do nosso vetor w. Se quisermos saber em quais posições do vetor se encontram os elementos que satisfazem à condição, podemos utilizar a função which(). Vejamos:
+```
 
-w[w >= 13]
-## [1] 13 14 15
-which(w >= 13)
-## [1] 3 4 5
-Diversas funções matemáticas e estatísticas podem ser facilmente aplicadas a vetores numéricos. Vejamos algumas funções importantes abaixo.
+# FUNÇÕES
 
-Função	Descrição
-sum()	Retorna a soma
-mean()	Retorna a média
-sd()	Retorna o desvio padrão
-median()	Retorna a mediana
-var()	Retorna a variância
-cor()	Retorna a correlação entre dois vetores
-min()	Retorna o mínimo
-max()	Retorna o máximo
-range()	Retorna o mínimo e o máximo
-summary()	Retorna um sumário dos dados
-quantile()	Retorna os quantis do conjunto numérico
-NOTA: Lembre-se que para ler sobre qualquer função no R basta digitarmos ? seguidos do nome da função no console.
+## Funções Matemáticas
 
-Faça os exemplos seguintes e veja os resultados.
+Funções matemáticas predefinidas mais usuais:
 
-vetor1 <- c(1, 8, 11, 23.5, 12.8, 16, 25)
 
-vetor2 <- c(10, 7.5, 10, 20.1, 24, 12, 25)
+Função|Descrição|Exemplo
+------|---------|------------
+abs(x)|Valor absoluto de x|abs(-5)  =  5
+sqrt(x)|Raiz quadrada de x|abs(-5) results in 5
+exp(x)|Função exponencial e^x|exp(1)  =  2.718282
+log(x)|Logaritmo natural de x (base e)|log(10)  =  2.302585
+log10(x)|Logaritmo comum de x (base 10)|log10(100)  =  2
+sin(x)|Seno de x (x em radianos)|sin(pi/2)  =  1
+cos(x)|Cosseno de x (x em radianos)|cos(pi)  =  -1
+tan(x)|Tangente de x (x em radianos)|tan(pi/4)  =  1
+round(x, digits = 0)|Arredonda x para o número especificado de dígitos|round(3.14159, digits = 2)  =  3.14
+ceiling(x)|Arredonda x para cima até o inteiro mais próximo|ceiling(3.2)  =  4
+floor(x)|Arredonda x para baixo até o inteiro mais próximo|floor(3.8)  =  3
+sum(x)|Soma de todos os elementos em x|sum(1:5)  =  15
+mean(x)|Média aritmética de x|mean(c(1, 2, 3, 4, 5))  =  3
+median(x)|Mediana de x|median(c(1, 2, 3, 4, 5))  =  3
+sd(x)|Desvio padrão de x|sd(c(1, 2, 3, 4, 5))  =  1.581139
+var(x)|Variância de x|var(c(1, 2, 3, 4, 5))  =  2.5
+max(x)|Valor máximo em x|max(c(1, 5, 2, 4, 3))  =  5
+min(x)|Valor mínimo em x|min(c(1, 5, 2, 4, 3))  =  1
+-----------------------------------------------------
 
-sum(vetor1)
+## Funções Estatísticas
 
-mean(vetor2)
+Funções estatísticas predefinidas mais usuais:
 
-cor(vetor1, vetor2)
+Função|Descrição|Exemplo
+------|---------|---------
+mean(x)|Média aritmética de x|mean(c(1, 2, 3, 4, 5)) results in 3
+median(x)|Mediana de x|median(c(1, 2, 3, 4, 5))  =  3
+sd(x)|Desvio padrão de x|sd(c(1, 2, 3, 4, 5))  =  1.581139
+var(x)|Variância de x|var(c(1, 2, 3, 4, 5))  =  2.5
+quantile(x, probs)|Quantis de x em probabilidades especificadas|quantile(x, probs = c(0.25, 0.75)) gives the 25th and 75th percentiles
+range(x)|Valores mínimo e máximo de x|range(c(1, 5, 2, 4, 3))  =  1 5
+IQR(x)|Intervalo interquartil de x|IQR(c(1, 2, 3, 4, 5))  =  2
+summary(x)|Estatísticas resumidas de x (mín., 1º quantil, mediana, média, 3º quantil, máx.)|summary(c(1, 2, 3, 4, 5))
+cor(x, y)|Coeficiente de correlação entre x e y|cor(x, y) = 0.3
+cov(x, y)|Covariância entre x e y|cov(x, y) = 0.75
+lm(y ~ x)|Regressão linear de y em x|model <- lm(y ~ x)
+t.test(x, y)|teste t para comparar médias de x e y|t.test(x, y)
+wilcox.test(x, y)|Teste de soma de postos de Wilcoxon (não paramétrico)|wilcox.test(x, y)
+chisq.test(x)|Teste qui-quadrado para qualidade de ajuste ou independência|chisq.test(x)
+aov(y ~ x)|Análise de variância (ANOVA)|model <- aov(y ~ x)
 
-range(vetor1)
-5.4 Sequências e números aleatórios
-Sequências são importantes em várias operações, principalmente por economizar tempo. Uma forma simples de criar uma sequência é utilizando : e estabelecendo o início e o fim. Vejamos um exemplo de como criar uma sequência dos números de 1 a 20.
 
-1:20
-##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
-É possível também que nossa sequência seja formada por um intervalo determinado por nós. Para isso, utilizamos a função seq(). Como exemplo, vamos criar uma sequência de 0 a 50 com um intervalo de 5.
+## Funções para manipulação de strings
 
-seq(0, 50, 5)
-##  [1]  0  5 10 15 20 25 30 35 40 45 50
-Outras funções que frequentemente utilizamos no R são as que geram números aleatórias. Tais funções são bastante importantes nos processos de amostragem. As funções mais utilizadas para essa tarefa são: sample() e runif(). Vamos aos exemplos:
+Funções para manipulação de *strings* ou vetores de caractéres (char)
 
-#Gerar 20 números inteiros no intervalo de 0 a 100 sem reposição
-sample(0:100, 20)
-##  [1] 82 90 47 68 87 12 72 31 44 42 60 45 93 11 46 58 25 26  5  9
-#Gerar 20 valores entre 0 e 1 com reposição
-sample(0:1, 20, replace = TRUE)
-##  [1] 1 1 0 0 0 0 1 1 0 0 0 0 0 0 1 1 1 0 0 0
-#Gerar 5 valores decimais entre 0 e 10
-runif(5, 0, 10)
-## [1] 3.3825195 6.7469271 8.1158721 8.4822125 0.3636028
-Podemos gerar também valores aleatórios de variáveis do tipo character. Para isso, podemos utilizar a função sample() e definir um vetor de onde deverá ser selecionada a amostra. Como exemplo, podemos gerar 5 valores aleatórios entre as variáveis categóricas “masculino” e “feminino”. Observe que, como o número de valores gerados supera o conjunto de variáveis, devemos definir a possibilidade de repetição (replace = TRUE).
+Função|Descrição|Exemplo
+------|---------|---------
+nchar(x)|Número de caracteres em uma string|nchar("Hello") results in 5|
+paste(..., sep = " ")|Concatena strings|paste("Hello", "world")  =  "Hello world"|
+substr(x, start, stop)|Extrai substring|substr("Hello", 2, 4)  =  "ell"|
+strsplit(x, split)|Divide string por delimitador|strsplit("Hello world", " ")  =  a list with elements "Hello" and "world"|
+grep(pattern, x)|Encontra padrão em string|grep("ell", "Hello")  =  1 (index of match)|
+gsub(pattern, replacement, x)|Substitui padrão por outra string|gsub("o", "a", "Hello")  =  "Hella"|
+tolower(x)|Converte para minúsculas|tolower("Hello")  =  "hello"|
+toupper(x)|Converte para maiúsculas|toupper("Hello")  =  "HELLO"|
+trimws(x)|Remove espaços em branco iniciais/finais|trimws(" Hello ")  =  "Hello"|
+cat(x)|Concatena e imprime as strings em x|cat("Olá, ", "como vai?") = "Olá, como vai?"
 
-sample(c("masculino", "feminino"), 5, replace = TRUE)
-## [1] "feminino"  "feminino"  "feminino"  "feminino"  "masculino"
-Para gerarmos um determinado texto ou número repetidas vezes, podemos utilizar a função replicate().
+## Funções para manipulação de vetores
 
-replicate(5, "meu texto")
-## [1] "meu texto" "meu texto" "meu texto" "meu texto" "meu texto"
-5.5 Outras funções importantes para manipular vetores
-A tabela seguinte apresenta algumas outras funções importantes para trabalharmos com vetores. É importante que você leia a documentação de cada função para evitar erros.
+Função|Descrição|Exemplo
+------|---------|---------
+paste(...)|Concatena strings, com um separador|paste("Hello", "world", sep = "-")  =  "Hello-world"
+paste0(...)|Concatena strings, sem um separador|paste0("Hello", "world")  =  "Helloworld"
+order(x)|Retorna uma permutação de índices que classificaria x|order(c(3, 1, 2))  =  2 3 1
+length(x)|Retorna o comprimento de um objeto (vetor, lista, matriz, etc.)|length(c(1, 2, 3))  =  3
+names(x)|Obtém ou define os nomes dos elementos em um objeto (lista, vetor, etc.)|names(my_list) <- c("a", "b", "c")
+cumsum(x)|Retorna a soma cumulativa de um vetor numérico|cumsum(c(1, 2, 3))  =  1 3 6
+cumprod(x)|Retorna o produto cumulativo de um vetor numérico|cumprod(c(1, 2, 3))  =  1 2 6
+cummin(x)|Retorna o mínimo cumulativo de um vetor numérico|cummin(c(3, 1, 2, 4))  =  3 1 1 1
+cummax(x)|Retorna o máximo cumulativo de um vetor numérico|cummax(c(3, 1, 2, 4))  =  3 3 3 4
+sort(x)|Classifica um vetor (ou as colunas de uma matriz) em ordem crescente|sort(c(3, 1, 2))  =  1 2 3
+rev(x)|Inverte a ordem dos elementos em um vetor|rev(c(1, 2, 3))  =  3 2 1
+is.na(x)|Retorna um vetor lógico indicando se os elementos estão faltando (NA)|is.na(c(1, NA, 3))  =  FALSE TRUE FALSE
+is.null(x)|Retorna TRUE se x for NULL, FALSE caso contrário|is.null(NULL)  =  TRUE
 
-Função	Descrição
-paste()	Concatena vetores
-order()	Retorna a ordem
-length()	Retorna o tamanho do vetor
-names()	Nomeia os elementos
-cumsum()	Retorna um vetor que é a soma cumulativa do vetor objeto
-sort()	Ordena um vetor
-rev()	Retorna o vetor em ordem decrescente
-is.na()	Retorna um vetor lógico com TRUE para valor ausente (NA)
-6 EXERCÍCIOS
-Tente responder as questões de 1 a 7 sem utilizar o R.
+## Outras funções para manipulação de vetores
 
-Qual é o resultado da operação 11 > 3?
+Função|Descrição|Exemplo
+------|---------|---------
+c(...)|Combinar elementos em um vetor|c(1, 2, 3) creates a vector 1 2 3|
+length(x)|Comprimento de um vetor|length(c(1, 2, 3))  =  3|
+sort(x)|Classificar um vetor|sort(c(3, 1, 2))  =  1 2 3|
+rev(x)|Reverter um vetor|rev(c(1, 2, 3))  =  3 2 1|
+unique(x)|Extrair elementos únicos|unique(c(1, 2, 2, 3))  =  1 2 3|
+append(x, values)|Adicionar valores a um vetor|append(c(1, 2), 3)  =  1 2 3|
+rep(x, times)|Repetir um vetor|rep(1:2, times = 3)  =  1 2 1 2 1 2|
+which(x)| Retorna os índices correspondentes aos valores verdadeiros|which(c(T,F,T,F,T)) = 1 3 5|
 
-Qual é o resultado da operação 13 + 4 * (5 + NA) ?
+## Funções para manipular matrizes
 
-Qual o resultado da operação (TRUE + FALSE + T)^2?
+Função|Descrição
+------|---------|---------
+t()|Retorna a matriz transposta
+diag(k)|Cria uma matriz identidade k x k
+det()|Calcula o determinante da matriz
+diag()|Retorna os elementos da diagonal principal
+dim()|Retorna a dimensão da matriz
+ncol|Retorna o número de colunas da matriz
+nrow()|Retorna o número de linhas da matriz
+rowSums()|Retorna a soma das linhas da matriz
+rowMeans()|Retorna a média das linhas das matriz
+colSums()|Retorna a soma das colunas da matriz
+colMeans()|Retorna a média das colunas da matriz
 
-Podemos realizar a operação 3nota <- 3.5 no R? Justifique a sua resposta.
 
-Sendo u <- c("A", 3), qual a classe do vetor u?
+# MATRIZES
 
-Sendo j <- seq(1, 10, 3), qual será o valor do terceiro componente do vetor j?
+A função *matrix()* cria uma matriz a partir do conjunto de valores fornecido.
+A função *as.matrix()* tenta transformar seu argumento em uma matriz, e *is.matrix()* testa se seu argumento é uma matriz (estrita).
+A indexação dos elementos dentro das matrizes é sempre o mesmo:
+$\begin{pmatrix}a_{1,1} &  & \\ 
+   & \ddots & \\ 
+   &  & a_{m,n}\end{pmatrix}$
 
-Sendo z <- c(1, 3, 5, 12, 87, 21, 0, 12), como podemos selecionar apenas os componentes do vetor z maiores do que 20?
+## Criando matrizes
 
-NOTA: Para executarmos os exercícios seguintes do nosso caso hipotético, precisamos carregar o objeto vetor01. Para isso, coloque o arquivo vetor.RData no mesmo diretório de trabalho que está utilizando (use o comando getwd() para conferir) e execute o comando load("vetor.RData") no console. Você visualizará o objeto vetor01 no Global Enviroment do RStudio.
-
-O vetor01possui 15.000 observações referentes às notas dos candidatos do concurso público para auxiliar administrativo da Prefeitura de São Longuinho. Os dados foram disponibilizados pela empresa organizadora do concurso. As notas variam de 0 a 10 e os candidatos que não realizaram a prova estão com NA nos respectivos campos.
-De posse dos dados, você deve realizar as seguintes tarefas:
-
-Coloque o vetor01 em ordem decrescente das notas e salve o resultado no próprio vetor01(sobrescrever). Você deve manter todas as 15.000 observações ao ordenar o vetor;
-Calcule a média e a mediana das notas;
-Calcule o desvio padrão das notas;
-Calcule o percentual de faltosos;
-Calcule quantos candidatos obtiveram notas maiores do que 7.00 e menores do que 8.00;
-Selecione as 500 maiores notas do vetor01 e guarde o resultado em um vetor chamado vetor02;
-Remova os valores ausentes (NA) do vetor01e guarde o resultado no próprio vetor01.
-7 MATRIZES
-A ideia de matriz no R é similar a da matriz que conhecemos na matemática. Seus componentes são indexados pelo índice da linha e da coluna correspondente. Para o R, uma matriz é uma coleção de elementos de uma mesma classe arranjados em duas dimensões.
-
-Am,n=⎛⎝⎜⎜⎜⎜⎜a1,1a2,1⋮am,1a1,2a2,2⋮am,2⋯⋯⋱⋯a1,na2,n⋮am,n⎞⎠⎟⎟⎟⎟⎟
-
-7.1 Criando matrizes
-O processo de criação de uma matriz no R é relativamente simples. No exemplo a seguir, vamos criar uma matriz com 100 elementos numéricos em sequência de 1 a 100. Nossa matriz terá 10 linhas e 10 colunas.
-
-matriz01 <- matrix( 
-            seq(1, 100), 
-            ncol = 10,
-            nrow = 10) 
-
-matriz01
-##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-##  [1,]    1   11   21   31   41   51   61   71   81    91
-##  [2,]    2   12   22   32   42   52   62   72   82    92
-##  [3,]    3   13   23   33   43   53   63   73   83    93
-##  [4,]    4   14   24   34   44   54   64   74   84    94
-##  [5,]    5   15   25   35   45   55   65   75   85    95
-##  [6,]    6   16   26   36   46   56   66   76   86    96
-##  [7,]    7   17   27   37   47   57   67   77   87    97
-##  [8,]    8   18   28   38   48   58   68   78   88    98
-##  [9,]    9   19   29   39   49   59   69   79   89    99
-## [10,]   10   20   30   40   50   60   70   80   90   100
-Percebemos que o R, por default, preenche a matriz por colunas e não por linhas. No entanto, podemos criar uma matriz preenchendo primeiro as linhas e depois as colunas. Para isso, basta definirmos o argumento byrow = TRUE. Vejamos o resultado do exemplo anterior com o preenchimento por linhas e depois por colunas.
-
-matriz01 <- matrix( 
-            seq(1, 100), 
-            ncol = 10,
-            nrow = 10,
-            byrow = TRUE)
-
-matriz01
-##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-##  [1,]    1    2    3    4    5    6    7    8    9    10
-##  [2,]   11   12   13   14   15   16   17   18   19    20
-##  [3,]   21   22   23   24   25   26   27   28   29    30
-##  [4,]   31   32   33   34   35   36   37   38   39    40
-##  [5,]   41   42   43   44   45   46   47   48   49    50
-##  [6,]   51   52   53   54   55   56   57   58   59    60
-##  [7,]   61   62   63   64   65   66   67   68   69    70
-##  [8,]   71   72   73   74   75   76   77   78   79    80
-##  [9,]   81   82   83   84   85   86   87   88   89    90
-## [10,]   91   92   93   94   95   96   97   98   99   100
-NOTA: Utilizaremos nossa matriz01 em alguns exemplos a seguir.
-
-Outro ponto que merece atenção é a regra de reciclagem dos dados utilizados para a criação da matriz. Execute o código abaixo e observe o que ocorre.
-
-matriz02 <- matrix( 
+Criando uma matriz 3x3 com os valores de 1 a 9:
+```{r}
+M1 <- matrix( 
             seq(1, 9), 
-            ncol = 2,
-            nrow = 5)
-matriz02
-As matrizes no R também podem guardar dados em texto (character). O exemplo a seguir mostra o armazenamento desse tipo de dado.
+            ncol = 3,
+            nrow = 3) 
+print(M1)
+```
+Os valores são preenchidos da de cima para baixo, começando pela primeira coluna, seguindo praa as próximas colunas da esquerda para a direita, até a última coluna.
 
-set.seed(2) #Define a semente para que o comando sample gere sempre o mesmo resultado.
-matriz03 <- matrix( 
-            sample(c("M", "F"), 100, replace = TRUE), 
-            ncol = 10) 
+Criando uma matriz 3x3 com os valores de 1 a 9:
+```{r}
+M1 <- matrix( 
+            seq(1, 9), 
+            ncol = 3,
+            nrow = 3,
+            byrow = TRUE)
+print(M1)
+```
+Agora os valores foram preenchidos da direita para a esquerda (nas linhas) começando pela linha superior, e de cima para baixo até a última linha, conforme:
 
-#Observe que nesse exemplo não temos o parâmetro nrow, no entanto o resultado é o mesmo.
-matriz03
-##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-##  [1,] "M"  "F"  "F"  "M"  "F"  "M"  "F"  "M"  "M"  "F"  
-##  [2,] "F"  "M"  "M"  "M"  "M"  "M"  "F"  "M"  "F"  "M"  
-##  [3,] "F"  "F"  "F"  "F"  "M"  "F"  "F"  "M"  "M"  "M"  
-##  [4,] "M"  "M"  "M"  "F"  "M"  "F"  "M"  "M"  "M"  "F"  
-##  [5,] "F"  "M"  "M"  "F"  "F"  "M"  "F"  "M"  "M"  "M"  
-##  [6,] "F"  "F"  "M"  "F"  "F"  "F"  "M"  "F"  "F"  "M"  
-##  [7,] "M"  "F"  "M"  "F"  "F"  "F"  "M"  "M"  "F"  "M"  
-##  [8,] "F"  "M"  "M"  "M"  "M"  "F"  "M"  "F"  "M"  "M"  
-##  [9,] "M"  "M"  "F"  "F"  "F"  "F"  "M"  "M"  "F"  "M"  
-## [10,] "F"  "M"  "M"  "M"  "F"  "F"  "M"  "F"  "M"  "M"
-7.2 Operações matemáticas com matrizes
-As operações com matrizes numéricas seguem praticamente a mesma lógica dos vetores. Ao realizar qualquer operação com uma constante numérica, a operação é feita para todos os elementos da matriz.
+Criando uma matriz 3x3 com os valores 1 a 9 aleatóriamente selecionados:
+```{r}
+M1 <- matrix( 
+            sample(seq(1, 9),9), 
+            ncol = 3,
+            nrow = 3) 
+print(M1)
+```
 
-matriz01 * 10
-##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-##  [1,]   10   20   30   40   50   60   70   80   90   100
-##  [2,]  110  120  130  140  150  160  170  180  190   200
-##  [3,]  210  220  230  240  250  260  270  280  290   300
-##  [4,]  310  320  330  340  350  360  370  380  390   400
-##  [5,]  410  420  430  440  450  460  470  480  490   500
-##  [6,]  510  520  530  540  550  560  570  580  590   600
-##  [7,]  610  620  630  640  650  660  670  680  690   700
-##  [8,]  710  720  730  740  750  760  770  780  790   800
-##  [9,]  810  820  830  840  850  860  870  880  890   900
-## [10,]  910  920  930  940  950  960  970  980  990  1000
-Já funções como mean(), sum(), sd() funcionam também como ocorre com os vetores, ou seja, levam em consideração todos os elementos da matriz.
+Criando uma matriz 5x3 com os valores de T e F sorteados:
+```{r}
+M1 <- matrix( 
+            sample(c(T,F), 5*3, replace = T), 
+            ncol = 5,
+            nrow = 3) 
+print(M1)
+```
 
-sum(matriz01)
-## [1] 5050
-Há uma série de funções úteis para trabalharmos com matrizes, seguem algumas:
 
-Função	Descrição
-t()	Retorna a matriz transposta
-diag(k)	Cria uma matriz identidade k x k
-det()	Calcula o determinante da matriz
-diag()	Retorna os elementos da diagonal principal
-dim()	Retorna a dimensão da matriz
-ncol	Retorna o número de colunas da matriz
-nrow()	Retorna o número de linhas da matriz
-rowSums()	Retorna a soma das linhas da matriz
-rowMeans()	Retorna a média das linhas das matriz
-colSums()	Retorna a soma das colunas da matriz
-colMeans()	Retorna a média das colunas da matriz
-As operações matemáticas entre matrizes também são possíveis no R. No entanto, temos que observar a dimensão das matrizes envolvidas na operação. Considere as matrizes A e B abaixo.
-A=⎡⎣⎢⎢3568921111911⎤⎦⎥⎥B=⎡⎣⎢⎢34721116761210⎤⎦⎥⎥
+```{r}
+set.seed(13) # fixa a sequência de valores aleatórios gerados
+M1 <- matrix( 
+            sample(c("Cara", "Coroa"), 10, replace = TRUE), 
+            ncol = 10, nrow = 1) 
+set.seed(13) 
+M2 <- matrix( 
+            sample(c("Cara", "Coroa"), 10, replace = TRUE), 
+            ncol = 10, nrow = 1) 
+print(M1)
+print(M2)
 
-Como exerício, crie as matrizes A e B no R e realize as seguintes operações:
+```
 
+## Operações com matrizes
+
+```{r}
+M1<-matrix(c(1,0,0,1),2,2)
+M2<-matrix(c(1:4),2,2,byrow = T)
+cat("M1")
+print(M1)
+cat("\n")
+cat("M2")
+print(M2)
+cat("\n")
+cat("M1+M2")
+print(M1+M2)
+cat("\n")
+cat("M2-M1")
+print(M2-M1)
+cat("\n")
+cat("M1.M2")
+print(M1%*%M2)
+cat("\n")
+cat("M2.M1")
+print(M2%*%M1)
+cat("\n")
+cat("M1*M2")
+print(M1*M2)
+cat("\n")
+cat("M1/M2")
+print(M1/M2)
+cat("\n")
+cat("M2/M1")
+print(M2/M1)
+```
 A+B
 A∗B
 A−B
 B÷A
-A operação de multiplicação entre matrizes no R tem suas peculiaridades. Se quisermos realizar a multiplicação matricial, devemos utilizar o operador %*%. Matematicamente o resultado será o seguinte:
+```{r}
+M1<-matrix(c(1,4,2,5,3,6),2,3)
+M2<-matrix(c(1:4),2,2,byrow = T)
+cat("M1")
+print(M1)
+cat("\n")
+cat("M2")
+print(M2)
+cat("\n")
+cat("M2.M1")
+print(M2%*%M1)
+```
 
-AB=[∑k=1naikbkj]
-Caso seja utilizado apenas o operador *, o resultado será o seguinte:
+## Selecionando partes de uma matriz
 
-A∗B=⎡⎣⎢⎢a11×b11a21×b21a31×b31a12×b12a22×b22a32×b32a13×b13a23×b23a33×b33⎤⎦⎥⎥
+```{r}
+M1 <- matrix( 
+            seq(1,25), 
+            ncol = 5, 
+            nrow = 5,
+            byrow = T) 
+print(M1)
+cat("\n")
+cat("linha 3 : M1[3,]")
+print(M1[3,])
+cat("\n")
+cat("coluna 3 : M1[,3]")
+print(M1[,3])
+cat("\n")
+cat("miolo : M1[c(2:4),c(2:4)]")
+print(M1[c(2:4),c(2:4)])
+cat("\n")
+cat("só linha 1 e 5 : M1[-c(2:4),]")
+print(M1[-c(2:4),])
+cat("\n")
+cat("só colunas 1 e 5 : M1[,-c(2:4)]")
+print(M1[,-c(2:4)])
+```
+## Nomeando linhas e colunas
+```{r}
+colnames(M1)<-c("Abobora","Banana","Cereja","Damasco","Ervilha")
+rownames(M1)<-c("Arara","Barata","Canário","Dromedário","Elefante")
+print(M1)
+cat("\n")
+cat("Cerejas comidas :")
+cat("\n")
+print(M1[,"Cereja"])
+cat("\n")
+cat("Canário comeu :")
+cat("\n")
+print(M1["Canário",])
+cat("\n")
+cat("Barata e Canário comeram Bananas e Cerejas")
+cat("\n")
+print(M1[c("Barata","Canário"),c("Banana","Cereja")])
+cat("\n")
+cat("Canário comeu Cereja")
+print(M1["Canário","Cereja"])
+cat("\n")
+```
 
-7.3 Manipulando matrizes
-Assim como nos vetores, podemos selecionar quaisquer elementos de uma matriz. A diferença é que, para selecionarmos um elemento em uma matriz, devemos informar em qual linha e coluna se encontra o dado que queremos. Digamos que o elemento que desejamos obter o valor se encontra na terceira linha da quarta coluna da nossa matriz01 , criada no item anterior. A solução é a seguinte:
 
-matriz01[3, 4]
-## [1] 24
-Muitas vezes não desejamos extrair o dado de apenas um elemento, mas de uma linha ou de uma coluna inteira de uma matriz. Para selecionarmos uma linha da nossa matriz01, utilizamos o seguinte comando: matriz01[i, ]. Onde i é a posição da linha que desejamos selecionar. Vejamos como fazemos para selecionar a linha 4 da matriz01:
+# DADOS EXTERNOS
+Nesta seção estudamos algumas maneiras de carregar dados externos.
+A referência para o estudo é o tutorial [Entrada e saída de dados](https://rawgit.com/lhmet/adar-ufsm/master/6_EntradaDeDados.html#salvando-e-carregando-objetos-em-arquivos-.rdata) do curso [FSC1104-Análise de dados ambientais com R](https://github.com/lhmet/adar-ufsm/tree/master).
 
-matriz01[4, ]
-##  [1] 31 32 33 34 35 36 37 38 39 40
-Para selecionar um intervalo de linhas, a lógica é semelhante a que utilizamos para intervalos de elementos em vetores. Segue exemplo:
+A seguir apresentaremos um procedimento para carregamento de dados externos.
 
-matriz01[2:6, ]
-##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-## [1,]   11   12   13   14   15   16   17   18   19    20
-## [2,]   21   22   23   24   25   26   27   28   29    30
-## [3,]   31   32   33   34   35   36   37   38   39    40
-## [4,]   41   42   43   44   45   46   47   48   49    50
-## [5,]   51   52   53   54   55   56   57   58   59    60
-Na seleção de colunas, o R funciona de maneira igual, bastando informar qual coluna, ou intervalo de colunas, que queremos fazer a seleção. Segue exemplo de seleção da coluna 5:
+## Carregando dados de tabelas *.csv*
 
-matriz01[ ,5]
-##  [1]  5 15 25 35 45 55 65 75 85 95
-Faça os exemplos abaixo e observe os resultados.
+Carregando a tabela de dados de autos de infração emitidos pelo ICMBio.
+```{r}
+autos_infracao_icmbio <- read_csv("~/BaseGeo/0_ICMBio/autos_infracao_icmbio.csv")
+```
+Visualizando as primeiras linhas do dado:
+```{r}
+head(autos_infracao_icmbio[, 1:10])
+```
 
-matriz01[2:4, ]
+Sumarizando:
+```{r}
+summary(autos_infracao_icmbio)
+```
 
-matriz01[1:3, 7:10]
+Sumario mais completo:
+```{r}
+#library(skimr)
+skim(autos_infracao_icmbio)
+```
+## Rapida avaliação dos valores das multas
 
-matriz01[-3, ]
+Histograma dos valores dos autos de infração com valores  **menores** do que R$ 10.000,00:
+```{r}
+hist(autos_infracao_icmbio$valor_mult[autos_infracao_icmbio$valor_mult<10000], main = "Histograma dos valores de autos de infração (até R$ 10k)", xlab = "valor da multa (R$)", ylab = "frequência")
+```
 
-matriz01[-3, -c(3:6)]
+Bigode (diagrama de caixa) dos valores dos autos de infração com valores **menores** do que R$ 10.000,00:
+```{r}
+boxplot(autos_infracao_icmbio$valor_mult[autos_infracao_icmbio$valor_mult<10000], main = "'Bigode' dos valores autos de infração (até R$ 10k) ", ylab = "frequência")
+```
+Histograma dos valores dos autos de infração com valores **entre** R$ 10.000,00 e 100.000,00:
+```{r}
+hist(autos_infracao_icmbio$valor_mult[(autos_infracao_icmbio$valor_mult>=10000)&(autos_infracao_icmbio$valor_mult<=100000)], main = "Histograma dos valores de autos de infração", xlab = "valor da multa (R$)", ylab = "frequência")
+```
 
-mean(matriz01[8:10, 8])
+Bigode (diagrama de caixa) dos valores dos autos de infração com valores **entre** R$ 10.000,00 e 100.000,00:
+```{r}
+boxplot(autos_infracao_icmbio$valor_mult[(autos_infracao_icmbio$valor_mult>=10000)&(autos_infracao_icmbio$valor_mult<=100000)], main = "Histograma dos valores de autos de infração", xlab = "valor da multa (R$)")
+```
 
-summary(matriz01)
-NOTA: Podemos observar que a lógica do R para matrizes é bem similar a de vetores.
 
-7.4 Nomeando linhas e colunas de uma matriz
-Para facilitar a utilização e leitura dos dados de uma matriz, às vezes é interessante nomear suas linhas e colunas. Como exemplo, suponha que você está diante de uma matriz das notas de matemática de uma turma durante o ano de 2017. Cada linha representa um aluno e cada coluna representa um bimestre. Os dados estão estruturados conforme segue.
+## Carregando dados *.RData*
 
-notas
-##       [,1] [,2] [,3] [,4]
-##  [1,]    5    7    5    6
-##  [2,]    9    7    4    6
-##  [3,]    6    7    4    5
-##  [4,]    6    7    4    7
-##  [5,]    8   10    5    5
-##  [6,]    8    9    9    6
-##  [7,]    4    4    8   10
-##  [8,]    6    8   10    5
-##  [9,]    8   10    7    8
-## [10,]    8    5    9    5
-Para deixar a leitura mais fácil, podemos nomear as linhas e colunas através das funções rownames() e colnames(), respectivamente. Segue exemplo:
+O formato *.RData* é o formato nativo do *R*. 
+```{r}
+# Verificando se o arquivo existe
+file.exists("data/chuva_df.RData") 
+# apagando a variavel chuva_df do ambiente de trabalho
+rm(chuva_df)
+# verifica existência de objeto
+exists(chuva_df)
+#> Error in exists(chuva_df): object 'chuva_df' not found
+# carregando chuva_df
+load(file = "data/chuva_df.RData")
+ls()
+```
+Visualizando as primeiras linhas do dado:
+```{r}
+head(chuva_df[, 1:10])
+```
 
-colnames(notas) <- c("bim-1", "bim-2", "bim-3", "bim-4")
-rownames(notas) <- c("João", "Pedro", "Amanda", "Fábio", "Fernanda", "Gustavo",
-                     "Severino", "Paulo", "Laura", "Túlio")
-notas
-##          bim-1 bim-2 bim-3 bim-4
-## João         5     7     5     6
-## Pedro        9     7     4     6
-## Amanda       6     7     4     5
-## Fábio        6     7     4     7
-## Fernanda     8    10     5     5
-## Gustavo      8     9     9     6
-## Severino     4     4     8    10
-## Paulo        6     8    10     5
-## Laura        8    10     7     8
-## Túlio        8     5     9     5
-Uma vez com nomes das linhas e colunas, podemos utilizar os mesmos para realizar filtros em nossa matriz. Para exibir apenas as notas da aluna Fernanda, fazemos:
+Sumarizando:
+```{r}
+summary(chuva_df)
+```
 
-notas["Fernanda", ]
-## bim-1 bim-2 bim-3 bim-4 
-##     8    10     5     5
-O procedimento para seleção das colunas segue a mesma lógica.
+```{r}
+#library(skimr)
+skim(chuva_df)
+```
 
-7.5 Unindo matrizes
-A união de matrizes é bastante importante para formarmos um conjunto de dados maior a partir de dados menores. Essa união pode ocorrer de duas formas: por linhas e por colunas. Para unirmos duas matrizes através das colunas, utilizamos a função cbind(). Já para fazer a união através das linhas, usamos a função rbind().
 
-Vamos continuar os exemplos com nossa matriz notas. No entanto, considere que, durante o ano de 2017, dois alunos foram transferidos da escola e suas notas de matemática nos dois primeiros bimestres estão armazenadas na matriz notas_transf. Vamos aos dados:
 
-notas_transf
-##            bim-1 bim-2 bim-3 bim-4
-## Dimas          6     8    NA    NA
-## Alessandra     8     9    NA    NA
-Para consolidar os dados, precisamos unir as matrizes notas e notas_transf por linhas. Para executar tal tarefa, vamos usar a função rbind().
-
-rbind(notas, notas_transf)
-##            bim-1 bim-2 bim-3 bim-4
-## João           5     7     5     6
-## Pedro          9     7     4     6
-## Amanda         6     7     4     5
-## Fábio          6     7     4     7
-## Fernanda       8    10     5     5
-## Gustavo        8     9     9     6
-## Severino       4     4     8    10
-## Paulo          6     8    10     5
-## Laura          8    10     7     8
-## Túlio          8     5     9     5
-## Dimas          6     8    NA    NA
-## Alessandra     8     9    NA    NA
-Para unirmos duas matrizes por colunas, o procedimento é similar. Porém, temos que observar que para unir matrizes através das colunas, devemos ter o mesmo número de linhas em todas as matrizes que desejamos unir. A lógica se aplica também à união por linhas, ou seja, as matrizes envolvidas devem ter o mesmo número de colunas.
-
-8 EXERCÍCIOS
-Tente resolver as questões de 1 a 5 sem utilizar o R.
-
-Podemos construir no R uma matriz com dados numéricos e texto? Se sim, qual o tipo de dado dessa matriz?
-
-O que ocorre se definirmos o argumento byrow = TRUE na construção de uma matriz?
-
-Para construir uma matriz com 25 elementos organizados em 5 linhas e 5 colunas, precisamos necessariamente definir os argumentos ncol = e nrow =da função matrix()? Por que?
-
-Considere o seguinte comando:
-
-m <- matrix(
-  c(1, 2, 3),
-  nrow = 2
-)
-Qual o valor do elemento da segunda linha da segunda coluna (m22
-)?
-
-Considerando a matriz m do item anterior, qual o resultado, no R, da seguintes operações:
-3 * m
-m + m
-m > 2
-sum[m == 3]
-NOTA: Para resolvermos os exercícios seguintes, precisamos carregar a nossa base (chuvas.RData). Utilize o seguinte comando: load("chuvas.RData"). (Não se esqueça de colocar o arquivo em seu diretório de trabalho)
-
-A matriz chuvas possui dados (em mm) sobre precipitações em 100 municípios do Brasil, durante um período de 30 dias. Os municípios estão representados em códigos através das linhas e os dias através das colunas. Diante de tais dados, resolva as seguintes questões:
-Qual a média do volume diário de chuvas do período observado?
-Qual município teve o maior volume de chuvas considerando os 30 dias observados?
-Considerando o volume de todos os municípios observados, em qual dia menos choveu?
-Qual o volume de chuvas do município 81 (mun_81) nos primeiros 10 dias observados?
-Qual o volume total de chuvas nos primeiros 15 dias observados? Esse volume foi maior ou menor do que os 15 dias seguintes?
-Crie uma nova coluna (coluna 31 da matriz) com dados das somas de cada uma das linhas e guarde na variável chuvas_somas. Nomeie essa nova coluna de “soma”.
-Crie uma nova matriz com dados de todos municípios, porém com dados apenas dos 15 primeiros dias observados. Guarde o resultado em uma variável chamada chuvas_15dias.
 9 DATA FRAMES E TIBBLES
 9.1 O que é um Data Frame?
 Em síntese, data frames são tabelas de dados. Em seu formato, são bem parecidos com as matrizes, no entanto, possuem algumas diferenças significativas. Podemos idealizar os data frames como sendo matrizes em que cada coluna pode armazenar um tipo de dado diferente. Logo, estamos lidando com um objeto bem mais versátil do que as matrizes e os vetores. Vejamos na prática!
@@ -3015,7 +3013,8 @@ Comandos para Regressão linear
 
 ## Cursos
 DataCamp
-
+[Text as Data](https://bookdown.org/davi_moreira/txt4cs/#pref%C3%A1cio)
+[W3 Schools](https://www.w3schools.com/r/default.asp)
 ## Sites
 Revolutions;
 R-bloggers;
