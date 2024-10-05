@@ -1,18 +1,198 @@
 ---
 title: "Aula 1"
 output: html_notebook
+editor_options:
+  markdown:
+    references: 
+      location: block
 ---
 
+# LINGUAGEM *R*
+ 
+A [linguagem R](https://www.r-project.org/) é uma ferramenta de programação estatística e gráfica, criada na década de 1990, na Nova Zelândia, por Ross Ihaka e Robert Gentleman. É uma linguagem de código aberto e multiplataforma, que pode ser executada em sistemas operacionais como Windows, Linux e Macintosh. 
+
+A linguagem R é utilizada para: 
+1. Análise estatística, 
+2. Manipulação de dados, 
+3. Visualização gráfica, 
+4. Construção de modelos preditivos, 
+5. Exploração de informações de forma visual. 
+
+Algumas das principais características da linguagem R são: 
+* Facilidade de aprendizado, mesmo para quem não tem familiaridade com programação,
+* Capacidade de lidar com grandes volumes de dados de forma eficiente,
+* Ferramentas poderosas para construir modelos preditivos, 
+* Suporte para análise de séries temporais, modelos lineares e não lineares.
+
+O nome R vem, em parte das iniciais dos nomes de seus criadores (Ross e Robert) e também de um jogo figurado com a linguagem S, da Bell Laboratories. O código fonte do R está disponível sob a [licença GNU GPL](https://www.gnu.org/licenses/). 
+
+# O que é a linguagem *R*
+
+A linguagem *R* é uma linguagem do tipo interpretada, dinamicamente tipada e multiparadigma, isto é, suporta múltiplos paradigmas de programação, como funcional, orientado a objetos e imperativo, oferecendo flexibilidade para diferentes estilos de codificação. Além destas características os desenvolvedores do R mantem o foco da linguagem na análise estatística e visualização de dados. 
+
+Por isto R é amplamente utilizada por estatísticos, cientistas de dados e pesquisadores para realizar tarefas como:
+
+* Manipulação de dados: importar, limpar, transformar e organizar dados de diversas fontes.
+* Análise estatística: realizar testes estatísticos, construir modelos de regressão, realizar análises de séries temporais, etc.
+* Visualização de dados: criar gráficos e visualizações interativas para comunicar insights a partir dos dados.
+* Machine learning: desenvolver algoritmos de aprendizado de máquina para construir modelos preditivos.
+
+# Para que serve a linguagem *R*?
+
+*R* é uma ferramenta poderosa para o processamento de dados, seja na academia, na indústria ou no governo. Ela pode ser usada para:
+
+* Analisar dados de pesquisas: descobrir padrões e tendências em dados de pesquisas de opinião, pesquisas de mercado, etc.
+* Desenvolver modelos financeiros: construir modelos para prever o risco de crédito, precificar derivativos, etc.
+* Analisar dados de saúde: estudar a eficácia de tratamentos médicos, identificar fatores de risco para doenças, etc.
+* Realizar pesquisas científicas: analisar dados experimentais, realizar simulações, etc.
+
+## Características importantes da linguagem *R*:
+
+A linguagem *R* foi desenvolvida para ser especializada em analises estatísticas com a capacidade de ser modular e extensível. Assim, considerando a ubiquidade da estatística em todas as áreas da academia, bem como da indústria, o *R* tornou-se padrão em várias áreas. Por isto muitos módulos e extensões foram desenvolvidas em *R* para tratar problemas específicos das diversas áreas.
+
+Assim, algumas das características mais importantes da linguagem são:
+* Possui uma vasta coleção de pacotes (bibliotecas de código) que fornecem funcionalidades para diversas áreas, como bioinformática, econometria e análise de redes sociais.
+* Permite a criação de gráficos de alta qualidade e personalizados.
+* É uma linguagem flexível e extensível, permitindo que usuários criem suas próprias funções e pacotes.
+* Possui uma comunidade ativa de usuários e desenvolvedores, que fornecem suporte e recursos online.
+
+## Lógica de funcionanmento
+
+A linguagem R funciona como um ambiente interativo onde você pode inserir comandos e obter resultados imediatamente. Esses comandos podem ser desde operações matemáticas simples até análises estatísticas complexas e criação de gráficos sofisticados.
+
+Basicamente, o código em R é interpretado, executando as instruções e fornecendo as saídas correspondentes, que podem ser valores numéricos, tabelas, gráficos ou outros objetos.
+
+As etapas de funcionamento do processamento são as seguintes:
+
+1. *Leitura do código*: O código que você escreve é lido e interpretado pelo interpretador R.
+2. *Execução*: O interpretador executa as instruções do código linha por linha.
+3. *Gerenciamento de memória*: onde o R gerencia a memória do computador, alocando espaço para armazenar dados e resultados.
+4. *Saída*: Os resultados da execução do código são exibidos no console, em gráficos ou salvos em arquivos.
+
+## Boas prática de utilização do R
+
+A melhor maneira de utilizar R depende do objetivo e estilo de trabalho. Algumas recomendações são:
+
+* Utilize um ambiente de desenvolvimento integrado (IDE): IDEs como *RStudio* oferecem recursos como editor de código com destaque de sintaxe, console interativo, visualizador de dados e gerenciamento de projetos, facilitando a escrita e organização do código.
+* Aprenda os conceitos básicos: Familiarize-se com os tipos de dados, estruturas de controle (como loops e condicionais) e funções básicas da linguagem R.
+* Explore os pacotes: R possui uma vasta coleção de pacotes que fornecem funcionalidades para diversas áreas. Utilize pacotes como tidyverse para manipulação de dados, ggplot2 para visualização e caret para machine learning.
+* Escreva código limpo e organizado: Utilize comentários para documentar seu código, siga convenções de estilo e divida seu código em funções para facilitar a reutilização e manutenção.
+* Participe da comunidade R: A comunidade R é ativa e acolhedora. Participe de fóruns online, listas de discussão e grupos de usuários para tirar dúvidas, compartilhar conhecimento e colaborar em projetos.
 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+## Outras recomedações
 
+1. Comece com problemas simples e vá aumentando a complexidade gradualmente.
+2. Utilize recursos online como tutoriais, cursos e documentação.
+3. Pratique regularmente para aprimorar suas habilidades.
+4. Não tenha medo de errar e experimentar!
+5. Com dedicação e prática, você poderá dominar a linguagem R e utilizá-la de forma eficiente para realizar análises de dados e obter insights valiosos.
+
+## Pacotes e Bibliotecas
+
+Em R, "pacotes" e "bibliotecas" são sinônimos. Eles são conjuntos de funções, dados e documentação que estendem as funcionalidades básicas da linguagem R. Podem ser entendidos como "aplicativos" instalaveis no R para acessar recursos e funcionadidades extras.
+
+Os pacotes permitem realizar tarefas específicas, sem precisar escrever todo o código do zero. Eles fornecem funções prontas para diversas áreas, como:
+
+*Manipulação de dados*: dplyr, tidyr, data.table
+*Visualização de dados*: ggplot2, plotly, lattice
+*Machine learning*: caret, randomForest, xgboost
+*Estatística*: stats, MASS, survival
+*Bioinformática*: Bioconductor, seqinr, phyloseq
+
+Alguns dos pacotes e bibliotecas mais utilizados no R são:
+
+PACOTE/BIBLIOTECA|DESCRIÇÃO
+------|----------
+dplyr| Um pacote que permite manipular dados 
+ggplot2| Uma biblioteca que ajuda a melhorar a visualização de dados 
+GWalkR| Uma biblioteca que transforma dados em aplicativos de visualização interativos 
+tidyr| Uma biblioteca que ajuda na organização de dados 
+caret| Um pacote adequado para a maioria dos modelos de aprendizado de máquina 
+h2o| Um pacote que contém uma implementação de redes neurais feed-forward e outros modelos avançados 
+forcats| Um pacote que fornece utilidades para fatores 
+Rcpp| Um pacote que permite a interação entre R e C++ 
+FactoMiner| Um pacote que permite a análise multivariada 
+RODBC| Um pacote que permite a conexão com banco de dados 
+httr/xml2/rvest| Um conjunto de ferramentas para a web 
+flexdashboard| Um pacote que permite a criação de dashboards no formato rmarkdown 
+janitor| Um pacote que permite a limpeza de dados para modelagem 
+plyr| Um pacote que permite a manipulação de vetores, listas e data.frames 
+roxygen2| Um pacote que permite a criação de pacotes de R 
+devtools| Um pacote que fornece diversas ferramentas 
+htmlwidgets| Um pacote que permite a integração entre R e bibliotecas JavaScript 
+leaflet| Um pacote que permite a criação de mapas interativos 
+
+Um conjunto importante de pacotes/bibliotecas *R* foi integrado na 'bliblioteca' [Ttidyverse](tidyverse.org).
+
+PACOTE/BIBLIOTECA|DESCRIÇÃO
+------|----------
+dplyr|Manipulação e transformação de dados
+tidyr|Manipulação e transformação de dados
+readr|Importação de vários tipos de arquivos (csv, tsv, fwf)
+purrr|Manipulação avançada de listas e vetores
+ggplot2|Gráficos dos mais variados tipos
+readxl|Importação de planilhas excel (.xls, .xlsx)
+lubridate|Manipulação de dados em formato de data e/ou tempo
+jsonlite|Importação de dados em JSON
+magrittr|Provê a utilização de pipes (%>%)
+xml2|Importação de dados em XML
+rvest|Utilizado para web scraping
+heaven|Leitura e escrita de arquivos SPSS, SAS e Stata
+DBI|Conexão a base de dados (MySQL, PostgresSQL, SQLite…)
+data.table|Leitura e escrita de grandes bases de dados
+ggmap|Mapas geográficos
+
+## Instalando pacotes
+
+Existem duas formas principais de instalar pacotes em R:
+
+### Instalando a partir do CRAN
+
+O [CRAN (Comprehensive R Archive Network)](https://cran.r-project.org/) é o repositório oficial de pacotes R.
+
+Para instalar um pacote do CRAN, utilize a função *install.packages()*. Por exemplo, para instalar o pacote ggplot2, execute o seguinte comando no console do R:
 ```{r}
-plot(cars)
+install.packages("ggplot2")
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+### Instalando a partir de outras fontes
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+Alguns pacotes não estão disponíveis no CRAN, mas podem ser instalados a partir de outras fontes, como [GitHub](https://github.com/) ou [Bioconductor](https://www.bioconductor.org/).
+Para instalar um pacote do GitHub, utilize a função *install_github()* do pacote devtools.
+Para instalar pacotes do Bioconductor, siga as instruções específicas no site do Bioconductor.
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+### Como utilizar pacotes?
+
+Após instalar um pacote, você precisa carregá-lo na sua sessão R para utilizar suas funções. Utilize a função *library()* para carregar um pacote. Por exemplo, para carregar o pacote ggplot2, execute:
+```{r}
+library(ggplot2)
+```
+
+Depois de carregar o pacote, você pode utilizar suas funções. Por exemplo, para criar um gráfico de dispersão com o ggplot2, utilize a função *ggplot()*.
+
+## RSTUDIO
+
+O RStudio é um ambiente de desenvolvimento integrado (IDE) de código aberto e gratuito para a linguagem de programação R. Ele fornece uma interface gráfica amigável e um conjunto de ferramentas que facilitam a escrita, execução e depuração de código R, tornando o processo de análise de dados mais eficiente e produtivo.
+
+Vantagens do RStudio em relação a outras maneiras de utilizar o R:
+
+* *Interface organizada*: O RStudio organiza os diferentes aspectos do seu trabalho com R em painéis separados, incluindo editor de código, console, ambiente de trabalho e visualizador de gráficos. Isso facilita a navegação e o gerenciamento do seu código e dados.
+* Editor de código com recursos avançados: O editor de código do RStudio oferece recursos como destaque de sintaxe, autocompletar, indentação automática e detecção de erros, o que torna a escrita de código mais rápida e precisa.
+* Console interativo: O console interativo permite que você execute comandos R e visualize os resultados imediatamente, o que facilita a experimentação e a depuração de código.
+* Gerenciamento de projetos: O RStudio permite que você organize seu trabalho em projetos, o que facilita a colaboração e o controle de versão.
+* Visualização de dados: O RStudio oferece ferramentas para visualizar dados em diferentes formatos, como tabelas, gráficos e mapas.
+* Depuração de código: O RStudio inclui ferramentas de depuração que permitem que você execute o código passo a passo e identifique erros.
+* Integração com outras ferramentas: O RStudio se integra com outras ferramentas populares, como Git e R Markdown, o que facilita o controle de versão e a criação de relatórios reproduzíveis.
+* Recursos extras: O RStudio oferece recursos extras, como histórico de comandos, ajuda integrada e atalhos de teclado, que aumentam a produtividade.
+
+Comparado com outras maneiras de usar o R, como o console interativo padrão ou a plataforma [Jupyter Notebook](https://jupyter.org/), o RStudio oferece:
+
+1. Maior organização e produtividade: a interface organizada e os recursos do editor de código facilitam a escrita e o gerenciamento de código.
+2. Melhor visualização de dados: as ferramentas de visualização integradas permitem explorar os dados de forma mais intuitiva.
+3. Depuração mais eficiente: as ferramentas de depuração ajudam a identificar e corrigir erros no código.
+4. Maior colaboração: o gerenciamento de projetos facilita o trabalho em equipe.
+
+Em resumo, o RStudio oferece um ambiente de desenvolvimento completo e amigável que aumenta a produtividade e facilita a análise de dados com a linguagem R. Para quem está começando a usar R, e ainda não estabeleceu uma rotina de trabalho com o R, ou procura uma maneira mais eficiente de trabalhar com a linguagem, o RStudio é uma excelente opção.
+
+# REFERÊNCIAS

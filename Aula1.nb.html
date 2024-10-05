@@ -1752,28 +1752,425 @@ display: none;
 
 
 <!-- rnb-text-begin -->
-<p>Try executing this chunk by clicking the <em>Run</em> button within
-the chunk or by placing your cursor inside it and pressing
-<em>Ctrl+Shift+Enter</em>.</p>
+<div id="linguagem-r" class="section level1">
+<h1>LINGUAGEM <em>R</em></h1>
+<p>A <a href="https://www.r-project.org/">linguagem R</a> é uma
+ferramenta de programação estatística e gráfica, criada na década de
+1990, na Nova Zelândia, por Ross Ihaka e Robert Gentleman. É uma
+linguagem de código aberto e multiplataforma, que pode ser executada em
+sistemas operacionais como Windows, Linux e Macintosh.</p>
+<p>A linguagem R é utilizada para: 1. Análise estatística, 2.
+Manipulação de dados, 3. Visualização gráfica, 4. Construção de modelos
+preditivos, 5. Exploração de informações de forma visual.</p>
+<p>Algumas das principais características da linguagem R são: *
+Facilidade de aprendizado, mesmo para quem não tem familiaridade com
+programação, * Capacidade de lidar com grandes volumes de dados de forma
+eficiente, * Ferramentas poderosas para construir modelos preditivos, *
+Suporte para análise de séries temporais, modelos lineares e não
+lineares.</p>
+<p>O nome R vem, em parte das iniciais dos nomes de seus criadores (Ross
+e Robert) e também de um jogo figurado com a linguagem S, da Bell
+Laboratories. O código fonte do R está disponível sob a <a href="https://www.gnu.org/licenses/">licença GNU GPL</a>.</p>
+</div>
+<div id="o-que-é-a-linguagem-r" class="section level1">
+<h1>O que é a linguagem <em>R</em></h1>
+<p>A linguagem <em>R</em> é uma linguagem do tipo interpretada,
+dinamicamente tipada e multiparadigma, isto é, suporta múltiplos
+paradigmas de programação, como funcional, orientado a objetos e
+imperativo, oferecendo flexibilidade para diferentes estilos de
+codificação. Além destas características os desenvolvedores do R mantem
+o foco da linguagem na análise estatística e visualização de dados.</p>
+<p>Por isto R é amplamente utilizada por estatísticos, cientistas de
+dados e pesquisadores para realizar tarefas como:</p>
+<ul>
+<li>Manipulação de dados: importar, limpar, transformar e organizar
+dados de diversas fontes.</li>
+<li>Análise estatística: realizar testes estatísticos, construir modelos
+de regressão, realizar análises de séries temporais, etc.</li>
+<li>Visualização de dados: criar gráficos e visualizações interativas
+para comunicar insights a partir dos dados.</li>
+<li>Machine learning: desenvolver algoritmos de aprendizado de máquina
+para construir modelos preditivos.</li>
+</ul>
+</div>
+<div id="para-que-serve-a-linguagem-r" class="section level1">
+<h1>Para que serve a linguagem <em>R</em>?</h1>
+<p><em>R</em> é uma ferramenta poderosa para o processamento de dados,
+seja na academia, na indústria ou no governo. Ela pode ser usada
+para:</p>
+<ul>
+<li>Analisar dados de pesquisas: descobrir padrões e tendências em dados
+de pesquisas de opinião, pesquisas de mercado, etc.</li>
+<li>Desenvolver modelos financeiros: construir modelos para prever o
+risco de crédito, precificar derivativos, etc.</li>
+<li>Analisar dados de saúde: estudar a eficácia de tratamentos médicos,
+identificar fatores de risco para doenças, etc.</li>
+<li>Realizar pesquisas científicas: analisar dados experimentais,
+realizar simulações, etc.</li>
+</ul>
+<div id="características-importantes-da-linguagem-r" class="section level2">
+<h2>Características importantes da linguagem <em>R</em>:</h2>
+<p>A linguagem <em>R</em> foi desenvolvida para ser especializada em
+analises estatísticas com a capacidade de ser modular e extensível.
+Assim, considerando a ubiquidade da estatística em todas as áreas da
+academia, bem como da indústria, o <em>R</em> tornou-se padrão em várias
+áreas. Por isto muitos módulos e extensões foram desenvolvidas em
+<em>R</em> para tratar problemas específicos das diversas áreas.</p>
+<p>Assim, algumas das características mais importantes da linguagem são:
+* Possui uma vasta coleção de pacotes (bibliotecas de código) que
+fornecem funcionalidades para diversas áreas, como bioinformática,
+econometria e análise de redes sociais. * Permite a criação de gráficos
+de alta qualidade e personalizados. * É uma linguagem flexível e
+extensível, permitindo que usuários criem suas próprias funções e
+pacotes. * Possui uma comunidade ativa de usuários e desenvolvedores,
+que fornecem suporte e recursos online.</p>
+</div>
+<div id="lógica-de-funcionanmento" class="section level2">
+<h2>Lógica de funcionanmento</h2>
+<p>A linguagem R funciona como um ambiente interativo onde você pode
+inserir comandos e obter resultados imediatamente. Esses comandos podem
+ser desde operações matemáticas simples até análises estatísticas
+complexas e criação de gráficos sofisticados.</p>
+<p>Basicamente, o código em R é interpretado, executando as instruções e
+fornecendo as saídas correspondentes, que podem ser valores numéricos,
+tabelas, gráficos ou outros objetos.</p>
+<p>As etapas de funcionamento do processamento são as seguintes:</p>
+<ol style="list-style-type: decimal">
+<li><em>Leitura do código</em>: O código que você escreve é lido e
+interpretado pelo interpretador R.</li>
+<li><em>Execução</em>: O interpretador executa as instruções do código
+linha por linha.</li>
+<li><em>Gerenciamento de memória</em>: onde o R gerencia a memória do
+computador, alocando espaço para armazenar dados e resultados.</li>
+<li><em>Saída</em>: Os resultados da execução do código são exibidos no
+console, em gráficos ou salvos em arquivos.</li>
+</ol>
+</div>
+<div id="boas-prática-de-utilização-do-r" class="section level2">
+<h2>Boas prática de utilização do R</h2>
+<p>A melhor maneira de utilizar R depende do objetivo e estilo de
+trabalho. Algumas recomendações são:</p>
+<ul>
+<li>Utilize um ambiente de desenvolvimento integrado (IDE): IDEs como
+<em>RStudio</em> oferecem recursos como editor de código com destaque de
+sintaxe, console interativo, visualizador de dados e gerenciamento de
+projetos, facilitando a escrita e organização do código.</li>
+<li>Aprenda os conceitos básicos: Familiarize-se com os tipos de dados,
+estruturas de controle (como loops e condicionais) e funções básicas da
+linguagem R.</li>
+<li>Explore os pacotes: R possui uma vasta coleção de pacotes que
+fornecem funcionalidades para diversas áreas. Utilize pacotes como
+tidyverse para manipulação de dados, ggplot2 para visualização e caret
+para machine learning.</li>
+<li>Escreva código limpo e organizado: Utilize comentários para
+documentar seu código, siga convenções de estilo e divida seu código em
+funções para facilitar a reutilização e manutenção.</li>
+<li>Participe da comunidade R: A comunidade R é ativa e acolhedora.
+Participe de fóruns online, listas de discussão e grupos de usuários
+para tirar dúvidas, compartilhar conhecimento e colaborar em
+projetos.</li>
+</ul>
+</div>
+<div id="outras-recomedações" class="section level2">
+<h2>Outras recomedações</h2>
+<ol style="list-style-type: decimal">
+<li>Comece com problemas simples e vá aumentando a complexidade
+gradualmente.</li>
+<li>Utilize recursos online como tutoriais, cursos e documentação.</li>
+<li>Pratique regularmente para aprimorar suas habilidades.</li>
+<li>Não tenha medo de errar e experimentar!</li>
+<li>Com dedicação e prática, você poderá dominar a linguagem R e
+utilizá-la de forma eficiente para realizar análises de dados e obter
+insights valiosos.</li>
+</ol>
+</div>
+<div id="pacotes-e-bibliotecas" class="section level2">
+<h2>Pacotes e Bibliotecas</h2>
+<p>Em R, “pacotes” e “bibliotecas” são sinônimos. Eles são conjuntos de
+funções, dados e documentação que estendem as funcionalidades básicas da
+linguagem R. Podem ser entendidos como “aplicativos” instalaveis no R
+para acessar recursos e funcionadidades extras.</p>
+<p>Os pacotes permitem realizar tarefas específicas, sem precisar
+escrever todo o código do zero. Eles fornecem funções prontas para
+diversas áreas, como:</p>
+<p><em>Manipulação de dados</em>: dplyr, tidyr, data.table
+<em>Visualização de dados</em>: ggplot2, plotly, lattice <em>Machine
+learning</em>: caret, randomForest, xgboost <em>Estatística</em>: stats,
+MASS, survival <em>Bioinformática</em>: Bioconductor, seqinr,
+phyloseq</p>
+<p>Alguns dos pacotes e bibliotecas mais utilizados no R são:</p>
+<table>
+<colgroup>
+<col width="37%" />
+<col width="62%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>PACOTE/BIBLIOTECA</th>
+<th>DESCRIÇÃO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>dplyr</td>
+<td>Um pacote que permite manipular dados</td>
+</tr>
+<tr class="even">
+<td>ggplot2</td>
+<td>Uma biblioteca que ajuda a melhorar a visualização de dados</td>
+</tr>
+<tr class="odd">
+<td>GWalkR</td>
+<td>Uma biblioteca que transforma dados em aplicativos de visualização
+interativos</td>
+</tr>
+<tr class="even">
+<td>tidyr</td>
+<td>Uma biblioteca que ajuda na organização de dados</td>
+</tr>
+<tr class="odd">
+<td>caret</td>
+<td>Um pacote adequado para a maioria dos modelos de aprendizado de
+máquina</td>
+</tr>
+<tr class="even">
+<td>h2o</td>
+<td>Um pacote que contém uma implementação de redes neurais feed-forward
+e outros modelos avançados</td>
+</tr>
+<tr class="odd">
+<td>forcats</td>
+<td>Um pacote que fornece utilidades para fatores</td>
+</tr>
+<tr class="even">
+<td>Rcpp</td>
+<td>Um pacote que permite a interação entre R e C++</td>
+</tr>
+<tr class="odd">
+<td>FactoMiner</td>
+<td>Um pacote que permite a análise multivariada</td>
+</tr>
+<tr class="even">
+<td>RODBC</td>
+<td>Um pacote que permite a conexão com banco de dados</td>
+</tr>
+<tr class="odd">
+<td>httr/xml2/rvest</td>
+<td>Um conjunto de ferramentas para a web</td>
+</tr>
+<tr class="even">
+<td>flexdashboard</td>
+<td>Um pacote que permite a criação de dashboards no formato
+rmarkdown</td>
+</tr>
+<tr class="odd">
+<td>janitor</td>
+<td>Um pacote que permite a limpeza de dados para modelagem</td>
+</tr>
+<tr class="even">
+<td>plyr</td>
+<td>Um pacote que permite a manipulação de vetores, listas e
+data.frames</td>
+</tr>
+<tr class="odd">
+<td>roxygen2</td>
+<td>Um pacote que permite a criação de pacotes de R</td>
+</tr>
+<tr class="even">
+<td>devtools</td>
+<td>Um pacote que fornece diversas ferramentas</td>
+</tr>
+<tr class="odd">
+<td>htmlwidgets</td>
+<td>Um pacote que permite a integração entre R e bibliotecas
+JavaScript</td>
+</tr>
+<tr class="even">
+<td>leaflet</td>
+<td>Um pacote que permite a criação de mapas interativos</td>
+</tr>
+</tbody>
+</table>
+<p>Um conjunto importante de pacotes/bibliotecas <em>R</em> foi
+integrado na ‘bliblioteca’ <a href="tidyverse.org">Ttidyverse</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>PACOTE/BIBLIOTECA</th>
+<th>DESCRIÇÃO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>dplyr</td>
+<td>Manipulação e transformação de dados</td>
+</tr>
+<tr class="even">
+<td>tidyr</td>
+<td>Manipulação e transformação de dados</td>
+</tr>
+<tr class="odd">
+<td>readr</td>
+<td>Importação de vários tipos de arquivos (csv, tsv, fwf)</td>
+</tr>
+<tr class="even">
+<td>purrr</td>
+<td>Manipulação avançada de listas e vetores</td>
+</tr>
+<tr class="odd">
+<td>ggplot2</td>
+<td>Gráficos dos mais variados tipos</td>
+</tr>
+<tr class="even">
+<td>readxl</td>
+<td>Importação de planilhas excel (.xls, .xlsx)</td>
+</tr>
+<tr class="odd">
+<td>lubridate</td>
+<td>Manipulação de dados em formato de data e/ou tempo</td>
+</tr>
+<tr class="even">
+<td>jsonlite</td>
+<td>Importação de dados em JSON</td>
+</tr>
+<tr class="odd">
+<td>magrittr</td>
+<td>Provê a utilização de pipes (%&gt;%)</td>
+</tr>
+<tr class="even">
+<td>xml2</td>
+<td>Importação de dados em XML</td>
+</tr>
+<tr class="odd">
+<td>rvest</td>
+<td>Utilizado para web scraping</td>
+</tr>
+<tr class="even">
+<td>heaven</td>
+<td>Leitura e escrita de arquivos SPSS, SAS e Stata</td>
+</tr>
+<tr class="odd">
+<td>DBI</td>
+<td>Conexão a base de dados (MySQL, PostgresSQL, SQLite…)</td>
+</tr>
+<tr class="even">
+<td>data.table</td>
+<td>Leitura e escrita de grandes bases de dados</td>
+</tr>
+<tr class="odd">
+<td>ggmap</td>
+<td>Mapas geográficos</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="instalando-pacotes" class="section level2">
+<h2>Instalando pacotes</h2>
+<p>Existem duas formas principais de instalar pacotes em R:</p>
+<div id="instalando-a-partir-do-cran" class="section level3">
+<h3>Instalando a partir do CRAN</h3>
+<p>O <a href="https://cran.r-project.org/">CRAN (Comprehensive R Archive
+Network)</a> é o repositório oficial de pacotes R.</p>
+<p>Para instalar um pacote do CRAN, utilize a função
+<em>install.packages()</em>. Por exemplo, para instalar o pacote
+ggplot2, execute o seguinte comando no console do R:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxvdChjYXJzKVxuYGBgIn0= -->
-<pre class="r"><code>plot(cars)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5zdGFsbC5wYWNrYWdlcyhcImdncGxvdDJcIilcbmBgYCJ9 -->
+<pre class="r"><code>install.packages(&quot;ggplot2&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the
-toolbar or by pressing <em>Ctrl+Alt+I</em>.</p>
-<p>When you save the notebook, an HTML file containing the code and
-output will be saved alongside it (click the <em>Preview</em> button or
-press <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
-<p>The preview shows you a rendered HTML copy of the contents of the
-editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not
-run any R code chunks. Instead, the output of the chunk when it was last
-run in the editor is displayed.</p>
+</div>
+<div id="instalando-a-partir-de-outras-fontes" class="section level3">
+<h3>Instalando a partir de outras fontes</h3>
+<p>Alguns pacotes não estão disponíveis no CRAN, mas podem ser
+instalados a partir de outras fontes, como <a href="https://github.com/">GitHub</a> ou <a href="https://www.bioconductor.org/">Bioconductor</a>. Para instalar um
+pacote do GitHub, utilize a função <em>install_github()</em> do pacote
+devtools. Para instalar pacotes do Bioconductor, siga as instruções
+específicas no site do Bioconductor.</p>
+</div>
+<div id="como-utilizar-pacotes" class="section level3">
+<h3>Como utilizar pacotes?</h3>
+<p>Após instalar um pacote, você precisa carregá-lo na sua sessão R para
+utilizar suas funções. Utilize a função <em>library()</em> para carregar
+um pacote. Por exemplo, para carregar o pacote ggplot2, execute:</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShnZ3Bsb3QyKVxuYGBgIn0= -->
+<pre class="r"><code>library(ggplot2)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Depois de carregar o pacote, você pode utilizar suas funções. Por
+exemplo, para criar um gráfico de dispersão com o ggplot2, utilize a
+função <em>ggplot()</em>.</p>
+</div>
+</div>
+<div id="rstudio" class="section level2">
+<h2>RSTUDIO</h2>
+<p>O RStudio é um ambiente de desenvolvimento integrado (IDE) de código
+aberto e gratuito para a linguagem de programação R. Ele fornece uma
+interface gráfica amigável e um conjunto de ferramentas que facilitam a
+escrita, execução e depuração de código R, tornando o processo de
+análise de dados mais eficiente e produtivo.</p>
+<p>Vantagens do RStudio em relação a outras maneiras de utilizar o
+R:</p>
+<ul>
+<li><em>Interface organizada</em>: O RStudio organiza os diferentes
+aspectos do seu trabalho com R em painéis separados, incluindo editor de
+código, console, ambiente de trabalho e visualizador de gráficos. Isso
+facilita a navegação e o gerenciamento do seu código e dados.</li>
+<li>Editor de código com recursos avançados: O editor de código do
+RStudio oferece recursos como destaque de sintaxe, autocompletar,
+indentação automática e detecção de erros, o que torna a escrita de
+código mais rápida e precisa.</li>
+<li>Console interativo: O console interativo permite que você execute
+comandos R e visualize os resultados imediatamente, o que facilita a
+experimentação e a depuração de código.</li>
+<li>Gerenciamento de projetos: O RStudio permite que você organize seu
+trabalho em projetos, o que facilita a colaboração e o controle de
+versão.</li>
+<li>Visualização de dados: O RStudio oferece ferramentas para visualizar
+dados em diferentes formatos, como tabelas, gráficos e mapas.</li>
+<li>Depuração de código: O RStudio inclui ferramentas de depuração que
+permitem que você execute o código passo a passo e identifique
+erros.</li>
+<li>Integração com outras ferramentas: O RStudio se integra com outras
+ferramentas populares, como Git e R Markdown, o que facilita o controle
+de versão e a criação de relatórios reproduzíveis.</li>
+<li>Recursos extras: O RStudio oferece recursos extras, como histórico
+de comandos, ajuda integrada e atalhos de teclado, que aumentam a
+produtividade.</li>
+</ul>
+<p>Comparado com outras maneiras de usar o R, como o console interativo
+padrão ou a plataforma <a href="https://jupyter.org/">Jupyter
+Notebook</a>, o RStudio oferece:</p>
+<ol style="list-style-type: decimal">
+<li>Maior organização e produtividade: a interface organizada e os
+recursos do editor de código facilitam a escrita e o gerenciamento de
+código.</li>
+<li>Melhor visualização de dados: as ferramentas de visualização
+integradas permitem explorar os dados de forma mais intuitiva.</li>
+<li>Depuração mais eficiente: as ferramentas de depuração ajudam a
+identificar e corrigir erros no código.</li>
+<li>Maior colaboração: o gerenciamento de projetos facilita o trabalho
+em equipe.</li>
+</ol>
+<p>Em resumo, o RStudio oferece um ambiente de desenvolvimento completo
+e amigável que aumenta a produtividade e facilita a análise de dados com
+a linguagem R. Para quem está começando a usar R, e ainda não
+estabeleceu uma rotina de trabalho com o R, ou procura uma maneira mais
+eficiente de trabalhar com a linguagem, o RStudio é uma excelente
+opção.</p>
+</div>
+</div>
+<div id="referências" class="section level1">
+<h1>REFERÊNCIAS</h1>
+<!-- rnb-text-end -->
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXVsYSAxIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgoKClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDdHJsK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KcGxvdChjYXJzKQpgYGAKCkFkZCBhIG5ldyBjaHVuayBieSBjbGlja2luZyB0aGUgKkluc2VydCBDaHVuayogYnV0dG9uIG9uIHRoZSB0b29sYmFyIG9yIGJ5IHByZXNzaW5nICpDdHJsK0FsdCtJKi4KCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ3RybCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLgoKVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQXVsYSAxIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKZWRpdG9yX29wdGlvbnM6CiAgbWFya2Rvd246CiAgICByZWZlcmVuY2VzOiAKICAgICAgbG9jYXRpb246IGJsb2NrCi0tLQoKIyBMSU5HVUFHRU0gKlIqCiAKQSBbbGluZ3VhZ2VtIFJdKGh0dHBzOi8vd3d3LnItcHJvamVjdC5vcmcvKSDDqSB1bWEgZmVycmFtZW50YSBkZSBwcm9ncmFtYcOnw6NvIGVzdGF0w61zdGljYSBlIGdyw6FmaWNhLCBjcmlhZGEgbmEgZMOpY2FkYSBkZSAxOTkwLCBuYSBOb3ZhIFplbMOibmRpYSwgcG9yIFJvc3MgSWhha2EgZSBSb2JlcnQgR2VudGxlbWFuLiDDiSB1bWEgbGluZ3VhZ2VtIGRlIGPDs2RpZ28gYWJlcnRvIGUgbXVsdGlwbGF0YWZvcm1hLCBxdWUgcG9kZSBzZXIgZXhlY3V0YWRhIGVtIHNpc3RlbWFzIG9wZXJhY2lvbmFpcyBjb21vIFdpbmRvd3MsIExpbnV4IGUgTWFjaW50b3NoLiAKCkEgbGluZ3VhZ2VtIFIgw6kgdXRpbGl6YWRhIHBhcmE6IAoxLiBBbsOhbGlzZSBlc3RhdMOtc3RpY2EsIAoyLiBNYW5pcHVsYcOnw6NvIGRlIGRhZG9zLCAKMy4gVmlzdWFsaXphw6fDo28gZ3LDoWZpY2EsIAo0LiBDb25zdHJ1w6fDo28gZGUgbW9kZWxvcyBwcmVkaXRpdm9zLCAKNS4gRXhwbG9yYcOnw6NvIGRlIGluZm9ybWHDp8O1ZXMgZGUgZm9ybWEgdmlzdWFsLiAKCkFsZ3VtYXMgZGFzIHByaW5jaXBhaXMgY2FyYWN0ZXLDrXN0aWNhcyBkYSBsaW5ndWFnZW0gUiBzw6NvOiAKKiBGYWNpbGlkYWRlIGRlIGFwcmVuZGl6YWRvLCBtZXNtbyBwYXJhIHF1ZW0gbsOjbyB0ZW0gZmFtaWxpYXJpZGFkZSBjb20gcHJvZ3JhbWHDp8OjbywKKiBDYXBhY2lkYWRlIGRlIGxpZGFyIGNvbSBncmFuZGVzIHZvbHVtZXMgZGUgZGFkb3MgZGUgZm9ybWEgZWZpY2llbnRlLAoqIEZlcnJhbWVudGFzIHBvZGVyb3NhcyBwYXJhIGNvbnN0cnVpciBtb2RlbG9zIHByZWRpdGl2b3MsIAoqIFN1cG9ydGUgcGFyYSBhbsOhbGlzZSBkZSBzw6lyaWVzIHRlbXBvcmFpcywgbW9kZWxvcyBsaW5lYXJlcyBlIG7Do28gbGluZWFyZXMuCgpPIG5vbWUgUiB2ZW0sIGVtIHBhcnRlIGRhcyBpbmljaWFpcyBkb3Mgbm9tZXMgZGUgc2V1cyBjcmlhZG9yZXMgKFJvc3MgZSBSb2JlcnQpIGUgdGFtYsOpbSBkZSB1bSBqb2dvIGZpZ3VyYWRvIGNvbSBhIGxpbmd1YWdlbSBTLCBkYSBCZWxsIExhYm9yYXRvcmllcy4gTyBjw7NkaWdvIGZvbnRlIGRvIFIgZXN0w6EgZGlzcG9uw612ZWwgc29iIGEgW2xpY2Vuw6dhIEdOVSBHUExdKGh0dHBzOi8vd3d3LmdudS5vcmcvbGljZW5zZXMvKS4gCgojIE8gcXVlIMOpIGEgbGluZ3VhZ2VtICpSKgoKQSBsaW5ndWFnZW0gKlIqIMOpIHVtYSBsaW5ndWFnZW0gZG8gdGlwbyBpbnRlcnByZXRhZGEsIGRpbmFtaWNhbWVudGUgdGlwYWRhIGUgbXVsdGlwYXJhZGlnbWEsIGlzdG8gw6ksIHN1cG9ydGEgbcO6bHRpcGxvcyBwYXJhZGlnbWFzIGRlIHByb2dyYW1hw6fDo28sIGNvbW8gZnVuY2lvbmFsLCBvcmllbnRhZG8gYSBvYmpldG9zIGUgaW1wZXJhdGl2bywgb2ZlcmVjZW5kbyBmbGV4aWJpbGlkYWRlIHBhcmEgZGlmZXJlbnRlcyBlc3RpbG9zIGRlIGNvZGlmaWNhw6fDo28uIEFsw6ltIGRlc3RhcyBjYXJhY3RlcsOtc3RpY2FzIG9zIGRlc2Vudm9sdmVkb3JlcyBkbyBSIG1hbnRlbSBvIGZvY28gZGEgbGluZ3VhZ2VtIG5hIGFuw6FsaXNlIGVzdGF0w61zdGljYSBlIHZpc3VhbGl6YcOnw6NvIGRlIGRhZG9zLiAKClBvciBpc3RvIFIgw6kgYW1wbGFtZW50ZSB1dGlsaXphZGEgcG9yIGVzdGF0w61zdGljb3MsIGNpZW50aXN0YXMgZGUgZGFkb3MgZSBwZXNxdWlzYWRvcmVzIHBhcmEgcmVhbGl6YXIgdGFyZWZhcyBjb21vOgoKKiBNYW5pcHVsYcOnw6NvIGRlIGRhZG9zOiBpbXBvcnRhciwgbGltcGFyLCB0cmFuc2Zvcm1hciBlIG9yZ2FuaXphciBkYWRvcyBkZSBkaXZlcnNhcyBmb250ZXMuCiogQW7DoWxpc2UgZXN0YXTDrXN0aWNhOiByZWFsaXphciB0ZXN0ZXMgZXN0YXTDrXN0aWNvcywgY29uc3RydWlyIG1vZGVsb3MgZGUgcmVncmVzc8OjbywgcmVhbGl6YXIgYW7DoWxpc2VzIGRlIHPDqXJpZXMgdGVtcG9yYWlzLCBldGMuCiogVmlzdWFsaXphw6fDo28gZGUgZGFkb3M6IGNyaWFyIGdyw6FmaWNvcyBlIHZpc3VhbGl6YcOnw7VlcyBpbnRlcmF0aXZhcyBwYXJhIGNvbXVuaWNhciBpbnNpZ2h0cyBhIHBhcnRpciBkb3MgZGFkb3MuCiogTWFjaGluZSBsZWFybmluZzogZGVzZW52b2x2ZXIgYWxnb3JpdG1vcyBkZSBhcHJlbmRpemFkbyBkZSBtw6FxdWluYSBwYXJhIGNvbnN0cnVpciBtb2RlbG9zIHByZWRpdGl2b3MuCgojIFBhcmEgcXVlIHNlcnZlIGEgbGluZ3VhZ2VtICpSKj8KCipSKiDDqSB1bWEgZmVycmFtZW50YSBwb2Rlcm9zYSBwYXJhIG8gcHJvY2Vzc2FtZW50byBkZSBkYWRvcywgc2VqYSBuYSBhY2FkZW1pYSwgbmEgaW5kw7pzdHJpYSBvdSBubyBnb3Zlcm5vLiBFbGEgcG9kZSBzZXIgdXNhZGEgcGFyYToKCiogQW5hbGlzYXIgZGFkb3MgZGUgcGVzcXVpc2FzOiBkZXNjb2JyaXIgcGFkcsO1ZXMgZSB0ZW5kw6puY2lhcyBlbSBkYWRvcyBkZSBwZXNxdWlzYXMgZGUgb3BpbmnDo28sIHBlc3F1aXNhcyBkZSBtZXJjYWRvLCBldGMuCiogRGVzZW52b2x2ZXIgbW9kZWxvcyBmaW5hbmNlaXJvczogY29uc3RydWlyIG1vZGVsb3MgcGFyYSBwcmV2ZXIgbyByaXNjbyBkZSBjcsOpZGl0bywgcHJlY2lmaWNhciBkZXJpdmF0aXZvcywgZXRjLgoqIEFuYWxpc2FyIGRhZG9zIGRlIHNhw7pkZTogZXN0dWRhciBhIGVmaWPDoWNpYSBkZSB0cmF0YW1lbnRvcyBtw6lkaWNvcywgaWRlbnRpZmljYXIgZmF0b3JlcyBkZSByaXNjbyBwYXJhIGRvZW7Dp2FzLCBldGMuCiogUmVhbGl6YXIgcGVzcXVpc2FzIGNpZW50w61maWNhczogYW5hbGlzYXIgZGFkb3MgZXhwZXJpbWVudGFpcywgcmVhbGl6YXIgc2ltdWxhw6fDtWVzLCBldGMuCgojIyBDYXJhY3RlcsOtc3RpY2FzIGltcG9ydGFudGVzIGRhIGxpbmd1YWdlbSAqUio6CgpBIGxpbmd1YWdlbSAqUiogZm9pIGRlc2Vudm9sdmlkYSBwYXJhIHNlciBlc3BlY2lhbGl6YWRhIGVtIGFuYWxpc2VzIGVzdGF0w61zdGljYXMgY29tIGEgY2FwYWNpZGFkZSBkZSBzZXIgbW9kdWxhciBlIGV4dGVuc8OtdmVsLiBBc3NpbSwgY29uc2lkZXJhbmRvIGEgdWJpcXVpZGFkZSBkYSBlc3RhdMOtc3RpY2EgZW0gdG9kYXMgYXMgw6FyZWFzIGRhIGFjYWRlbWlhLCBiZW0gY29tbyBkYSBpbmTDunN0cmlhLCBvICpSKiB0b3Jub3Utc2UgcGFkcsOjbyBlbSB2w6FyaWFzIMOhcmVhcy4gUG9yIGlzdG8gbXVpdG9zIG3Ds2R1bG9zIGUgZXh0ZW5zw7VlcyBmb3JhbSBkZXNlbnZvbHZpZGFzIGVtICpSKiBwYXJhIHRyYXRhciBwcm9ibGVtYXMgZXNwZWPDrWZpY29zIGRhcyBkaXZlcnNhcyDDoXJlYXMuCgpBc3NpbSwgYWxndW1hcyBkYXMgY2FyYWN0ZXLDrXN0aWNhcyBtYWlzIGltcG9ydGFudGVzIGRhIGxpbmd1YWdlbSBzw6NvOgoqIFBvc3N1aSB1bWEgdmFzdGEgY29sZcOnw6NvIGRlIHBhY290ZXMgKGJpYmxpb3RlY2FzIGRlIGPDs2RpZ28pIHF1ZSBmb3JuZWNlbSBmdW5jaW9uYWxpZGFkZXMgcGFyYSBkaXZlcnNhcyDDoXJlYXMsIGNvbW8gYmlvaW5mb3Jtw6F0aWNhLCBlY29ub21ldHJpYSBlIGFuw6FsaXNlIGRlIHJlZGVzIHNvY2lhaXMuCiogUGVybWl0ZSBhIGNyaWHDp8OjbyBkZSBncsOhZmljb3MgZGUgYWx0YSBxdWFsaWRhZGUgZSBwZXJzb25hbGl6YWRvcy4KKiDDiSB1bWEgbGluZ3VhZ2VtIGZsZXjDrXZlbCBlIGV4dGVuc8OtdmVsLCBwZXJtaXRpbmRvIHF1ZSB1c3XDoXJpb3MgY3JpZW0gc3VhcyBwcsOzcHJpYXMgZnVuw6fDtWVzIGUgcGFjb3Rlcy4KKiBQb3NzdWkgdW1hIGNvbXVuaWRhZGUgYXRpdmEgZGUgdXN1w6FyaW9zIGUgZGVzZW52b2x2ZWRvcmVzLCBxdWUgZm9ybmVjZW0gc3Vwb3J0ZSBlIHJlY3Vyc29zIG9ubGluZS4KCiMjIEzDs2dpY2EgZGUgZnVuY2lvbmFubWVudG8KCkEgbGluZ3VhZ2VtIFIgZnVuY2lvbmEgY29tbyB1bSBhbWJpZW50ZSBpbnRlcmF0aXZvIG9uZGUgdm9jw6ogcG9kZSBpbnNlcmlyIGNvbWFuZG9zIGUgb2J0ZXIgcmVzdWx0YWRvcyBpbWVkaWF0YW1lbnRlLiBFc3NlcyBjb21hbmRvcyBwb2RlbSBzZXIgZGVzZGUgb3BlcmHDp8O1ZXMgbWF0ZW3DoXRpY2FzIHNpbXBsZXMgYXTDqSBhbsOhbGlzZXMgZXN0YXTDrXN0aWNhcyBjb21wbGV4YXMgZSBjcmlhw6fDo28gZGUgZ3LDoWZpY29zIHNvZmlzdGljYWRvcy4KCkJhc2ljYW1lbnRlLCBvIGPDs2RpZ28gZW0gUiDDqSBpbnRlcnByZXRhZG8sIGV4ZWN1dGFuZG8gYXMgaW5zdHJ1w6fDtWVzIGUgZm9ybmVjZW5kbyBhcyBzYcOtZGFzIGNvcnJlc3BvbmRlbnRlcywgcXVlIHBvZGVtIHNlciB2YWxvcmVzIG51bcOpcmljb3MsIHRhYmVsYXMsIGdyw6FmaWNvcyBvdSBvdXRyb3Mgb2JqZXRvcy4KCkFzIGV0YXBhcyBkZSBmdW5jaW9uYW1lbnRvIGRvIHByb2Nlc3NhbWVudG8gc8OjbyBhcyBzZWd1aW50ZXM6CgoxLiAqTGVpdHVyYSBkbyBjw7NkaWdvKjogTyBjw7NkaWdvIHF1ZSB2b2PDqiBlc2NyZXZlIMOpIGxpZG8gZSBpbnRlcnByZXRhZG8gcGVsbyBpbnRlcnByZXRhZG9yIFIuCjIuICpFeGVjdcOnw6NvKjogTyBpbnRlcnByZXRhZG9yIGV4ZWN1dGEgYXMgaW5zdHJ1w6fDtWVzIGRvIGPDs2RpZ28gbGluaGEgcG9yIGxpbmhhLgozLiAqR2VyZW5jaWFtZW50byBkZSBtZW3Ds3JpYSo6IG9uZGUgbyBSIGdlcmVuY2lhIGEgbWVtw7NyaWEgZG8gY29tcHV0YWRvciwgYWxvY2FuZG8gZXNwYcOnbyBwYXJhIGFybWF6ZW5hciBkYWRvcyBlIHJlc3VsdGFkb3MuCjQuICpTYcOtZGEqOiBPcyByZXN1bHRhZG9zIGRhIGV4ZWN1w6fDo28gZG8gY8OzZGlnbyBzw6NvIGV4aWJpZG9zIG5vIGNvbnNvbGUsIGVtIGdyw6FmaWNvcyBvdSBzYWx2b3MgZW0gYXJxdWl2b3MuCgojIyBCb2FzIHByw6F0aWNhIGRlIHV0aWxpemHDp8OjbyBkbyBSCgpBIG1lbGhvciBtYW5laXJhIGRlIHV0aWxpemFyIFIgZGVwZW5kZSBkbyBvYmpldGl2byBlIGVzdGlsbyBkZSB0cmFiYWxoby4gQWxndW1hcyByZWNvbWVuZGHDp8O1ZXMgc8OjbzoKCiogVXRpbGl6ZSB1bSBhbWJpZW50ZSBkZSBkZXNlbnZvbHZpbWVudG8gaW50ZWdyYWRvIChJREUpOiBJREVzIGNvbW8gKlJTdHVkaW8qIG9mZXJlY2VtIHJlY3Vyc29zIGNvbW8gZWRpdG9yIGRlIGPDs2RpZ28gY29tIGRlc3RhcXVlIGRlIHNpbnRheGUsIGNvbnNvbGUgaW50ZXJhdGl2bywgdmlzdWFsaXphZG9yIGRlIGRhZG9zIGUgZ2VyZW5jaWFtZW50byBkZSBwcm9qZXRvcywgZmFjaWxpdGFuZG8gYSBlc2NyaXRhIGUgb3JnYW5pemHDp8OjbyBkbyBjw7NkaWdvLgoqIEFwcmVuZGEgb3MgY29uY2VpdG9zIGLDoXNpY29zOiBGYW1pbGlhcml6ZS1zZSBjb20gb3MgdGlwb3MgZGUgZGFkb3MsIGVzdHJ1dHVyYXMgZGUgY29udHJvbGUgKGNvbW8gbG9vcHMgZSBjb25kaWNpb25haXMpIGUgZnVuw6fDtWVzIGLDoXNpY2FzIGRhIGxpbmd1YWdlbSBSLgoqIEV4cGxvcmUgb3MgcGFjb3RlczogUiBwb3NzdWkgdW1hIHZhc3RhIGNvbGXDp8OjbyBkZSBwYWNvdGVzIHF1ZSBmb3JuZWNlbSBmdW5jaW9uYWxpZGFkZXMgcGFyYSBkaXZlcnNhcyDDoXJlYXMuIFV0aWxpemUgcGFjb3RlcyBjb21vIHRpZHl2ZXJzZSBwYXJhIG1hbmlwdWxhw6fDo28gZGUgZGFkb3MsIGdncGxvdDIgcGFyYSB2aXN1YWxpemHDp8OjbyBlIGNhcmV0IHBhcmEgbWFjaGluZSBsZWFybmluZy4KKiBFc2NyZXZhIGPDs2RpZ28gbGltcG8gZSBvcmdhbml6YWRvOiBVdGlsaXplIGNvbWVudMOhcmlvcyBwYXJhIGRvY3VtZW50YXIgc2V1IGPDs2RpZ28sIHNpZ2EgY29udmVuw6fDtWVzIGRlIGVzdGlsbyBlIGRpdmlkYSBzZXUgY8OzZGlnbyBlbSBmdW7Dp8O1ZXMgcGFyYSBmYWNpbGl0YXIgYSByZXV0aWxpemHDp8OjbyBlIG1hbnV0ZW7Dp8Ojby4KKiBQYXJ0aWNpcGUgZGEgY29tdW5pZGFkZSBSOiBBIGNvbXVuaWRhZGUgUiDDqSBhdGl2YSBlIGFjb2xoZWRvcmEuIFBhcnRpY2lwZSBkZSBmw7NydW5zIG9ubGluZSwgbGlzdGFzIGRlIGRpc2N1c3PDo28gZSBncnVwb3MgZGUgdXN1w6FyaW9zIHBhcmEgdGlyYXIgZMO6dmlkYXMsIGNvbXBhcnRpbGhhciBjb25oZWNpbWVudG8gZSBjb2xhYm9yYXIgZW0gcHJvamV0b3MuCgoKIyMgT3V0cmFzIHJlY29tZWRhw6fDtWVzCgoxLiBDb21lY2UgY29tIHByb2JsZW1hcyBzaW1wbGVzIGUgdsOhIGF1bWVudGFuZG8gYSBjb21wbGV4aWRhZGUgZ3JhZHVhbG1lbnRlLgoyLiBVdGlsaXplIHJlY3Vyc29zIG9ubGluZSBjb21vIHR1dG9yaWFpcywgY3Vyc29zIGUgZG9jdW1lbnRhw6fDo28uCjMuIFByYXRpcXVlIHJlZ3VsYXJtZW50ZSBwYXJhIGFwcmltb3JhciBzdWFzIGhhYmlsaWRhZGVzLgo0LiBOw6NvIHRlbmhhIG1lZG8gZGUgZXJyYXIgZSBleHBlcmltZW50YXIhCjUuIENvbSBkZWRpY2HDp8OjbyBlIHByw6F0aWNhLCB2b2PDqiBwb2RlcsOhIGRvbWluYXIgYSBsaW5ndWFnZW0gUiBlIHV0aWxpesOhLWxhIGRlIGZvcm1hIGVmaWNpZW50ZSBwYXJhIHJlYWxpemFyIGFuw6FsaXNlcyBkZSBkYWRvcyBlIG9idGVyIGluc2lnaHRzIHZhbGlvc29zLgoKIyMgUGFjb3RlcyBlIEJpYmxpb3RlY2FzCgpFbSBSLCAicGFjb3RlcyIgZSAiYmlibGlvdGVjYXMiIHPDo28gc2luw7RuaW1vcy4gRWxlcyBzw6NvIGNvbmp1bnRvcyBkZSBmdW7Dp8O1ZXMsIGRhZG9zIGUgZG9jdW1lbnRhw6fDo28gcXVlIGVzdGVuZGVtIGFzIGZ1bmNpb25hbGlkYWRlcyBiw6FzaWNhcyBkYSBsaW5ndWFnZW0gUi4gUG9kZW0gc2VyIGVudGVuZGlkb3MgY29tbyAiYXBsaWNhdGl2b3MiIGluc3RhbGF2ZWlzIG5vIFIgcGFyYSBhY2Vzc2FyIHJlY3Vyc29zIGUgZnVuY2lvbmFkaWRhZGVzIGV4dHJhcy4KCk9zIHBhY290ZXMgcGVybWl0ZW0gcmVhbGl6YXIgdGFyZWZhcyBlc3BlY8OtZmljYXMsIHNlbSBwcmVjaXNhciBlc2NyZXZlciB0b2RvIG8gY8OzZGlnbyBkbyB6ZXJvLiBFbGVzIGZvcm5lY2VtIGZ1bsOnw7VlcyBwcm9udGFzIHBhcmEgZGl2ZXJzYXMgw6FyZWFzLCBjb21vOgoKKk1hbmlwdWxhw6fDo28gZGUgZGFkb3MqOiBkcGx5ciwgdGlkeXIsIGRhdGEudGFibGUKKlZpc3VhbGl6YcOnw6NvIGRlIGRhZG9zKjogZ2dwbG90MiwgcGxvdGx5LCBsYXR0aWNlCipNYWNoaW5lIGxlYXJuaW5nKjogY2FyZXQsIHJhbmRvbUZvcmVzdCwgeGdib29zdAoqRXN0YXTDrXN0aWNhKjogc3RhdHMsIE1BU1MsIHN1cnZpdmFsCipCaW9pbmZvcm3DoXRpY2EqOiBCaW9jb25kdWN0b3IsIHNlcWluciwgcGh5bG9zZXEKCkFsZ3VucyBkb3MgcGFjb3RlcyBlIGJpYmxpb3RlY2FzIG1haXMgdXRpbGl6YWRvcyBubyBSIHPDo286CgpQQUNPVEUvQklCTElPVEVDQXxERVNDUknDh8ODTwotLS0tLS18LS0tLS0tLS0tLQpkcGx5cnwgVW0gcGFjb3RlIHF1ZSBwZXJtaXRlIG1hbmlwdWxhciBkYWRvcyAKZ2dwbG90MnwgVW1hIGJpYmxpb3RlY2EgcXVlIGFqdWRhIGEgbWVsaG9yYXIgYSB2aXN1YWxpemHDp8OjbyBkZSBkYWRvcyAKR1dhbGtSfCBVbWEgYmlibGlvdGVjYSBxdWUgdHJhbnNmb3JtYSBkYWRvcyBlbSBhcGxpY2F0aXZvcyBkZSB2aXN1YWxpemHDp8OjbyBpbnRlcmF0aXZvcyAKdGlkeXJ8IFVtYSBiaWJsaW90ZWNhIHF1ZSBhanVkYSBuYSBvcmdhbml6YcOnw6NvIGRlIGRhZG9zIApjYXJldHwgVW0gcGFjb3RlIGFkZXF1YWRvIHBhcmEgYSBtYWlvcmlhIGRvcyBtb2RlbG9zIGRlIGFwcmVuZGl6YWRvIGRlIG3DoXF1aW5hIApoMm98IFVtIHBhY290ZSBxdWUgY29udMOpbSB1bWEgaW1wbGVtZW50YcOnw6NvIGRlIHJlZGVzIG5ldXJhaXMgZmVlZC1mb3J3YXJkIGUgb3V0cm9zIG1vZGVsb3MgYXZhbsOnYWRvcyAKZm9yY2F0c3wgVW0gcGFjb3RlIHF1ZSBmb3JuZWNlIHV0aWxpZGFkZXMgcGFyYSBmYXRvcmVzIApSY3BwfCBVbSBwYWNvdGUgcXVlIHBlcm1pdGUgYSBpbnRlcmHDp8OjbyBlbnRyZSBSIGUgQysrIApGYWN0b01pbmVyfCBVbSBwYWNvdGUgcXVlIHBlcm1pdGUgYSBhbsOhbGlzZSBtdWx0aXZhcmlhZGEgClJPREJDfCBVbSBwYWNvdGUgcXVlIHBlcm1pdGUgYSBjb25leMOjbyBjb20gYmFuY28gZGUgZGFkb3MgCmh0dHIveG1sMi9ydmVzdHwgVW0gY29uanVudG8gZGUgZmVycmFtZW50YXMgcGFyYSBhIHdlYiAKZmxleGRhc2hib2FyZHwgVW0gcGFjb3RlIHF1ZSBwZXJtaXRlIGEgY3JpYcOnw6NvIGRlIGRhc2hib2FyZHMgbm8gZm9ybWF0byBybWFya2Rvd24gCmphbml0b3J8IFVtIHBhY290ZSBxdWUgcGVybWl0ZSBhIGxpbXBlemEgZGUgZGFkb3MgcGFyYSBtb2RlbGFnZW0gCnBseXJ8IFVtIHBhY290ZSBxdWUgcGVybWl0ZSBhIG1hbmlwdWxhw6fDo28gZGUgdmV0b3JlcywgbGlzdGFzIGUgZGF0YS5mcmFtZXMgCnJveHlnZW4yfCBVbSBwYWNvdGUgcXVlIHBlcm1pdGUgYSBjcmlhw6fDo28gZGUgcGFjb3RlcyBkZSBSIApkZXZ0b29sc3wgVW0gcGFjb3RlIHF1ZSBmb3JuZWNlIGRpdmVyc2FzIGZlcnJhbWVudGFzIApodG1sd2lkZ2V0c3wgVW0gcGFjb3RlIHF1ZSBwZXJtaXRlIGEgaW50ZWdyYcOnw6NvIGVudHJlIFIgZSBiaWJsaW90ZWNhcyBKYXZhU2NyaXB0IApsZWFmbGV0fCBVbSBwYWNvdGUgcXVlIHBlcm1pdGUgYSBjcmlhw6fDo28gZGUgbWFwYXMgaW50ZXJhdGl2b3MgCgpVbSBjb25qdW50byBpbXBvcnRhbnRlIGRlIHBhY290ZXMvYmlibGlvdGVjYXMgKlIqIGZvaSBpbnRlZ3JhZG8gbmEgJ2JsaWJsaW90ZWNhJyBbVHRpZHl2ZXJzZV0odGlkeXZlcnNlLm9yZykuCgpQQUNPVEUvQklCTElPVEVDQXxERVNDUknDh8ODTwotLS0tLS18LS0tLS0tLS0tLQpkcGx5cnxNYW5pcHVsYcOnw6NvIGUgdHJhbnNmb3JtYcOnw6NvIGRlIGRhZG9zCnRpZHlyfE1hbmlwdWxhw6fDo28gZSB0cmFuc2Zvcm1hw6fDo28gZGUgZGFkb3MKcmVhZHJ8SW1wb3J0YcOnw6NvIGRlIHbDoXJpb3MgdGlwb3MgZGUgYXJxdWl2b3MgKGNzdiwgdHN2LCBmd2YpCnB1cnJyfE1hbmlwdWxhw6fDo28gYXZhbsOnYWRhIGRlIGxpc3RhcyBlIHZldG9yZXMKZ2dwbG90MnxHcsOhZmljb3MgZG9zIG1haXMgdmFyaWFkb3MgdGlwb3MKcmVhZHhsfEltcG9ydGHDp8OjbyBkZSBwbGFuaWxoYXMgZXhjZWwgKC54bHMsIC54bHN4KQpsdWJyaWRhdGV8TWFuaXB1bGHDp8OjbyBkZSBkYWRvcyBlbSBmb3JtYXRvIGRlIGRhdGEgZS9vdSB0ZW1wbwpqc29ubGl0ZXxJbXBvcnRhw6fDo28gZGUgZGFkb3MgZW0gSlNPTgptYWdyaXR0cnxQcm92w6ogYSB1dGlsaXphw6fDo28gZGUgcGlwZXMgKCU+JSkKeG1sMnxJbXBvcnRhw6fDo28gZGUgZGFkb3MgZW0gWE1MCnJ2ZXN0fFV0aWxpemFkbyBwYXJhIHdlYiBzY3JhcGluZwpoZWF2ZW58TGVpdHVyYSBlIGVzY3JpdGEgZGUgYXJxdWl2b3MgU1BTUywgU0FTIGUgU3RhdGEKREJJfENvbmV4w6NvIGEgYmFzZSBkZSBkYWRvcyAoTXlTUUwsIFBvc3RncmVzU1FMLCBTUUxpdGXigKYpCmRhdGEudGFibGV8TGVpdHVyYSBlIGVzY3JpdGEgZGUgZ3JhbmRlcyBiYXNlcyBkZSBkYWRvcwpnZ21hcHxNYXBhcyBnZW9ncsOhZmljb3MKCiMjIEluc3RhbGFuZG8gcGFjb3RlcwoKRXhpc3RlbSBkdWFzIGZvcm1hcyBwcmluY2lwYWlzIGRlIGluc3RhbGFyIHBhY290ZXMgZW0gUjoKCiMjIyBJbnN0YWxhbmRvIGEgcGFydGlyIGRvIENSQU4KCk8gW0NSQU4gKENvbXByZWhlbnNpdmUgUiBBcmNoaXZlIE5ldHdvcmspXShodHRwczovL2NyYW4uci1wcm9qZWN0Lm9yZy8pIMOpIG8gcmVwb3NpdMOzcmlvIG9maWNpYWwgZGUgcGFjb3RlcyBSLgoKUGFyYSBpbnN0YWxhciB1bSBwYWNvdGUgZG8gQ1JBTiwgdXRpbGl6ZSBhIGZ1bsOnw6NvICppbnN0YWxsLnBhY2thZ2VzKCkqLiBQb3IgZXhlbXBsbywgcGFyYSBpbnN0YWxhciBvIHBhY290ZSBnZ3Bsb3QyLCBleGVjdXRlIG8gc2VndWludGUgY29tYW5kbyBubyBjb25zb2xlIGRvIFI6CmBgYHtyfQppbnN0YWxsLnBhY2thZ2VzKCJnZ3Bsb3QyIikKYGBgCgojIyMgSW5zdGFsYW5kbyBhIHBhcnRpciBkZSBvdXRyYXMgZm9udGVzCgpBbGd1bnMgcGFjb3RlcyBuw6NvIGVzdMOjbyBkaXNwb27DrXZlaXMgbm8gQ1JBTiwgbWFzIHBvZGVtIHNlciBpbnN0YWxhZG9zIGEgcGFydGlyIGRlIG91dHJhcyBmb250ZXMsIGNvbW8gW0dpdEh1Yl0oaHR0cHM6Ly9naXRodWIuY29tLykgb3UgW0Jpb2NvbmR1Y3Rvcl0oaHR0cHM6Ly93d3cuYmlvY29uZHVjdG9yLm9yZy8pLgpQYXJhIGluc3RhbGFyIHVtIHBhY290ZSBkbyBHaXRIdWIsIHV0aWxpemUgYSBmdW7Dp8OjbyAqaW5zdGFsbF9naXRodWIoKSogZG8gcGFjb3RlIGRldnRvb2xzLgpQYXJhIGluc3RhbGFyIHBhY290ZXMgZG8gQmlvY29uZHVjdG9yLCBzaWdhIGFzIGluc3RydcOnw7VlcyBlc3BlY8OtZmljYXMgbm8gc2l0ZSBkbyBCaW9jb25kdWN0b3IuCgojIyMgQ29tbyB1dGlsaXphciBwYWNvdGVzPwoKQXDDs3MgaW5zdGFsYXIgdW0gcGFjb3RlLCB2b2PDqiBwcmVjaXNhIGNhcnJlZ8OhLWxvIG5hIHN1YSBzZXNzw6NvIFIgcGFyYSB1dGlsaXphciBzdWFzIGZ1bsOnw7Vlcy4gVXRpbGl6ZSBhIGZ1bsOnw6NvICpsaWJyYXJ5KCkqIHBhcmEgY2FycmVnYXIgdW0gcGFjb3RlLiBQb3IgZXhlbXBsbywgcGFyYSBjYXJyZWdhciBvIHBhY290ZSBnZ3Bsb3QyLCBleGVjdXRlOgpgYGB7cn0KbGlicmFyeShnZ3Bsb3QyKQpgYGAKCkRlcG9pcyBkZSBjYXJyZWdhciBvIHBhY290ZSwgdm9jw6ogcG9kZSB1dGlsaXphciBzdWFzIGZ1bsOnw7Vlcy4gUG9yIGV4ZW1wbG8sIHBhcmEgY3JpYXIgdW0gZ3LDoWZpY28gZGUgZGlzcGVyc8OjbyBjb20gbyBnZ3Bsb3QyLCB1dGlsaXplIGEgZnVuw6fDo28gKmdncGxvdCgpKi4KCiMjIFJTVFVESU8KCk8gUlN0dWRpbyDDqSB1bSBhbWJpZW50ZSBkZSBkZXNlbnZvbHZpbWVudG8gaW50ZWdyYWRvIChJREUpIGRlIGPDs2RpZ28gYWJlcnRvIGUgZ3JhdHVpdG8gcGFyYSBhIGxpbmd1YWdlbSBkZSBwcm9ncmFtYcOnw6NvIFIuIEVsZSBmb3JuZWNlIHVtYSBpbnRlcmZhY2UgZ3LDoWZpY2EgYW1pZ8OhdmVsIGUgdW0gY29uanVudG8gZGUgZmVycmFtZW50YXMgcXVlIGZhY2lsaXRhbSBhIGVzY3JpdGEsIGV4ZWN1w6fDo28gZSBkZXB1cmHDp8OjbyBkZSBjw7NkaWdvIFIsIHRvcm5hbmRvIG8gcHJvY2Vzc28gZGUgYW7DoWxpc2UgZGUgZGFkb3MgbWFpcyBlZmljaWVudGUgZSBwcm9kdXRpdm8uCgpWYW50YWdlbnMgZG8gUlN0dWRpbyBlbSByZWxhw6fDo28gYSBvdXRyYXMgbWFuZWlyYXMgZGUgdXRpbGl6YXIgbyBSOgoKKiAqSW50ZXJmYWNlIG9yZ2FuaXphZGEqOiBPIFJTdHVkaW8gb3JnYW5pemEgb3MgZGlmZXJlbnRlcyBhc3BlY3RvcyBkbyBzZXUgdHJhYmFsaG8gY29tIFIgZW0gcGFpbsOpaXMgc2VwYXJhZG9zLCBpbmNsdWluZG8gZWRpdG9yIGRlIGPDs2RpZ28sIGNvbnNvbGUsIGFtYmllbnRlIGRlIHRyYWJhbGhvIGUgdmlzdWFsaXphZG9yIGRlIGdyw6FmaWNvcy4gSXNzbyBmYWNpbGl0YSBhIG5hdmVnYcOnw6NvIGUgbyBnZXJlbmNpYW1lbnRvIGRvIHNldSBjw7NkaWdvIGUgZGFkb3MuCiogRWRpdG9yIGRlIGPDs2RpZ28gY29tIHJlY3Vyc29zIGF2YW7Dp2Fkb3M6IE8gZWRpdG9yIGRlIGPDs2RpZ28gZG8gUlN0dWRpbyBvZmVyZWNlIHJlY3Vyc29zIGNvbW8gZGVzdGFxdWUgZGUgc2ludGF4ZSwgYXV0b2NvbXBsZXRhciwgaW5kZW50YcOnw6NvIGF1dG9tw6F0aWNhIGUgZGV0ZWPDp8OjbyBkZSBlcnJvcywgbyBxdWUgdG9ybmEgYSBlc2NyaXRhIGRlIGPDs2RpZ28gbWFpcyByw6FwaWRhIGUgcHJlY2lzYS4KKiBDb25zb2xlIGludGVyYXRpdm86IE8gY29uc29sZSBpbnRlcmF0aXZvIHBlcm1pdGUgcXVlIHZvY8OqIGV4ZWN1dGUgY29tYW5kb3MgUiBlIHZpc3VhbGl6ZSBvcyByZXN1bHRhZG9zIGltZWRpYXRhbWVudGUsIG8gcXVlIGZhY2lsaXRhIGEgZXhwZXJpbWVudGHDp8OjbyBlIGEgZGVwdXJhw6fDo28gZGUgY8OzZGlnby4KKiBHZXJlbmNpYW1lbnRvIGRlIHByb2pldG9zOiBPIFJTdHVkaW8gcGVybWl0ZSBxdWUgdm9jw6ogb3JnYW5pemUgc2V1IHRyYWJhbGhvIGVtIHByb2pldG9zLCBvIHF1ZSBmYWNpbGl0YSBhIGNvbGFib3Jhw6fDo28gZSBvIGNvbnRyb2xlIGRlIHZlcnPDo28uCiogVmlzdWFsaXphw6fDo28gZGUgZGFkb3M6IE8gUlN0dWRpbyBvZmVyZWNlIGZlcnJhbWVudGFzIHBhcmEgdmlzdWFsaXphciBkYWRvcyBlbSBkaWZlcmVudGVzIGZvcm1hdG9zLCBjb21vIHRhYmVsYXMsIGdyw6FmaWNvcyBlIG1hcGFzLgoqIERlcHVyYcOnw6NvIGRlIGPDs2RpZ286IE8gUlN0dWRpbyBpbmNsdWkgZmVycmFtZW50YXMgZGUgZGVwdXJhw6fDo28gcXVlIHBlcm1pdGVtIHF1ZSB2b2PDqiBleGVjdXRlIG8gY8OzZGlnbyBwYXNzbyBhIHBhc3NvIGUgaWRlbnRpZmlxdWUgZXJyb3MuCiogSW50ZWdyYcOnw6NvIGNvbSBvdXRyYXMgZmVycmFtZW50YXM6IE8gUlN0dWRpbyBzZSBpbnRlZ3JhIGNvbSBvdXRyYXMgZmVycmFtZW50YXMgcG9wdWxhcmVzLCBjb21vIEdpdCBlIFIgTWFya2Rvd24sIG8gcXVlIGZhY2lsaXRhIG8gY29udHJvbGUgZGUgdmVyc8OjbyBlIGEgY3JpYcOnw6NvIGRlIHJlbGF0w7NyaW9zIHJlcHJvZHV6w612ZWlzLgoqIFJlY3Vyc29zIGV4dHJhczogTyBSU3R1ZGlvIG9mZXJlY2UgcmVjdXJzb3MgZXh0cmFzLCBjb21vIGhpc3TDs3JpY28gZGUgY29tYW5kb3MsIGFqdWRhIGludGVncmFkYSBlIGF0YWxob3MgZGUgdGVjbGFkbywgcXVlIGF1bWVudGFtIGEgcHJvZHV0aXZpZGFkZS4KCkNvbXBhcmFkbyBjb20gb3V0cmFzIG1hbmVpcmFzIGRlIHVzYXIgbyBSLCBjb21vIG8gY29uc29sZSBpbnRlcmF0aXZvIHBhZHLDo28gb3UgYSBwbGF0YWZvcm1hIFtKdXB5dGVyIE5vdGVib29rXShodHRwczovL2p1cHl0ZXIub3JnLyksIG8gUlN0dWRpbyBvZmVyZWNlOgoKMS4gTWFpb3Igb3JnYW5pemHDp8OjbyBlIHByb2R1dGl2aWRhZGU6IGEgaW50ZXJmYWNlIG9yZ2FuaXphZGEgZSBvcyByZWN1cnNvcyBkbyBlZGl0b3IgZGUgY8OzZGlnbyBmYWNpbGl0YW0gYSBlc2NyaXRhIGUgbyBnZXJlbmNpYW1lbnRvIGRlIGPDs2RpZ28uCjIuIE1lbGhvciB2aXN1YWxpemHDp8OjbyBkZSBkYWRvczogYXMgZmVycmFtZW50YXMgZGUgdmlzdWFsaXphw6fDo28gaW50ZWdyYWRhcyBwZXJtaXRlbSBleHBsb3JhciBvcyBkYWRvcyBkZSBmb3JtYSBtYWlzIGludHVpdGl2YS4KMy4gRGVwdXJhw6fDo28gbWFpcyBlZmljaWVudGU6IGFzIGZlcnJhbWVudGFzIGRlIGRlcHVyYcOnw6NvIGFqdWRhbSBhIGlkZW50aWZpY2FyIGUgY29ycmlnaXIgZXJyb3Mgbm8gY8OzZGlnby4KNC4gTWFpb3IgY29sYWJvcmHDp8OjbzogbyBnZXJlbmNpYW1lbnRvIGRlIHByb2pldG9zIGZhY2lsaXRhIG8gdHJhYmFsaG8gZW0gZXF1aXBlLgoKRW0gcmVzdW1vLCBvIFJTdHVkaW8gb2ZlcmVjZSB1bSBhbWJpZW50ZSBkZSBkZXNlbnZvbHZpbWVudG8gY29tcGxldG8gZSBhbWlnw6F2ZWwgcXVlIGF1bWVudGEgYSBwcm9kdXRpdmlkYWRlIGUgZmFjaWxpdGEgYSBhbsOhbGlzZSBkZSBkYWRvcyBjb20gYSBsaW5ndWFnZW0gUi4gUGFyYSBxdWVtIGVzdMOhIGNvbWXDp2FuZG8gYSB1c2FyIFIsIGUgYWluZGEgbsOjbyBlc3RhYmVsZWNldSB1bWEgcm90aW5hIGRlIHRyYWJhbGhvIGNvbSBvIFIsIG91IHByb2N1cmEgdW1hIG1hbmVpcmEgbWFpcyBlZmljaWVudGUgZGUgdHJhYmFsaGFyIGNvbSBhIGxpbmd1YWdlbSwgbyBSU3R1ZGlvIMOpIHVtYSBleGNlbGVudGUgb3DDp8Ojby4KCiMgUkVGRVLDik5DSUFT</div>
 
 
 

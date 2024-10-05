@@ -3,4 +3,106 @@ title: "Aula 3"
 output: html_notebook
 ---
 
-conteúdo da aula 3...
+# DATAFRAMES
+
+Genericamente falando, *Dataframes* (DF) ou quandros de dados, são matrizes de dados bidimencionais, com rótulos para colunas e linhas.
+
+## Carregando dados em um DF
+
+Vamos carregar os dados que estão em um arquivo, em formato de planilha, para dentro de um dataframe. 
+Carregando o dado do arquivo *autos_infracao_icmbio.csv*:
+```{r}
+#library(readr)
+ai_df <- read_csv("~/BaseGeo/0_ICMBio/autos_infracao_icmbio.csv", 
++     col_types = cols(ogc_fid = col_integer(), 
++         vw_num_aut = col_integer(), embargo = col_character(), 
++         data = col_date(format = "%Y-%m-%d"), 
++         ano = col_integer(), artigo_1 = col_integer(), 
++         artigo_2 = col_integer()))
+> View(ai_df)  
+```
+
+## Verificando os dados
+
+Visualizando as primeiras linhas do dado:
+```{r}
+head(ai_df)
+```
+
+Sumarizando:
+```{r}
+summary(ai_df)
+```
+
+## Selecionando os dados
+
+Para selecionar os dados é importante saber o nome das colunas, uma vez que nosso dados está disposto em forma tabular, on de as variáveis estão dispostas em colunas.
+
+Para isto usamos:
+```{r}
+colnames(ai_df)
+```
+
+E a estrutura que tem os dados:
+```{r}
+str(ai_df)
+```
+
+
+
+Para entender os intervalos de variação dos dados podemos usar outra função de sumário, o *skim()*
+
+Outra forma de sumarizar os dados:
+```{r}
+#library(skimr)
+skim(ai_df)
+```
+
+Com a função subset() podemos 'recortar' ou 'filtrar' os dados:
+```{r}
+ai_c_embargo <- subset(ai_df, embargo=="Sim" & valor_mult<=25000, select = c("numero_ai","valor_mult","ano" ))
+ai_s_embargo <- subset(ai_df, embargo=="Não" & valor_mult<=25000, select = c("numero_ai","valor_mult","ano" ))
+```
+
+Visualizando o resultado do subconjunto de dados:
+```{r}
+par(mfrow=c(1,2))
+hist(ai_c_embargo$valor_mult, main = "Com embargo", xlab = "multa (R$)")
+hist(ai_s_embargo$valor_mult, main = "Sem embargo", xlab = "multa (R$)")
+```
+Cria um DF temporário:
+```{r}
+ai_tmp <- subset(ai_df, valor_mult<=25000, select = c("numero_ai","valor_mult","ano" ))
+```
+
+## Alterando o DF
+
+Adiciona uma nova coluna 'embargos' mas com resultado lógico:
+```{r}
+ai_tmp$embargo <- subset(ai_df, valor_mult<=25000, select = c("embargo"))$embargo == "Sim"
+```
+
+Visualizando as primeiras linhas:
+```{r}
+head(ai_tmp)
+```
+Agora vamos fazer operações matemática sobre os valores das multas, para tentar diminuir a amplitude da escala.
+
+```{r}
+ai_tmp$valor_mult <- log10(ai_tmp$valor_mult) #talvez fique melhor com ln!
+ai_tmp <- subset(ai_tmp, valor_mult > 0 & valor_mult < 10)
+```
+
+Histograma dos valores de multas:
+```{r}
+hist(ai_tmp$valor_mult)
+```
+
+
+Agora isualizando o resultado do subconjunto de dados:
+```{r}
+par(mfrow=c(1,2))
+hist(ai_tmp$valor_mult[ai_tmp$embargo], main = "Com embargo", xlab = "multa (R$)")
+hist(ai_tmp$valor_mult[ai_tmp$embargo==FALSE], main = "Sem embargo", xlab = "multa (R$)")
+```
+
